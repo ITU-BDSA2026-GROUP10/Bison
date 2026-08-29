@@ -27,7 +27,7 @@ class Program
                     string[] info = postInfo[i].Split(",");
                     Post post = new Post(info[0], info[1], info[2]);
                     posts.Append(post);
-                    Console.WriteLine(post.author + post.observations + DateTimeOffset.FromUnixTimeSeconds(post.timecode).DateTime);
+                    Console.WriteLine(post.getAuthor() + DateTimeOffset.FromUnixTimeSeconds(post.getTimecode()).DateTime + post.getObservation());
                 }
                 
                 /*;
