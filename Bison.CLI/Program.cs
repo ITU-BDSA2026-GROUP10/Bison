@@ -31,7 +31,7 @@ class Program
                 
                 //}
                 
-                /*;
+                /*
                 Console.WriteLine(timecode); */
 
             } else if(args[0] == "observe")
