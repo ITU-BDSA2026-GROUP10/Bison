@@ -30,7 +30,7 @@ class Program
                     Console.WriteLine(post.author + post.observations + DateTimeOffset.FromUnixTimeSeconds(post.timecode).DateTime);
                 }
                 
-                /*;
+                /*
                 Console.WriteLine(timecode); */
 
             } else if(args[0] == "observe")
