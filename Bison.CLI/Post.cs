@@ -1,31 +1,37 @@
 using System;
 using System.Collections.Specialized;
+using System.Net;
 
 public class Post
 {
-    private string author;
-    private long timecode;
-    private string observation;
 
-    Post(string authors, string observations, long timecodes)
+    string author;
+    long timecode;
+    string observation;
+
+    public Post(string authors, string observations, string timecodes)
     {
         author = authors;
         observation = observations;
-        timecode = timecodes;
+        timecode = long.Parse(timecodes);
+        //potential bug with parse?
     }
 
-    public string GetAuthor()
+    public string getAuthor ()
     {
         return author;
     }
-    public long GetTime()
-    {
-        return timecode;
-    }
-    public string GetObservation()
+
+    public string getObservation()
     {
         return observation;
     }
+
+    public long getTimecode()
+    {
+        return timecode;
+    }
+
     /*long GetTime()
     {
         return DateTimeOffset.FromUnixTimeSeconds(timecode).DateTime;
