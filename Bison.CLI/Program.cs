@@ -14,28 +14,22 @@ class Program
             
             if(args[0] == "read")
             {
-                string text = "hej";
-                text = reader.ReadLine();
-
-                string importantText = reader.ReadToEnd();
+                string text = reader.ReadLine(); //for the first line (not data)
+                
                 
                 while ((text = reader.ReadLine()) != null)
                 {
+                    string[] info = text.Split(",");
+                    Post post = new Post(info[0], info[1], info[2]);
+                    //posts.Append(post);
+                    Console.WriteLine(post.getAuthor() + " @ " + DateTimeOffset.FromUnixTimeSeconds(post.getTimecode()).DateTime + ": " + post.getObservation());
+
                     //the while loop that reads each line
                     //this is a more save way than regex for splitting at a new line with big data sets
                     //more on that at: https://stackoverflow.com/questions/1547476/split-a-string-on-newlines-in-net/23408020#23408020
                 }
                 
-                string[] postInfo = importantText.Split("");
-                Post[] posts = new Post[3];
-
-                for (int i = 0; i < postInfo.Length; i++)
-                {
-                    string[] info = postInfo[i].Split(",");
-                    Post post = new Post(info[0], info[1], info[2]);
-                    posts.Append(post);
-                    Console.WriteLine(post.getAuthor() + DateTimeOffset.FromUnixTimeSeconds(post.getTimecode()).DateTime + post.getObservation());
-                }
+                //}
                 
                 /*;
                 Console.WriteLine(timecode); */
