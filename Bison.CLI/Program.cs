@@ -19,6 +19,13 @@ class Program
 
                 string importantText = reader.ReadToEnd();
                 
+                while ((text = reader.ReadLine()) != null)
+                {
+                    //the while loop that reads each line
+                    //this is a more save way than regex for splitting at a new line with big data sets
+                    //more on that at: https://stackoverflow.com/questions/1547476/split-a-string-on-newlines-in-net/23408020#23408020
+                }
+                
                 string[] postInfo = importantText.Split("");
                 Post[] posts = new Post[3];
 
@@ -27,7 +34,7 @@ class Program
                     string[] info = postInfo[i].Split(",");
                     Post post = new Post(info[0], info[1], info[2]);
                     posts.Append(post);
-                    Console.WriteLine(post.author + post.observations + DateTimeOffset.FromUnixTimeSeconds(post.timecode).DateTime);
+                    Console.WriteLine(post.getAuthor() + DateTimeOffset.FromUnixTimeSeconds(post.getTimecode()).DateTime + post.getObservation());
                 }
                 
                 /*
