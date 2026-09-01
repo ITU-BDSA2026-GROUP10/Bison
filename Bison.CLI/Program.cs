@@ -21,7 +21,8 @@ public class Program
                     string[] info = text.Split(",");
                     Post post = new Post(info[0], info[1], info[2]);
                     //posts.Append(post);
-                    Console.WriteLine(post.getAuthor() + " @ " + DateTimeOffset.FromUnixTimeSeconds(post.getTimecode()).DateTime + ": " + post.getObservation().Trim('\"'));
+                    DateTime time = DateTimeOffset.FromUnixTimeSeconds(post.getTimecode()).DateTime;
+                    Console.WriteLine(post.getAuthor() + " @ " + time + ": " + post.getObservation().Trim('\"'));
 
                     //the while loop that reads each line
                     //this is a more save way than regex for splitting at a new line with big data sets
@@ -38,7 +39,7 @@ public class Program
                 {
                     //https://learn.microsoft.com/en-us/dotnet/api/system.environment.username?view=net-8.0
                     // https://learn.microsoft.com/en-us/dotnet/api/system.datetime.now?view=net-10.0
-                    long lokalTid = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    long lokalTid = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
                     
                     writer.WriteLine(Environment.UserName + ",\"" +  args[1] + "\"," + lokalTid);
                     
