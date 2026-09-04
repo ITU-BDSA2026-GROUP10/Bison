@@ -17,9 +17,14 @@ public class Program
                 var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                 
                 var records = csv.GetRecords<Cheep>();
+                Console.WriteLine(records);
+
+                
                 foreach (var r in records)
                 {
-                    Console.WriteLine($"{r.Author}, {r.Observation}, {r.Timestamp}");
+                    DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
+                    Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+                    //Console.WriteLine($"{r.Author}, {r.Observation}, {r.Timestamp}");
                 }
                 
                 
