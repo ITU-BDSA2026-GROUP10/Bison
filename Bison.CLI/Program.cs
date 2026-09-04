@@ -1,19 +1,35 @@
 ﻿using System;
 using System.IO;
 using System.Reflection.Metadata;
+using CsvHelper;
+using System.Globalization;
 
 public class Program
 {
-    //https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-read-text-from-a-file
-    //https://dev.to/maikomiyazaki/c-date-time-conversion-cheatsheet-3fm8#chapter-1
+
     static void Main (string[] args)
     {
         try
-        {
-            
+        {   
             if(args[0] == "read")
             {
-                using StreamReader reader = new("bison_observe_cli_db.csv");
+                var reader = new StreamReader("bison_observe_cli_db.csv");
+                var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                
+                var records = csv.GetRecords<Cheep>();
+                Console.WriteLine(records);
+
+                
+                foreach (var r in records)
+                {
+                    DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
+                    Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+                    //Console.WriteLine($"{r.Author}, {r.Observation}, {r.Timestamp}");
+                }
+                
+                
+
+                /*using StreamReader reader = new("bison_observe_cli_db.csv");
                 string text = reader.ReadLine(); //for the first line (not data)
                 
                 while ((text = reader.ReadLine()) != null)
@@ -32,13 +48,12 @@ public class Program
                 /*
                 Console.WriteLine(timecode); */
 
-            } else if(args[0] == "observe") // https://learn.microsoft.com/en-us/dotnet/api/system.io.file.appendtext?view=net-8.0
+            } else if(args[0] == "observe")
             {
                 string path = "bison_observe_cli_db.csv";
                 using (StreamWriter writer = File.AppendText(path))
                 {
-                    //https://learn.microsoft.com/en-us/dotnet/api/system.environment.username?view=net-8.0
-                    // https://learn.microsoft.com/en-us/dotnet/api/system.datetime.now?view=net-10.0
+    
                     long lokalTid = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
                     
                     writer.WriteLine(Environment.UserName + ",\"" +  args[1] + "\"," + lokalTid);
