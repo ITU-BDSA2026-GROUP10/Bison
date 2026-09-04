@@ -2,7 +2,6 @@ using System;
 using System.Collections.Specialized;
 using System.Net;
 using System.ComponentModel.DataAnnotations.Schema;
-using CsvHelper.Configuration.Attributes;
 
 public record Cheep (string Author, string Observation, long Timestamp);
 /*{
