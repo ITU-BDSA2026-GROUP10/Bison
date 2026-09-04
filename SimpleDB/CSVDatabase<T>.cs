@@ -1,6 +1,6 @@
 ﻿namespace SimpleDB;
 
-public sealed class CSVDatabase<T> : IDatabaseRepository {}
+public sealed class CSVDatabase<T> : IDatabaseRepository<T> {}
 {
     public IEnumerable<T> Read(int? limit = null) {
 
