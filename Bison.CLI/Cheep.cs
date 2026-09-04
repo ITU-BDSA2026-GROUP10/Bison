@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Specialized;
 using System.Net;
+using System.ComponentModel.DataAnnotations.Schema;
+using CsvHelper.Configuration.Attributes;
 
-public record Cheep
+public record Cheep (string Author, string Observation, long Timestamp)
 {
-    public Cheep(string Author, string observations, string timecodes)
-    {
-        author = author;
-        observation = observations;
-        timecode = long.Parse(timecodes);
-        //potential bug with parse?
-        //hello this is test branch
-    }
+    [Name("Author")]
+    public required string Author { get; set; } = "";
+
+    [Name("Observation")]
+    public required string Observation {get; set;} ="";
+    [Name("Timestamp")]
+    public required long Timestamp { get; set;} = 0;
 }
