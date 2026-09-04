@@ -8,15 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <PackageReference Include="CsvHelper" Version="33.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
-=======
-    <PackageReference Include="docopt.net" Version="0.8.3" />
->>>>>>> main
   </ItemGroup>
 
 </Project>
