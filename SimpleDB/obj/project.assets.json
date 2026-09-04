@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "/Users/raaminraza/.nuget/packages/": {}
+    "/Users/sofiehelt/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/raaminraza/Desktop/Analysis, Design and Software Architecture/Bison-1/SimpleDB/SimpleDB.csproj",
+      "projectUniqueName": "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/SimpleDB.csproj",
       "projectName": "SimpleDB",
-      "projectPath": "/Users/raaminraza/Desktop/Analysis, Design and Software Architecture/Bison-1/SimpleDB/SimpleDB.csproj",
-      "packagesPath": "/Users/raaminraza/.nuget/packages/",
-      "outputPath": "/Users/raaminraza/Desktop/Analysis, Design and Software Architecture/Bison-1/SimpleDB/obj/",
+      "projectPath": "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/SimpleDB.csproj",
+      "packagesPath": "/Users/sofiehelt/.nuget/packages/",
+      "outputPath": "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/raaminraza/.nuget/NuGet/NuGet.Config"
+        "/Users/sofiehelt/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -38,6 +38,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -59,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet@8/8.0.130/libexec/sdk/8.0.130/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.424/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
