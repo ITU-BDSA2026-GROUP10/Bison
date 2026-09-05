@@ -18,12 +18,6 @@ public class Program
                 IEnumerable<Cheep> enumerator = csvDatabase.Read();
                 UserInterface.printObservations(enumerator);
 
-                /*
-                    //the while loop that reads each line
-                    //this is a more save way than regex for splitting at a new line with big data sets
-                    //more on that at: https://stackoverflow.com/questions/1547476/split-a-string-on-newlines-in-net/23408020#23408020
-                */
-
             } else if(args[0] == "observe")
             {
                 CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
