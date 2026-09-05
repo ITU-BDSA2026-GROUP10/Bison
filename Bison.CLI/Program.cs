@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection.Metadata;
 using CsvHelper;
 using System.Globalization;
+using SimpleDB;
 
 public class Program
 {
@@ -13,7 +14,11 @@ public class Program
         {   
             if(args[0] == "read")
             {
-                var reader = new StreamReader("bison_observe_cli_db.csv");
+                //CSVDatabase csvDatabase = new CSVDatabase();
+                CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
+                csvDatabase.Read();
+
+                /*var reader = new StreamReader("bison_observe_cli_db.csv");
                 var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                 
                 var records = csv.GetRecords<Cheep>();
@@ -25,7 +30,7 @@ public class Program
                     DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
                     Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
                     //Console.WriteLine($"{r.Author}, {r.Observation}, {r.Timestamp}");
-                }
+                }/
                 
                 
 
@@ -50,7 +55,9 @@ public class Program
 
             } else if(args[0] == "observe")
             {
-                string path = "bison_observe_cli_db.csv";
+                CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
+                csvDatabase.Store(args[1]);
+                /*string path = "bison_observe_cli_db.csv";
                 using (StreamWriter writer = File.AppendText(path))
                 {
     
@@ -59,7 +66,7 @@ public class Program
                     writer.WriteLine(Environment.UserName + ",\"" +  args[1] + "\"," + lokalTid);
                     
                     writer.Close();
-                }
+                }*/
                 
             }
 

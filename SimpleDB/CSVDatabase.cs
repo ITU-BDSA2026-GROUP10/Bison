@@ -25,6 +25,15 @@ sealed class CSVDatabase<T> /*: IDatabaseRepository<T> */
     }
  
     public void Store(T record) {
-        
+        string path = "bison_observe_cli_db.csv";
+                using (StreamWriter writer = File.AppendText(path))
+                {
+    
+                    long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+                    
+                    writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime);
+                    
+                    writer.Close();
+                }
     }
 }
