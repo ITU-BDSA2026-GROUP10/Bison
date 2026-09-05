@@ -16,13 +16,7 @@ public class Program
             {
                 CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
                 IEnumerable<Cheep> enumerator = csvDatabase.Read();
-
-                foreach (var r in enumerator)
-                {
-                    DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
-                    Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
-                }
-                
+                UserInterface.printObservations(enumerator);
 
                 /*
                     //the while loop that reads each line
