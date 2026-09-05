@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/SimpleDB.csproj": {}
+    "C:\\Users\\signe\\BDSA\\Bison\\SimpleDB\\SimpleDB.csproj": {}
   },
   "projects": {
-    "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/SimpleDB.csproj": {
+    "C:\\Users\\signe\\BDSA\\Bison\\SimpleDB\\SimpleDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/SimpleDB.csproj",
+        "projectUniqueName": "C:\\Users\\signe\\BDSA\\Bison\\SimpleDB\\SimpleDB.csproj",
         "projectName": "SimpleDB",
-        "projectPath": "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/SimpleDB.csproj",
-        "packagesPath": "/Users/sofiehelt/.nuget/packages/",
-        "outputPath": "/Users/sofiehelt/BDSProject2026/Bison/SimpleDB/obj/",
+        "projectPath": "C:\\Users\\signe\\BDSA\\Bison\\SimpleDB\\SimpleDB.csproj",
+        "packagesPath": "C:\\Users\\signe\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\signe\\BDSA\\Bison\\SimpleDB\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/sofiehelt/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\signe\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -64,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.424/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.424/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

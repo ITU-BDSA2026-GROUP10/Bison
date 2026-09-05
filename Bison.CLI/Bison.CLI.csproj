@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
+    <Compile Include="..\SimpleDB\**\*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)"/>
   </ItemGroup>
 
 </Project>
