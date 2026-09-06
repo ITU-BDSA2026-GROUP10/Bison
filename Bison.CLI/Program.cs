@@ -34,16 +34,41 @@ public class Program
 
         observeCommand.SetAction(parseResult =>
         {
-            string observation = parseResult.GetValue(observationArgument);
-            CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
-            csvDatabase.Store(observation);  
+            try {
+                if(parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
+                {
+                    string observation = parseResult.GetValue(observationArgument);
+                    if(observation != null)
+                    {
+                        CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
+                        csvDatabase.Store(observation); 
+                    }
+                } else
+                {
+                    throw new ArgumentException("Observation cannot be null or empty string, please enter a valid observation.");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         });
 
 
         ParseResult parseResult = rootCommand.Parse(args);
-        parseResult.Invoke();
-
-
+        try
+        {
+            foreach (var unmatchedToken in parseResult.UnmatchedTokens)
+            {
+                throw new ArgumentException("This action does not exist, please try a valid action");
+            }
+            parseResult.Invoke();
+        }
+        catch (ArgumentException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        
 
 
        /*try
