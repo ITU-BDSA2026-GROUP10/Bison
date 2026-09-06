@@ -9,6 +9,7 @@ public static class UserInterface
             {
                 Observation observation = (Observation)r;
                 Console.WriteLine(r.Author + " @ " + time + ": " + observation.observation.Trim('\"'));
+                Console.WriteLine("i'm an observation");
             } else if (typeof(Comment).IsInstanceOfType(r))
             {
                 Comment comment = (Comment)r;

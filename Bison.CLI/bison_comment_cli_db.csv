@@ -1,10 +1,8 @@
-sofiehelt,"Comment { Author = sofiehelt, Timestamp = 1788721452, author = sofiehelt, timestamp = 1788721452, observationId = 2, comment = 2,hej
- }",1788728652
-sofiehelt,"Comment { Author = sofiehelt, Timestamp = 1788721695, author = sofiehelt, timestamp = 1788721695, observationId = 2, comment = 2,hej
- }",1788728895
-sofiehelt,"Comment { Author = sofiehelt, Timestamp = 1788721723, author = sofiehelt, timestamp = 1788721723, observationId = 2, comment = 2,hej
- }",1788728923
-sofiehelt,"Comment { Author = sofiehelt, Timestamp = 1788721741, author = sofiehelt, timestamp = 1788721741, observationId = 2, comment = 2,hej
- }",1788728941
-sofiehelt,"Comment { Author = , Timestamp = 0, author = , timestamp = 0, observationId = 2, comment = 2,hej
- }",1788729019
+Author, Id, Comment, Timestampsofiehelt,"1,hej
+
+",1788730037
+sofiehelt,"1,hej",1788730099
+sofiehelt,"1,hej",1788730112
+sofiehelt,"1,hej",1788730137
+sofiehelt,"1,hej",1788730178
+sofiehelt,"1,hej",1788730227
