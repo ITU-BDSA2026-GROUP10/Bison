@@ -17,13 +17,21 @@ public class Program
     
         Command readCommand = new ("read"); 
         Command observeCommand = new ("observe");
+        Command commentCommand = new ("comment");
+        Command discussionCommand = new ("discussion");
 
         rootCommand.Add(readCommand);
         rootCommand.Add(observeCommand);
+        rootCommand.Add(commentCommand);
+        rootCommand.Add(discussionCommand);
     
         Argument<string> observationArgument = new Argument<string>("observation");
+        Argument<string> commentArgument = new Argument<string>("comment");
+        Argument<long> discussionArgument = new Argument<long> ("observationId");
         
         observeCommand.Arguments.Add(observationArgument);
+        commentCommand.Arguments.Add(commentArgument);
+        discussionCommand.Arguments.Add(discussionArgument);
 
         readCommand.SetAction(parseResult =>
         {
@@ -52,6 +60,48 @@ public class Program
             {
                 Console.WriteLine(e.Message);
             }
+        });
+
+        commentCommand.SetAction(parseResult =>
+        {
+            try {
+                if(parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
+                {
+                    string comment = parseResult.GetValue(commentArgument);
+                    if(comment != null)
+                    {
+                        long observationId = 0;
+                        int endOfId = 0;
+                        char[] charArray = comment.ToCharArray();
+                        for(int i = 0; i<charArray.Length; i++)
+                        {
+                            char ch = charArray[i];
+                            if (ch.Equals(',')) //finds the end of the observation id
+                            {
+                                endOfId = i;
+                            }
+                        }
+                        observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
+                        CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
+                        csvDatabase.Store(comment);
+                    }
+                } else
+                {
+                    throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        );
+
+        discussionCommand.SetAction(parseResult =>
+        { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
+            CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
+            IEnumerable<Cheep> enumerator = csvDatabase.Read();
+            UserInterface.printObservations(enumerator);
         });
 
 
