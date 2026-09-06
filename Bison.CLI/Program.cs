@@ -49,7 +49,7 @@ public class Program
                     if(observation != null)
                     {
                         CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
-                        csvDatabase.Store(observation); 
+                        csvDatabase.Store(observation,"bison_observe_cli_db.csv"); 
                     }
                 } else
                 {
@@ -82,8 +82,8 @@ public class Program
                             }
                         }
                         observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
-                        CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
-                        csvDatabase.Store(comment);
+                        CSVDatabase<String> csvDatabase = new CSVDatabase<String>();
+                        csvDatabase.Store(comment,"bison_comment_cli_db.csv");
                     }
                 } else
                 {
