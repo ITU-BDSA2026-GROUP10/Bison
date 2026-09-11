@@ -5,6 +5,8 @@ on:
     tags:
       - "v*.*.*"
 
+permissions: write-all
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,5 +15,3 @@ jobs:
         uses: actions/checkout@v6
       - name: Release
         uses: softprops/action-gh-release@v3
-        
-permissions: write-all
