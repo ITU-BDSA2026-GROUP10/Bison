@@ -37,6 +37,7 @@ public class Program
         {
             CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
             IEnumerable<Cheep> enumerator = csvDatabase.Read();
+            Console.WriteLine("inde i program, hej!");
             UserInterface.printObservations(enumerator);
         });
 
@@ -101,6 +102,7 @@ public class Program
         { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
             CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
             IEnumerable<Cheep> enumerator = csvDatabase.Read();
+            Console.WriteLine("inde i discussion command");
             UserInterface.printObservations(enumerator);
         });
 
@@ -118,8 +120,6 @@ public class Program
         {
             Console.WriteLine(e.Message);
         }
-        
-
 
        /*try
         {  
