@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public record Cheep (string Author, string Observation, long Timestamp);
+public record Cheep (string Author, long Timestamp);
 /*{
     [Name("Author")]
     public required string Author { get; set; }

@@ -16,8 +16,7 @@ sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     }
  
-    public void Store(T record) {
-        string path = "bison_observe_cli_db.csv";
+    public void Store(T record, string path) {
         using (StreamWriter writer = File.AppendText(path))
         {
 
