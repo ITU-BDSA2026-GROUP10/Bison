@@ -7,9 +7,9 @@ using System.Globalization;
 sealed class CSVDatabase<T> : IDatabaseRepository<T> 
 {
      
-    public IEnumerable<T> Read(int? limit = null) {
+    public IEnumerable<T> Read(string path, int? limit = null) {
         IEnumerable <T> objects;
-        var reader = new StreamReader("bison_observe_cli_db.csv");
+        var reader = new StreamReader(path);
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
         Console.WriteLine("Inde i read");

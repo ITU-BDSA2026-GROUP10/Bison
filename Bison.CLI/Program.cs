@@ -36,7 +36,7 @@ public class Program
         readCommand.SetAction(parseResult =>
         {
             CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
-            IEnumerable<Cheep> enumerator = csvDatabase.Read();
+            IEnumerable<Cheep> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
             Console.WriteLine("inde i program, hej!");
             UserInterface.printObservations(enumerator);
         });
@@ -100,10 +100,10 @@ public class Program
 
         discussionCommand.SetAction(parseResult =>
         { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
-            CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
-            IEnumerable<Cheep> enumerator = csvDatabase.Read();
+            CSVDatabase<Comment> csvDatabase = new CSVDatabase<Comment>();
+            IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
             Console.WriteLine("inde i discussion command");
-            UserInterface.printObservations(enumerator);
+            UserInterface.printDiscussion(enumerator);
         });
 
 
