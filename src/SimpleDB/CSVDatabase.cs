@@ -5,9 +5,10 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq.Expressions;
 
-sealed class CSVDatabase<T> : IDatabaseRepository<T> 
+sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
-     
+    public CSVDatabase(){}
+
     public IEnumerable<T> Read(string path, int? limit = null) {
         IEnumerable <T> objects;
         var reader = new StreamReader(path);
@@ -23,7 +24,7 @@ sealed class CSVDatabase<T> : IDatabaseRepository<T>
         {
 
             long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter();
+            long id = Counter(path);
 
             writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
             
@@ -31,29 +32,35 @@ sealed class CSVDatabase<T> : IDatabaseRepository<T>
         }
     }
 
-    public void StoreComment(T record, string path, long ObservationID)
+    public void StoreComment(T record, string path, string observePath, long ObservationID)
     {
-        long count = Counter();
-        Console.WriteLine(count);
-        if(count >= ObservationID)
-        {
-            Console.WriteLine("HEJ!!!!!");
-            using (StreamWriter writer = File.AppendText(path))
+        long count = Counter(observePath);
+        try{
+            if(count >= ObservationID)
             {
+                using (StreamWriter writer = File.AppendText(path))
+                {
+                    long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
 
-                long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-
-                writer.WriteLine(Environment.UserName + "," + ObservationID + ",\"" +  record + "\"," + localTime);
-                
-                writer.Close();
+                    writer.WriteLine(Environment.UserName + "," + ObservationID + ",\"" +  record + "\"," + localTime);
+                    
+                    writer.Close();
+                }
+            } else
+            {
+                throw new ArgumentException("The observation does not exist");
             }
+        }
+        catch (ArgumentException e)
+        {
+            Console.WriteLine(e.Message);
         }
     }
 
     //Used https://github.com/JoshClose/CsvHelper/issues/948 as reference
-   private long Counter()
+   private long Counter(string path)
    {
-       using(StreamReader reader = new StreamReader("bison_observe_cli_db.csv"))
+       using(StreamReader reader = new StreamReader(path))
        {
            int recordsLength = 0;
            while(reader.ReadLine() != null)
@@ -64,4 +71,9 @@ sealed class CSVDatabase<T> : IDatabaseRepository<T>
            return recordsLength;
        }
    }
+
+   public long GetNumberOfLinesInAFile(string path)
+    {
+        return Counter(path);
+    }
 }
