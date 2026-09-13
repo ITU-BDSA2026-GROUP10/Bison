@@ -4,7 +4,7 @@ using System.Transactions;
 public class UnitTest1
 {
     [Fact]
-    public void CommentToNonexistingObservationThrowsAnException()
+    public void CSVDatabaseDoesNotStoreCommentToNonexistingObservation()
     {
         //Arange
         string comment = "99, sej fugl";
