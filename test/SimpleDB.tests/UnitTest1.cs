@@ -1,4 +1,6 @@
 namespace SimpleDB.tests;
+
+using System.Reflection;
 using System.Transactions;
 
 public class UnitTest1
@@ -17,5 +19,18 @@ public class UnitTest1
         
         //Assert
         Assert.Equal(before, after);
+    }
+
+    [Fact]
+    public void UnixTimeConvertsCorrectlyToUserReadableTime()
+    {
+        //Arrange
+        long unixTime = 1789313646+7200;
+
+        //Act
+        DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTime).DateTime;
+        string dateTimeString = dateTime.ToLongTimeString();
+        //Assert
+        Assert.Equal("17.34.06", dateTimeString);
     }
 }
