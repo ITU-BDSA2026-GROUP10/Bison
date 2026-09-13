@@ -3,6 +3,7 @@
 using CsvHelper;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.Linq.Expressions;
 
 sealed class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -27,6 +28,25 @@ sealed class CSVDatabase<T> : IDatabaseRepository<T>
             writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
             
             writer.Close();
+        }
+    }
+
+    public void StoreComment(T record, string path, long ObservationID)
+    {
+        long count = Counter();
+        Console.WriteLine(count);
+        if(count >= ObservationID)
+        {
+            Console.WriteLine("HEJ!!!!!");
+            using (StreamWriter writer = File.AppendText(path))
+            {
+
+                long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+
+                writer.WriteLine(Environment.UserName + "," + ObservationID + ",\"" +  record + "\"," + localTime);
+                
+                writer.Close();
+            }
         }
     }
 

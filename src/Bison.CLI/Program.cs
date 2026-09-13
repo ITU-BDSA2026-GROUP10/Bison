@@ -35,8 +35,8 @@ public class Program
 
         readCommand.SetAction(parseResult =>
         {
-            CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>();
-            IEnumerable<Cheep> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+            CSVDatabase<Observations> csvDatabase = new CSVDatabase<Observations>();
+            IEnumerable<Observations> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
             Console.WriteLine("inde i program, hej!");
             UserInterface.printObservations(enumerator);
         });
@@ -65,36 +65,7 @@ public class Program
 
         commentCommand.SetAction(parseResult =>
         {
-            try {
-                if(parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
-                {
-                    string comment = parseResult.GetValue(commentArgument);
-                    if(comment != null)
-                    {
-                        long observationId = 0;
-                        int endOfId = 0;
-                        char[] charArray = comment.ToCharArray();
-                        for(int i = 0; i<charArray.Length; i++)
-                        {
-                            char ch = charArray[i];
-                            if (ch.Equals(',')) //finds the end of the observation id
-                            {
-                                endOfId = i;
-                            }
-                        }
-                        observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
-                        CSVDatabase<String> csvDatabase = new CSVDatabase<String>();
-                        csvDatabase.Store(comment,"bison_comment_cli_db.csv");
-                    }
-                } else
-                {
-                    throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
-                }
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            SetCommentAction(parseResult, commentArgument);
         }
         );
 
@@ -143,6 +114,40 @@ public class Program
         {
             
         }*/   
+    }
+    public static void SetCommentAction(ParseResult parseResult, Argument <string> commentArgument)
+    {
+        try {
+                if(parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
+                {
+                    string comment = parseResult.GetValue(commentArgument);
+                    if(comment != null)
+                    {
+                        long observationId = 0;
+                        int endOfId = 0;
+                        char[] charArray = comment.ToCharArray();
+                        for(int i = 0; i<charArray.Length; i++)
+                        {
+                            char ch = charArray[i];
+                            if (ch.Equals(',')) //finds the end of the observation id
+                            {
+                                endOfId = i;
+                            }
+                        }
+                        observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
+                        string actualComment = comment.Substring(endOfId+2);
+                        CSVDatabase<String> csvDatabase = new CSVDatabase<String>();
+                        csvDatabase.StoreComment(actualComment,"bison_comment_cli_db.csv", observationId);
+                    }
+                } else
+                {
+                    throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
     }
 }
  
