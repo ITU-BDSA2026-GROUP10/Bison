@@ -18,17 +18,41 @@ sealed class CSVDatabase<T> : IDatabaseRepository<T>
     }
  
     public void Store(T record, string path) {
+        /*using (StreamWriter writer = File.AppendText(path)){
+            long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+            if (path.Equals("bison_observe_cli_db.csv"))
+            {
+                long id = Counter();
+
+                writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
+            }
+            else if (path.Equals("bison_comment_cli_db.csv"))
+            {
+                long observationId = 0;
+                int endOfId = 0;
+                char[] charArray = record.ToCharArray();
+                for(int i = 0; i<charArray.Length; i++)
+                {
+                    char ch = charArray[i];
+                    if (ch.Equals(',')) //finds the end of the observation id
+                    {
+                        endOfId = i;
+                    }
+                }
+                observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
+            }
+            writer.Close();
+        }*/
         using (StreamWriter writer = File.AppendText(path))
         {
-
             long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
             long id = Counter();
 
             writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
-            
             writer.Close();
         }
     }
+    
 
     //Used https://github.com/JoshClose/CsvHelper/issues/948 as reference
    private long Counter()
