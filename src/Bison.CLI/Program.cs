@@ -27,7 +27,7 @@ public class Program
     
         Argument<string> observationArgument = new Argument<string>("observation");
         Argument<string> commentArgument = new Argument<string>("comment");
-        Argument<long> discussionArgument = new Argument<long> ("observationId");
+        Argument<string> discussionArgument = new Argument<string> ("observationId");
         
         observeCommand.Arguments.Add(observationArgument);
         commentCommand.Arguments.Add(commentArgument);
@@ -39,6 +39,15 @@ public class Program
             IEnumerable<Observations> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
             Console.WriteLine("inde i program, hej!");
             UserInterface.printObservations(enumerator);
+        });
+
+        discussionCommand.SetAction(parseResult =>
+        { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
+            CSVDatabase<Comment> csvDatabase = new CSVDatabase<Comment>();
+            IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
+            Console.WriteLine("inde i discussion command");
+            long discussionArgumentLong = long.Parse(parseResult.GetValue(discussionArgument));
+            UserInterface.printDiscussion(discussionArgumentLong, enumerator);
         });
 
         observeCommand.SetAction(parseResult =>
@@ -68,14 +77,6 @@ public class Program
             SetCommentAction(parseResult, commentArgument);
         }
         );
-
-        discussionCommand.SetAction(parseResult =>
-        { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
-            CSVDatabase<Comment> csvDatabase = new CSVDatabase<Comment>();
-            IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
-            Console.WriteLine("inde i discussion command");
-            UserInterface.printDiscussion(enumerator);
-        });
 
 
         ParseResult parseResult = rootCommand.Parse(args);

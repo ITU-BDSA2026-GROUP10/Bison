@@ -4,6 +4,8 @@ using CsvHelper;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Security.AccessControl;
+using System.Transactions;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -42,7 +44,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
                 {
                     long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
 
-                    writer.WriteLine(Environment.UserName + "," + ObservationID + ",\"" +  record + "\"," + localTime);
+                    writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + ObservationID);
                     
                     writer.Close();
                 }

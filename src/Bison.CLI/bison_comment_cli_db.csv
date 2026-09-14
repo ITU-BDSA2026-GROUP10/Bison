@@ -1,8 +1,2 @@
-Author, Id, Comment, Timestamp
-sofiehelt,"1,hej",1788730099
-sofiehelt,"1,hej",1788730112
-sofiehelt,"1,hej",1788730137
-sofiehelt,"1,hej",1788730178
-sofiehelt,"1,hej",1788730227
-teklasvane,1,"hej",1789313441
-teklasvane,1,"hej",1789318104
+Author, Observation, Timestamp, ObservationId
+sofiehelt,"hej",1789379614,1
