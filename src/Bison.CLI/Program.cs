@@ -37,7 +37,6 @@ public class Program
         {
             CSVDatabase<Observations> csvDatabase = new CSVDatabase<Observations>();
             IEnumerable<Observations> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
-            Console.WriteLine("inde i program, hej!");
             UserInterface.printObservations(enumerator);
         });
 
@@ -45,7 +44,6 @@ public class Program
         { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
             CSVDatabase<Comment> csvDatabase = new CSVDatabase<Comment>();
             IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
-            Console.WriteLine("inde i discussion command");
             long discussionArgumentLong = long.Parse(parseResult.GetValue(discussionArgument));
             UserInterface.printDiscussion(discussionArgumentLong, enumerator);
         });

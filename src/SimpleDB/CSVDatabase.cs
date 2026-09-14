@@ -16,8 +16,6 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         var reader = new StreamReader(path);
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
-        Console.WriteLine("Inde i read");
-        Console.WriteLine(objects);
         return objects;
     }
  
