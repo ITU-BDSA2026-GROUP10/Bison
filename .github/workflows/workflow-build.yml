@@ -5,10 +5,10 @@ name: build and test with dotnet
 
 on:
   push:
+    branches:
+      - main
   pull_request:
     branches: [ "main" ]
-  merge_group:
-    types: [checks_requested]
 
 jobs:
   build:
