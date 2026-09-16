@@ -56,25 +56,25 @@ public class UnitTest1
     [Fact]
     public void storedObservationsCanBeRetrived ()
     {
-        CSVDatabase <Observation> csvDatabase = new CSVDatabase <Observation> ();
+        CSVDatabase <Observations> csvDatabase = new CSVDatabase <Observations> ();
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
-        List <Observation> observationsToBeStored = new List<Observation>();
-        Observation observation0 = new Observation("ropf","A bird at DR Byen",1690891760,0);
-        Observation observation1 = new Observation("adho","I think that is a Heron at DR Byen", 1690978778,1);
-        Observation observation2 = new Observation("edka","Ardea cinerea at DR Byen",1690979858,2);
+        List <Observations> observationsToBeStored = new List<Observations>();
+        Observations observation0 = new Observations("ropf","A bird at DR Byen",1690891760,0);
+        Observations observation1 = new Observations("adho","I think that is a Heron at DR Byen", 1690978778,1);
+        Observations observation2 = new Observations("edka","Ardea cinerea at DR Byen",1690979858,2);
         
         //så vidt jeg kunne se blev observationerne aldrig tilføjet til listen, men ved ikke om det var meningen
         observationsToBeStored.Add(observation0);
         observationsToBeStored.Add(observation1);
         observationsToBeStored.Add(observation2);
 
-        foreach (Observation o in observationsToBeStored)
+        foreach (Observations o in observationsToBeStored)
         {
             csvDatabase.Store(o,"integrationstest_observation.csv");
         }
-        List <Observation> observations = csvDatabase.read("integrationstest_observation.csv");
+        List <Observations> observations = csvDatabase.read("integrationstest_observation.csv");
 
-        foreach (Observation ob in observations)
+        foreach (Observations ob in observations)
         {
             AssemblyTrademarkAttribute.Contains(observations, i => i.Author = ob.Author && i.Observation == ob.Observation 
             && i.Timestamp == ob. Timestamp && i.ID == ob.ID);
