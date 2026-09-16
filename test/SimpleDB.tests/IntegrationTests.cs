@@ -1,10 +1,7 @@
-//namespace SimpleDB.tests;
-
-global using Xunit;
 /*using System.Reflection;
 using System.Transactions;
 
-public class GlobalUsings
+public class Integrationstest
 {
     [Fact]
     public void storedCommentsCanBeRetrived ()
