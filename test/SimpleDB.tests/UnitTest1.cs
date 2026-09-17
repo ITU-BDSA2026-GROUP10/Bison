@@ -44,9 +44,9 @@ public class UnitTest1
         //csvDatabase.StoreComment("spotted heron at DR byen","integrationstest.csv","integrationtest_observation",1);
         csvDatabase.StoreComment(comment,"integrationstest.csv","integrationtest_observation",1);
         //List <Comment> comments = csvDatabase.read("integrationstest_comment.csv");
-        IEnumerable <Comment> comments = csvDatabase.read("integrationstest_comment.csv");
+        IEnumerable <Comment> comments = csvDatabase.Read("integrationstest_comment.csv");
 
-        Assert.Contains(comment, 
+        Assert.Contains(comments, 
         c => c.ObservationId == 1 
         && c.Author == "sofiehelt" 
         && c.Timestamp == timestamp 
@@ -72,11 +72,11 @@ public class UnitTest1
         {
             csvDatabase.Store(o,"integrationstest_observation.csv");
         }
-        List <Observations> observations = csvDatabase.read("integrationstest_observation.csv");
+        IEnumerable<Observations> observations = csvDatabase.Read("integrationstest_observation.csv");
 
         foreach (Observations ob in observations)
         {
-            AssemblyTrademarkAttribute.Contains(observations, i => i.Author = ob.Author && i.Observation == ob.Observation 
+            Assert.Contains(observations, i => i.Author == ob.Author && i.Observation == ob.Observation 
             && i.Timestamp == ob. Timestamp && i.ID == ob.ID);
         }
     }
