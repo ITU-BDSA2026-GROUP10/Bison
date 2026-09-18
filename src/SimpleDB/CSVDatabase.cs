@@ -9,7 +9,22 @@ using System.Transactions;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
-    public CSVDatabase(){}
+
+    private static readonly CSVDatabase instance = new CSVDatabase();
+
+    static CSVDatabase() {} 
+
+    private CSVDatabase() {} 
+
+    public static CSVDatabase getInstance 
+    {
+        get
+        {
+            return instance;
+        } 
+
+    }
+     
 
     public IEnumerable<T> Read(string path, int? limit = null) {
         IEnumerable <T> objects;
