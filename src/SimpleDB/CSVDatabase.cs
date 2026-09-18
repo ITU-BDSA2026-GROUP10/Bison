@@ -10,19 +10,15 @@ using System.Transactions;
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
 
-    private static readonly CSVDatabase instance = new CSVDatabase();
+    private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
 
     static CSVDatabase() {} 
 
     private CSVDatabase() {} 
 
-    public static CSVDatabase getInstance 
+    public static CSVDatabase<T> getInstance() 
     {
-        get
-        {
-            return instance;
-        } 
-
+        return instance;
     }
      
 

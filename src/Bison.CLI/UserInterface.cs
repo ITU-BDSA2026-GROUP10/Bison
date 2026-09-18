@@ -1,6 +1,6 @@
 public static class UserInterface
 {
-    public static void printObservations(IEnumerable<Observations> obs)
+    public static void printObservations(IEnumerable<Observation> obs)
     {
         foreach (var r in obs)
         {

@@ -39,14 +39,14 @@ public class Program
 
         readCommand.SetAction(parseResult =>
         {
-            CSVDatabase<Observations> csvDatabase = new CSVDatabase<Observations>();
-            IEnumerable<Observations> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+            CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
+            IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
             UserInterface.printObservations(enumerator);
         });
 
         discussionCommand.SetAction(parseResult =>
         { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
-            CSVDatabase<Comment> csvDatabase = new CSVDatabase<Comment>();
+            CSVDatabase<Comment> csvDatabase = CSVDatabase<Comment>.getInstance();
             IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
             long discussionArgumentLong = long.Parse(parseResult.GetValue(discussionArgument));
             UserInterface.printDiscussion(discussionArgumentLong, enumerator);
@@ -60,7 +60,7 @@ public class Program
                     string observation = parseResult.GetValue(observationArgument);
                     if(observation != null)
                     {
-                        CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
+                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
                         csvDatabase.Store(observation,"bison_observe_cli_db.csv"); 
                     }
                 } else
@@ -89,7 +89,7 @@ public class Program
                     string location = parseResult.GetValue(locationArgument);
                     if (locationArgument != null && location != null)
                     {
-                        CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
+                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
                         csvDatabase.Store(location,"bison_observe_cli_db.csv");
                     }
                 } 
@@ -137,7 +137,7 @@ public class Program
                         }
                         observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
                         string actualComment = comment.Substring(endOfId+2);
-                        CSVDatabase<String> csvDatabase = new CSVDatabase<String>();
+                        CSVDatabase<String> csvDatabase = CSVDatabase<String>.getInstance();
                         csvDatabase.StoreComment(actualComment,"bison_comment_cli_db.csv", "bison_observe_cli_db.csv", observationId);
                     }
                 } else
