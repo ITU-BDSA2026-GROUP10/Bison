@@ -135,7 +135,7 @@ public class Program
                         }
                         observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
                         string actualComment = comment.Substring(endOfId+2);
-                        CSVDatabase<String> csvDatabase = new CSVDatabase<String>();
+                        CSVDatabase<string> csvDatabase = new CSVDatabase<string>();
                         csvDatabase.StoreComment(actualComment,"bison_comment_cli_db.csv", "bison_observe_cli_db.csv", observationId);
                     }
                 } else
