@@ -30,12 +30,12 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         return objects;
     }
  
-    public void Store(T record, string path) {
-        using (StreamWriter writer = File.AppendText(path))
+    public void Store(T record) {
+        using (StreamWriter writer = File.AppendText("bison_observe_cli_cb.csv"))
         {
 
             long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter(path);
+            long id = Counter("bison_observe_cli_cb.csv");
 
             writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
             
@@ -43,13 +43,13 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         }
     }
 
-    public void StoreComment(T record, string path, string observePath, long ObservationID)
+    public void StoreComment(T record, string observePath, long ObservationID)
     {
         long count = Counter(observePath);
         try{
             if(count >= ObservationID)
             {
-                using (StreamWriter writer = File.AppendText(path))
+                using (StreamWriter writer = File.AppendText("bison_comment_cli_db.csv"))
                 {
                     long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
 

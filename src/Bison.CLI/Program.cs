@@ -39,8 +39,8 @@ public class Program
 
         readCommand.SetAction(parseResult =>
         {
-            CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
-            IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+            CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
+            IEnumerable<Observations> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
             UserInterface.printObservations(enumerator);
         });
 
@@ -61,7 +61,7 @@ public class Program
                     if(observation != null)
                     {
                         CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(observation,"bison_observe_cli_db.csv"); 
+                        csvDatabase.Store(observation); 
                     }
                 } else
                 {
@@ -90,7 +90,7 @@ public class Program
                     if (locationArgument != null && location != null)
                     {
                         CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(location,"bison_observe_cli_db.csv");
+                        csvDatabase.Store(location);
                     }
                 } 
             } 
@@ -138,7 +138,7 @@ public class Program
                         observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
                         string actualComment = comment.Substring(endOfId+2);
                         CSVDatabase<String> csvDatabase = CSVDatabase<String>.getInstance();
-                        csvDatabase.StoreComment(actualComment,"bison_comment_cli_db.csv", "bison_observe_cli_db.csv", observationId);
+                        csvDatabase.StoreComment(comment,actualComment, observationId);
                     }
                 } else
                 {
