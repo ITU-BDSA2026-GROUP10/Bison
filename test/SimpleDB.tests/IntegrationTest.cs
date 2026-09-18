@@ -5,7 +5,7 @@ using SimpleDB;
 public class IntegrationTest
 {
     [Fact]
-    public void storedCommentsCanBeRetrived ()
+    public void storedCommentsCanBeRetrieved ()
     {
         //Arrange
         CSVDatabase<Comment> csvDatabase = new CSVDatabase <Comment> ();
@@ -22,7 +22,7 @@ public class IntegrationTest
     }
 
     [Fact]
-    public void storedObservationsCanBeRetrived ()
+    public void storedObservationsCanBeRetrieved ()
     {
         //Arrange
         CSVDatabase <Observations> csvDatabase = new CSVDatabase <Observations> ();
