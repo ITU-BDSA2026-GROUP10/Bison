@@ -39,16 +39,16 @@ public class Program
 
         readCommand.SetAction(parseResult =>
         {
-            CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
-            IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+            CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
+            IEnumerable<Observations> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
             UserInterface.printObservations(enumerator);
         });
 
         discussionCommand.SetAction(parseResult =>
         { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
             CSVDatabase<Comment> csvDatabase = CSVDatabase<Comment>.getInstance();
-            IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
             long discussionArgumentLong = long.Parse(parseResult.GetValue(discussionArgument));
+            IEnumerable<Comment> enumerator = csvDatabase.ReadDiscussion("bison_comment_cli_db.csv",discussionArgumentLong);
             UserInterface.printDiscussion(discussionArgumentLong, enumerator);
         });
 
@@ -58,10 +58,11 @@ public class Program
                 if(parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
                 {
                     string observation = parseResult.GetValue(observationArgument);
+                    Observations observation1 = new Observations(null, observation, 0,0);
                     if(observation != null)
                     {
-                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(observation,"bison_observe_cli_db.csv"); 
+                        CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
+                        csvDatabase.Store(observation1); 
                     }
                 } else
                 {
@@ -80,7 +81,7 @@ public class Program
         }
         );
 
-        locationCommand.SetAction(parseResult =>
+        /*locationCommand.SetAction(parseResult =>
         {
             try
             {
@@ -90,7 +91,7 @@ public class Program
                     if (locationArgument != null && location != null)
                     {
                         CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(location,"bison_observe_cli_db.csv");
+                        csvDatabase.Store(location);
                     }
                 } 
             } 
@@ -99,7 +100,7 @@ public class Program
                 Console.WriteLine(e.Message);
             }
         }
-        );
+        );*/
 
         ParseResult parseResult = rootCommand.Parse(args);
         try

@@ -3,29 +3,35 @@ using SimpleDB;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-CSVDatabase<Cheep> database = new SimpleDB.CSVDatabase<Cheep>();
+CSVDatabase<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
+CSVDatabase<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
 /*app.MapGet("/observations", () => new Observation("signe","Heron at DR Byen",1788161296,3));
 app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
 
 app.MapGet("/observations", () =>
 {
-    return database.Read("bison_observe_cli_db.csv");
+    return databaseObs.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv");
 });
 
-app.MapGet("/comments", () =>
+app.MapGet("/comments", (long observationId) =>
 {
-    return database.Read("bison_comment_cli_db.csv");
+    return databaseCom.ReadDiscussion("../Bison.CLI/bison_comment_cli_db.csv",observationId);
 });
 
-app.MapPost("/observation", (Observation observation) =>
+app.MapPost("/observation", (Observations observation) =>
 {
-    database.Store(observation,"bison_observe_cli_db.csv");
+    databaseObs.Store(observation);
 });
 
 app.MapPost("/comment", (Comment comment) =>
 {
-    database.StoreComment(comment,"bison_comment_cli_db.csv",comment.Observation,comment.ObservationId);
-});
+    databaseCom.StoreComment(comment,comment.Observation,comment.ObservationId);
+}); 
+
+app.MapPost("/hello", () =>
+{
+    return "hello";
+}); 
 
 app.Run();
 

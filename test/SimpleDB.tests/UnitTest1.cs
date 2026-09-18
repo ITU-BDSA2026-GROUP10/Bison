@@ -8,7 +8,6 @@ public class UnitTest1
     public void CSVDatabaseDoesNotStoreCommentToNonexistingObservation()
     {
         //Arange
-        //string comment = "99, sej fugl";
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
         Comment comment = new Comment("teklasvane","sej fugl", timestamp,99);
         CSVDatabase<Comment> database = new CSVDatabase<Comment>();
