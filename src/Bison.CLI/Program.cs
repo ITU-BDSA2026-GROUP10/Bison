@@ -82,22 +82,11 @@ public class Program
 
         locationCommand.SetAction(parseResult =>
         {
-            try
-            {
-               if(parseResult.GetValue(locationArgument) != null && !parseResult.GetValue(locationArgument).Equals(""))
-                {
-                    string location = parseResult.GetValue(locationArgument);
-                    if (locationArgument != null && location != null)
-                    {
-                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(location,"bison_observe_cli_db.csv");
-                    }
-                } 
-            } 
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
+            IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+            string locationArgumentString = "DR Byen";
+            //String.Parse(parseResult.GetValue(locationArgument));
+            UserInterface.printObservationsByLocation(locationArgumentString, enumerator);
         }
         );
 
@@ -149,6 +138,10 @@ public class Program
             {
                 Console.WriteLine(e.Message);
             }
+    }
+    public static void SetLocationAction()
+    {
+        
     }
 }
  

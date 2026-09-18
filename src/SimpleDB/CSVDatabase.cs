@@ -36,8 +36,9 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
             long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
             long id = Counter(path);
+            string location = "DR byen"; //later we will create a method for finding the actual location
 
-            writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
+            writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id + "\"," + location);
             
             writer.Close();
         }
@@ -67,7 +68,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
             Console.WriteLine(e.Message);
         }
     }
-
+    
     //Used https://github.com/JoshClose/CsvHelper/issues/948 as reference
    private long Counter(string path)
    {

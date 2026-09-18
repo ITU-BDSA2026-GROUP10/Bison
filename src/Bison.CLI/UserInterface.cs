@@ -20,4 +20,15 @@ public static class UserInterface
             }
         } 
     }
+
+    public static void printObservationsByLocation(string location, IEnumerable<Observation> obs)
+    {    
+        foreach (var r in obs)
+        {
+            if (r.Location.Equals(location)){
+                DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
+                Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+            }
+        }
+    }
 }
