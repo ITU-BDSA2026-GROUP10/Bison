@@ -3,6 +3,8 @@
 global using Xunit;
 /*using System.Reflection;
 using System.Transactions;
+using Cli.Lessons;
+using Spectre.Console;
 
 public class GlobalUsings
 {
@@ -12,8 +14,8 @@ public class GlobalUsings
         CSVDatabase csvDatabase = new CSVDatabase ();
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
         Comment comment = new Comment("sofiehelt","spotted heron a DR byen", timestamp,1);
-        csvDatabase.storeComment(observation,"integrationstest.csv","spotted heron at DR byen",1);
-        List <Comment> comment = csvDatabase.read("integrationstest_comment.csv");
+        csvDatabase.storeComment(observation,"test.csv","spotted heron at DR byen",1);
+        List <Comment> comment = csvDatabase.read("test_comment.csv");
 
         Assert.Contains(comment, c => c.ObservationId == 1 && c.Author == "sofiehelt" && c.Timestamp == timestamp 
         && c.Observation == "spotted heron at DR byen");
@@ -31,9 +33,9 @@ public class GlobalUsings
         Observation observation = new Observation(edka,"Ardea cinerea at DR Byen",1690979858,2);
         foreach (observation o in observationsToBeStored)
         {
-            csvDatabase.Store(o,"integrationstest_observation.csv");
+            csvDatabase.Store(o,"test_observation.csv");
         }
-        List <Observation> observations = csvDatabase.read("integrationstest_observation.csv");
+        List <Observation> observations = csvDatabase.read("test_observation.csv");
 
         foreach (Observation ob in observations)
         {
