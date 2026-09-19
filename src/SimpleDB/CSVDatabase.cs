@@ -37,7 +37,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
             long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
             long id = Counter(path);
         
-            writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id + "\"," + location);
+            writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
             
             writer.Close();
         }
