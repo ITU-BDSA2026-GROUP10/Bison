@@ -31,11 +31,13 @@ public class Program
         Argument<string> commentArgument = new Argument<string>("comment");
         Argument<string> discussionArgument = new Argument<string> ("observationId");
         Argument<string> locationArgument = new Argument<string> ("location");
+        Argument<string> locationArgument2 = new Argument<string> ("location");
         
         observeCommand.Arguments.Add(observationArgument);
+        observeCommand.Arguments.Add(locationArgument);
         commentCommand.Arguments.Add(commentArgument);
         discussionCommand.Arguments.Add(discussionArgument);
-        locationCommand.Arguments.Add(locationArgument);
+        locationCommand.Arguments.Add(locationArgument2);
 
         readCommand.SetAction(parseResult =>
         {
@@ -54,18 +56,18 @@ public class Program
 
         observeCommand.SetAction(parseResult =>
         {
-            try {
-                if(parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
+            try 
+            {
+                string observation = parseResult.GetValue(observationArgument);
+                string location = parseResult.GetValue(locationArgument);
+                
+                if((observation != null && !observation.Equals("")) && (location != null && !location.Equals("")))
                 {
-                    string observation = parseResult.GetValue(observationArgument);
-                    if(observation != null)
-                    {
-                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(observation,"bison_observe_cli_db.csv"); 
-                    }
+                    CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
+                    csvDatabase.Store(observation,"bison_observe_cli_db.csv",location);
                 } else
                 {
-                    throw new ArgumentException("Observation cannot be null or empty string, please enter a valid observation.");
+                    throw new ArgumentException("Observation or location cannot be null or empty string, please enter valid input.");
                 }
             }
             catch (ArgumentException e)
@@ -82,11 +84,28 @@ public class Program
 
         locationCommand.SetAction(parseResult =>
         {
-            CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
-            IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
-            string locationArgumentString = "DR Byen";
-            //String.Parse(parseResult.GetValue(locationArgument));
-            UserInterface.printObservationsByLocation(locationArgumentString, enumerator);
+            try 
+            {
+                string location = parseResult.GetValue(locationArgument2);
+
+                if((location != null && !location.Equals("")))
+                {
+                    CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
+                    IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+                    
+
+                    UserInterface.printObservationsByLocation(location, enumerator);
+
+                } else
+                {
+                    throw new ArgumentException("Location cannot be null or empty string, please enter a valid location.");
+                }
+    
+            
+            } catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         );
 
