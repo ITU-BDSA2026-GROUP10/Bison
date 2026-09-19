@@ -41,16 +41,16 @@ public class Program
 
         readCommand.SetAction(parseResult =>
         {
-            CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
-            IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+            CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
+            IEnumerable<Observations> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
             UserInterface.printObservations(enumerator);
         });
 
         discussionCommand.SetAction(parseResult =>
         { //this is just what happens when a user tries to do the read command - so this should be changed to list comments
             CSVDatabase<Comment> csvDatabase = CSVDatabase<Comment>.getInstance();
-            IEnumerable<Comment> enumerator = csvDatabase.Read("bison_comment_cli_db.csv");
             long discussionArgumentLong = long.Parse(parseResult.GetValue(discussionArgument));
+            IEnumerable<Comment> enumerator = csvDatabase.ReadDiscussion("bison_comment_cli_db.csv",discussionArgumentLong);
             UserInterface.printDiscussion(discussionArgumentLong, enumerator);
         });
 
@@ -91,7 +91,7 @@ public class Program
                 if((location != null && !location.Equals("")))
                 {
                     CSVDatabase<Observation> csvDatabase = CSVDatabase<Observation>.getInstance();
-                    IEnumerable<Observation> enumerator = csvDatabase.Read("bison_observe_cli_db.csv");
+                    IEnumerable<Observation> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
                     
 
                     UserInterface.printObservationsByLocation(location, enumerator);

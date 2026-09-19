@@ -1,6 +1,8 @@
+
+using SimpleDB;
 public static class UserInterface
 {
-    public static void printObservations(IEnumerable<Observation> obs)
+    public static void printObservations(IEnumerable<Observations> obs)
     {
         foreach (var r in obs)
         {

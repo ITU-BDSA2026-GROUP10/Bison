@@ -22,12 +22,34 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
     }
      
 
-    public IEnumerable<T> Read(string path, int? limit = null) {
+    public IEnumerable<T> ReadObservation(string path, int? limit = null) {
         IEnumerable <T> objects;
         var reader = new StreamReader(path);
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
         return objects;
+    }
+ 
+
+    public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null) {
+        IEnumerable <T> objects;
+        var reader = new StreamReader(path);
+        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        objects = csv.GetRecords<T>();
+
+        List<T> comments = new List<T>();
+        foreach(var obj in objects)
+        {
+            if(obj is Comment comment && obj != null)
+            {
+                long id = comment.ObservationId;
+                if(id == observationId)
+                {
+                    comments.Add(obj);
+                }
+            }
+        }
+        return comments;
     }
  
     public void Store(T record, string path, string location) {
@@ -49,7 +71,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         try{
             if(count >= ObservationID)
             {
-                using (StreamWriter writer = File.AppendText(path))
+                using (StreamWriter writer = File.AppendText("bison_comment_cli_db.csv"))
                 {
                     long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
 
