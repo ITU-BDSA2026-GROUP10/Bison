@@ -25,10 +25,12 @@ public static class UserInterface
     {    
         foreach (var r in obs)
         {
-            if (r.Location.Equals(location)){
+            if (r.Location.Equals(location, StringComparison.OrdinalIgnoreCase)){
                 DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
                 Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
             }
+            /*ignore case: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/strings/common-tasks/compare
+            */
         }
     }
 }
