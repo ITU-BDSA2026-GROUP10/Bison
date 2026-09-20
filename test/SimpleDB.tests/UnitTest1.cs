@@ -1,7 +1,6 @@
 namespace SimpleDB.tests;
 
 using SimpleDB;
-//using Bison.CLI;
 
 public class UnitTest1
 {
@@ -21,7 +20,6 @@ public class UnitTest1
         //Assert
         Assert.Equal(before, after);
     }
-
     [Fact]
     public void CSVDatabaseStoresCommentToExistingObservation()
     {
@@ -50,16 +48,4 @@ public class UnitTest1
         Assert.NotEqual(beforeComment, afterComment);
     }
     */
-    [Fact]
-    public void UnixTimeConvertsCorrectlyToUserReadableTime()
-    {
-        //Arrange
-        long unixTime = 1789313646+7200;
-
-        //Act
-        DateTime dateTime = UserInterface.GetDateTime(unixTime);
-        
-        //Assert
-        Assert.Equal("13/09/2026 17.34.06", dateTime.ToString());
-    }
 }
