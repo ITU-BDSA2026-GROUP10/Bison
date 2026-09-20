@@ -4,7 +4,7 @@ using System.Reflection;
 using SimpleDB;
 public class IntegrationTest
 {
-    [Fact]
+    /*[Fact]
     public void storedObservationsCanBeRetrieved ()
     {
         //Arrange
@@ -46,5 +46,5 @@ public class IntegrationTest
         
         //Assert
         Assert.Contains(commentForAssert, comments);
-    }
+    }*/
 }

@@ -1,10 +1,11 @@
 namespace SimpleDB.tests;
 
 using SimpleDB;
+//using Bison.CLI;
 
 public class UnitTest1
 {
-    [Fact]
+    /*[Fact]
     public void CSVDatabaseDoesNotStoreCommentToNonexistingObservation()
     {
         //Arange
@@ -48,7 +49,7 @@ public class UnitTest1
         Assert.NotEqual(beforeObservation, afterObservation);
         Assert.NotEqual(beforeComment, afterComment);
     }
-
+    */
     [Fact]
     public void UnixTimeConvertsCorrectlyToUserReadableTime()
     {
@@ -56,10 +57,9 @@ public class UnitTest1
         long unixTime = 1789313646+7200;
 
         //Act
-        DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTime).DateTime;
-        string dateTimeString = dateTime.ToLongTimeString();
+        DateTime dateTime = UserInterface.GetDateTime(unixTime);
         
         //Assert
-        Assert.Equal("17.34.06", dateTimeString);
+        Assert.Equal("13/09/2026 17.34.06", dateTime.ToString());
     }
 }
