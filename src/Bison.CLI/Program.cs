@@ -62,7 +62,7 @@ public class Program
                     if(observation != null)
                     {
                         CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
-                        csvDatabase.Store(observation1); 
+                        csvDatabase.Store(observation1, "bison_observe_cli_cb.csv"); 
                     }
                 } else
                 {

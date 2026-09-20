@@ -8,7 +8,7 @@ interface IDatabaseRepository<T>
 
     public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null);
 
-    public void Store(T record);
+    public void Store(T record, string path);
 
     public void StoreComment(T record, string observePath, long ObservationID);
 }
