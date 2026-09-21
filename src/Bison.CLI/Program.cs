@@ -48,7 +48,7 @@ public class Program
         DiscussionCommands(discussionCommand, client, discussionArgument);
         
 
-        observeCommand.SetAction(parseResult =>
+        observeCommand.SetAction(async parseResult =>
         {
 
             /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
@@ -76,7 +76,7 @@ public class Program
             {
                 string observation = parseResult.GetValue(observationArgument);
                 string location = parseResult.GetValue(locationArgument);
-                //var response = await client.GetFromJsonAsync<IEnumerable<Observations>>($"http://localhost:5252/observation?observation={observation=observation}");
+                var response = await client.GetFromJsonAsync<IEnumerable<Observations>>($"http://localhost:5252/observation?observation={observation=observation}");
             } catch (HttpRequestException e)
             {
                 Console.WriteLine("\nException Caught!");
