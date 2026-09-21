@@ -29,6 +29,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         objects = csv.GetRecords<T>();
         return objects;
     }
+ 
 
     public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null) {
         IEnumerable <T> objects;
@@ -51,20 +52,20 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         return comments;
     }
  
-    public void Store(T record) {
-        using (StreamWriter writer = File.AppendText("bison_observe_cli_cb.csv"))
+    public void Store(T record, string path, string location) {
+        using (StreamWriter writer = File.AppendText(path))
         {
 
             long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter("bison_observe_cli_cb.csv");
-
-            writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + id);
+            long id = Counter(path);
+        
+            writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
             
             writer.Close();
         }
     }
 
-    public void StoreComment(T record, string observePath, long ObservationID)
+    public void StoreComment(T record, string path, string observePath, long ObservationID)
     {
         long count = Counter(observePath);
         try{
@@ -88,7 +89,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
             Console.WriteLine(e.Message);
         }
     }
-
+    
     //Used https://github.com/JoshClose/CsvHelper/issues/948 as reference
    private long Counter(string path)
    {
