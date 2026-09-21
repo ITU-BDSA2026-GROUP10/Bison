@@ -11,11 +11,11 @@ using System.Net.Http.Json;
 public class Program
 {   
     // https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-10.0
+
+    static readonly HttpClient client = new HttpClient();
+    client.BaseAddress = new Uri("http://localhost:5252");
     static async Task<int> Main (string[] args)
     {
-      
-        HttpClient client = new HttpClient();
-        client.BaseAddress = new Uri("http://localhost:5252");
 
         RootCommand rootCommand = new RootCommand();
     
@@ -119,6 +119,20 @@ public class Program
         }
     
         return await parseResult.InvokeAsync();
+    }
+
+    private async void readCommands(Command readCommand)
+    {
+            try {
+                // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
+                var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
+                if (response != null)
+                    UserInterface.printObservations(response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
     }
 
     public static void SetCommentAction(ParseResult parseResult, Argument <string> commentArgument)
