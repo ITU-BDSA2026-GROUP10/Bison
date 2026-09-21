@@ -65,7 +65,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         }
     }
 
-    public void StoreComment(T record, string path, string observePath, long ObservationID)
+    public void StoreComment(T record, string observePath, long ObservationID)
     {
         long count = Counter(observePath);
         try{

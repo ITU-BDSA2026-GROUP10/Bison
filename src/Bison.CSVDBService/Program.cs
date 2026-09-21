@@ -20,17 +20,12 @@ app.MapGet("/comments", (long observationId) =>
 
 app.MapPost("/observation", (Observations observation) =>
 {
-    databaseObs.Store(observation);
+    databaseObs.Store(observation, "../Bison.CLI/bison_observe_cli_db.csv", "Location in Bison.CSVDBService program.cs");
 });
 
 app.MapPost("/comment", (Comment comment) =>
 {
-    databaseCom.StoreComment(comment,comment.Observation,comment.ObservationId);
-}); 
-
-app.MapPost("/hello", () =>
-{
-    return "hello";
+    databaseCom.StoreComment(comment, "../Bison.CLI/bison_comment_cli_db.csv", comment.Observation,comment.ObservationId);
 }); 
 
 app.Run();

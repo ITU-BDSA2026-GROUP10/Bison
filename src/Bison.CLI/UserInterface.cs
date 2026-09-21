@@ -23,7 +23,7 @@ public static class UserInterface
         } 
     }
 
-    public static void printObservationsByLocation(string location, IEnumerable<Observation> obs)
+    public static void printObservationsByLocation(string location, IEnumerable<Observations> obs)
     {    
         foreach (var r in obs)
         {

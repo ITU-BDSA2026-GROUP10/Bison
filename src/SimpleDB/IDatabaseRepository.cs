@@ -10,5 +10,5 @@ interface IDatabaseRepository<T>
 
     public void Store(T record, string path, string location);
 
-    public void StoreComment(T record, string path, string observePath, long ObservationID);
+    public void StoreComment(T record, string observePath, long ObservationID);
 }
