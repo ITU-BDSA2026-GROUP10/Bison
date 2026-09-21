@@ -43,19 +43,8 @@ public class Program
         discussionCommand.Arguments.Add(discussionArgument);
         locationCommand.Arguments.Add(locationArgument2);
 
-        readCommand.SetAction(async parseResult =>
-        {
-        try {
-            // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
-            var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
-            if (response != null)
-                UserInterface.printObservations(response);
-        } catch (HttpRequestException e)
-        {
-            Console.WriteLine("\nException Caught!");
-            Console.WriteLine("Message: {0} ", e.Message);
-        }
-        });
+        ReadCommands(readCommand, client);
+       
 
         discussionCommand.SetAction(async parseResult =>
         { 
@@ -99,7 +88,7 @@ public class Program
             {
                 string observation = parseResult.GetValue(observationArgument);
                 string location = parseResult.GetValue(locationArgument);
-                var response = await client.GetFromJsonAsync<IEnumerable<Observations>>($"http://localhost:5252/observation?observation={observation=observation}");
+                //var response = await client.GetFromJsonAsync<IEnumerable<Observations>>($"http://localhost:5252/observation?observation={observation=observation}");
             } catch (HttpRequestException e)
             {
                 Console.WriteLine("\nException Caught!");
@@ -163,7 +152,22 @@ public class Program
         return await parseResult.InvokeAsync();
     }
 
-
+    private static async void ReadCommands(Command readCommand, HttpClient client)
+    {
+     readCommand.SetAction(async parseResult =>
+        {
+        try {
+            // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
+            var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
+            if (response != null)
+                UserInterface.printObservations(response);
+        } catch (HttpRequestException e)
+        {
+            Console.WriteLine("\nException Caught!");
+            Console.WriteLine("Message: {0} ", e.Message);
+        }
+        });   
+    }
     public static void SetLocationAction(ParseResult parseResult, Argument<string> locationArgument2)
      {
         try 

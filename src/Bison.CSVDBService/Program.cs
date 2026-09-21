@@ -25,7 +25,12 @@ app.MapPost("/observation", (Observations observation) =>
 
 app.MapPost("/comment", (Comment comment) =>
 {
-    databaseCom.StoreComment(comment, "../Bison.CLI/bison_comment_cli_db.csv", comment.Observation,comment.ObservationId);
+    databaseCom.StoreComment(comment,comment.Observation,comment.ObservationId);
+}); 
+
+app.MapPost("/hello", () =>
+{
+    return "hello";
 }); 
 
 app.Run();
