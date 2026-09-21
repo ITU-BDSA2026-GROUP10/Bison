@@ -45,20 +45,8 @@ public class Program
 
         ReadCommands(readCommand, client);
        
-
-        discussionCommand.SetAction(async parseResult =>
-        { 
-            try {
-                long ObservationId = long.Parse(parseResult.GetValue(discussionArgument));
-                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId = ObservationId}");
-                if (response != null)
-                    UserInterface.printDiscussion(ObservationId, response);
-            } catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message: {0} ", e.Message);
-            }
-        });
+        DiscussionCommands(discussionCommand, client, discussionArgument);
+        
 
         observeCommand.SetAction(parseResult =>
         {
@@ -167,6 +155,23 @@ public class Program
             Console.WriteLine("Message: {0} ", e.Message);
         }
         });   
+    }
+    
+    private static async void DiscussionCommands(Command discussionCommand, HttpClient client, Argument<string> discussionArgument)
+    {
+        discussionCommand.SetAction(async parseResult =>
+        { 
+            try {
+                long ObservationId = long.Parse(parseResult.GetValue(discussionArgument));
+                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId = ObservationId}");
+                if (response != null)
+                    UserInterface.printDiscussion(ObservationId, response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
+        });
     }
     public static void SetLocationAction(ParseResult parseResult, Argument<string> locationArgument2)
      {
