@@ -69,7 +69,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
     {
         long count = Counter(observePath);
         try{
-            if(count >= ObservationID)
+            if(ObservationExists(count, ObservationID))
             {
                 using (StreamWriter writer = File.AppendText("bison_comment_cli_db.csv"))
                 {
@@ -108,5 +108,10 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
    public long GetNumberOfLinesInAFile(string path)
     {
         return Counter(path);
+    }
+
+    public bool ObservationExists(long count, long ObservationID)
+    {
+        return count >= ObservationID;
     }
 }
