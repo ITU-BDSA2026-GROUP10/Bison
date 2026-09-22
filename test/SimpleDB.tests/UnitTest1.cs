@@ -1,5 +1,7 @@
 namespace SimpleDB.tests;
 
+using System.ComponentModel.Design;
+using System.Reflection;
 using SimpleDB;
 
 public class UnitTest1
@@ -48,4 +50,20 @@ public class UnitTest1
         Assert.NotEqual(beforeComment, afterComment);
     }
     */
+    [Fact]
+    public void TestName()
+    {
+        // Arange
+        Cheep cheep = new Cheep(Environment.UserName, "testing...", 22);
+        Observations obs = new Observations(Environment.UserName, "testing obs...", 22, 101);
+        Observations obs1 = new Observations(Environment.UserName, "testing obs...", 22, 101);
+        
+        // Act
+    
+        // Assert
+        Assert.True(obs is Cheep);
+        Assert.False(cheep is Observations);
+        Assert.False(cheep == obs);
+        Assert.True(obs == obs1);
+    }
 }
