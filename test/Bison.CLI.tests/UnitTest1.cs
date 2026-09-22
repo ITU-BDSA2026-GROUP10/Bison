@@ -13,7 +13,7 @@ public class UnitTest1
         DateTime dateTime = UserInterface.GetDateTime(unixTime);
         
         //Assert
-        Assert.Equal("13/09/2026 17.34.06", dateTime.ToString());
+        Assert.Equal("13-09-2026 17:34:06", dateTime.ToString());
     }
 
     /*[Fact]
