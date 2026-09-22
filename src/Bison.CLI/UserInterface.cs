@@ -28,7 +28,7 @@ public static class UserInterface
         return DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
     }
 
-    public static bool observationExists(long count, long ObservationID)
+    public static bool ObservationExists(long count, long ObservationID)
     {
         return count >= ObservationID;
     }
