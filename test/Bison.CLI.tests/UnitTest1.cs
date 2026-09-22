@@ -16,7 +16,7 @@ public class UnitTest1
         Assert.Equal("13-09-2026 17:34:06", dateTime.ToString());
     }
 
-    /*[Fact]
+    [Fact]
     public void CommentToNonExistingObservationReturnsFalse()
     {
         //Arrange
@@ -25,5 +25,5 @@ public class UnitTest1
 
         //Assert
         Assert.False(UserInterface.ObservationExists(2, comment.ObservationId));   
-    }*/
+    }
 }
