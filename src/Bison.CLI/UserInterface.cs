@@ -28,14 +28,14 @@ public static class UserInterface
         foreach (var r in obs)
         {
             if (r.Location.Equals(location, StringComparison.OrdinalIgnoreCase)){
-                DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
+                DateTime time = GetDateTime(r.Timestamp);
                 Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
             }
             /*ignore case: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/strings/common-tasks/compare
             */
         }
     }
-    public static DateTime GetDateTime(long timestamp)
+ public static DateTime GetDateTime(long timestamp)
     {
         return DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
     }
