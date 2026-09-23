@@ -7,6 +7,9 @@ using SimpleDB;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.Net.Http.Json;
+using System.Net.Http.Headers;
+using System.Text.Json;
+
 
 public class Program
 {
@@ -18,6 +21,9 @@ public class Program
         RootCommand rootCommand = new RootCommand();
 
         HttpClient client = new HttpClient();
+        
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri("http://localhost:5252");
 
         Command readCommand = new("read");
@@ -39,16 +45,19 @@ public class Program
         Argument<string> locationArgument2 = new Argument<string>("location");
 
         observeCommand.Arguments.Add(observationArgument);
+        observeCommand.Arguments.Add(locationArgument);
         commentCommand.Arguments.Add(commentArgument);
         discussionCommand.Arguments.Add(discussionArgument);
         locationCommand.Arguments.Add(locationArgument2);
+
 
         ReadCommands(readCommand, client);
        
         DiscussionCommands(discussionCommand, client, discussionArgument);
         
+        ObserveCommands(observeCommand, client, observationArgument, locationArgument);
 
-        observeCommand.SetAction(async parseResult =>
+        /*observeCommand.SetAction(async parseResult =>
         {
 
             /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
@@ -72,7 +81,7 @@ public class Program
                     Console.WriteLine(e.Message);
                 }*/
 
-            try
+            /*try
             {
                 string observation = parseResult.GetValue(observationArgument);
                 string location = parseResult.GetValue(locationArgument);
@@ -84,7 +93,7 @@ public class Program
             }
 
 
-        });
+        });*/
 
         locationCommand.SetAction(parseResult =>
         {
@@ -138,6 +147,31 @@ public class Program
         }
 
         return await parseResult.InvokeAsync();
+    }
+
+    private static async void ObserveCommands(Command observeCommand, HttpClient client, Argument<string> observationArgument, Argument<string> locationArgument)
+    {
+        observeCommand.SetAction(async parseResult =>
+       {
+           Console.WriteLine("in observe command");
+           try
+           {
+               string observation = parseResult.GetValue(observationArgument);
+               string location = parseResult.GetValue(locationArgument);
+               Console.WriteLine("observation: " + observation);
+               Console.WriteLine("location: " + location);
+               string jsonObservation = JsonSerializer.Serialize(observation);
+               Console.WriteLine("json version of observation:" + jsonObservation);
+               string jsonLocation = JsonSerializer.Serialize(location);
+               Console.WriteLine("json version of location:" + jsonLocation);
+               var response = await client.PostAsJsonAsync($"http://localhost:5252/observation?observation={observation}&location={location}", new {observation, location});
+           } catch (HttpRequestException e)
+           {
+               Console.WriteLine("\nException Caught!");
+               Console.WriteLine("Message: {0} ", e.Message);
+           }
+       });
+
     }
 
     private static async void ReadCommands(Command readCommand, HttpClient client)
