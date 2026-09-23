@@ -38,3 +38,11 @@ jobs:
         with:
           name: "windows executable"
           path: src/Bison.CLI/bin/Release/net8.0/win-x64
+      - uses: actions/upload-artifact@v7
+        with:
+          name: "mac executable"
+          path: src/Bison.CLI/bin/Release/net8.0/osx-x64
+      - uses: actions/upload-artifact@v7
+        with:
+          name: "linux executable"
+          path: src/Bison.CLI/bin/Release/net8.0/linux-x64
