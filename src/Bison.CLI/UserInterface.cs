@@ -1,3 +1,5 @@
+
+using SimpleDB;
 public static class UserInterface
 {
     public static void printObservations(IEnumerable<Observations> obs)

@@ -1,3 +1,5 @@
+namespace SimpleDB;
+
 using System;
 using System.Collections.Specialized;
 using System.Net;
