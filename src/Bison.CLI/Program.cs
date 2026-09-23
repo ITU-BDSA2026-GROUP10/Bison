@@ -40,6 +40,7 @@ public class Program
 
         Argument<string> observationArgument = new Argument<string>("observation");
         Argument<string> commentArgument = new Argument<string>("comment");
+        Argument<string> observationIdArgument = new Argument<string>("observationID");
         Argument<string> discussionArgument = new Argument<string>("observationId");
         Argument<string> locationArgument = new Argument<string>("location");
         Argument<string> locationArgument2 = new Argument<string>("location");
@@ -47,6 +48,7 @@ public class Program
         observeCommand.Arguments.Add(observationArgument);
         observeCommand.Arguments.Add(locationArgument);
         commentCommand.Arguments.Add(commentArgument);
+        commentCommand.Arguments.Add(observationIdArgument);
         discussionCommand.Arguments.Add(discussionArgument);
         locationCommand.Arguments.Add(locationArgument2);
 
@@ -56,6 +58,8 @@ public class Program
         DiscussionCommands(discussionCommand, client, discussionArgument);
         
         ObserveCommands(observeCommand, client, observationArgument, locationArgument);
+
+        CommentCommands(commentCommand, client, commentArgument, observationIdArgument);
 
         /*observeCommand.SetAction(async parseResult =>
         {
@@ -158,12 +162,11 @@ public class Program
            {
                string observation = parseResult.GetValue(observationArgument);
                string location = parseResult.GetValue(locationArgument);
-               Console.WriteLine("observation: " + observation);
-               Console.WriteLine("location: " + location);
+               
                string jsonObservation = JsonSerializer.Serialize(observation);
-               Console.WriteLine("json version of observation:" + jsonObservation);
+               
                string jsonLocation = JsonSerializer.Serialize(location);
-               Console.WriteLine("json version of location:" + jsonLocation);
+               
                var response = await client.PostAsJsonAsync($"http://localhost:5252/observation?observation={observation}&location={location}", new {observation, location});
            } catch (HttpRequestException e)
            {
@@ -207,6 +210,52 @@ public class Program
             }
         });
     }
+   
+    public static void CommentCommands(Command commentCommand, HttpClient client, Argument<string> commentArgument, Argument<string> observationIdArgument)
+    {
+        commentCommand.SetAction(async parseResult =>
+        {
+            Console.WriteLine("in comment command");
+            try
+            {
+                if (parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
+                {
+                    string comment = parseResult.GetValue(commentArgument);
+                    string id = parseResult.GetValue(observationIdArgument);
+                    /*if (comment != null)
+                    {
+                        long observationId = 0;
+                        int endOfId = 0;
+                        char[] charArray = comment.ToCharArray();
+                        for (int i = 0; i < charArray.Length; i++)
+                        {
+                            char ch = charArray[i];
+                            if (ch.Equals(',')) //finds the end of the observation id
+                            {
+                                endOfId = i;
+                            }
+                        }
+                        observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
+                        string actualComment = comment.Substring(endOfId + 2);*/
+                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance(); //Skal ændres
+                        
+                        var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&observationId={id}", new {comment, id});
+                        
+                        //csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
+                    
+                }
+                else
+                {
+                    throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        });
+    }
+
     public static void SetLocationAction(ParseResult parseResult, Argument<string> locationArgument2)
      {
         try 
@@ -232,43 +281,6 @@ public class Program
                 Console.WriteLine(e.Message);
             }
     }
-    public static void SetCommentAction(ParseResult parseResult, Argument<string> commentArgument)
-    {
-        try
-        {
-            if (parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
-            {
-                string comment = parseResult.GetValue(commentArgument);
-                if (comment != null)
-                {
-                    long observationId = 0;
-                    int endOfId = 0;
-                    char[] charArray = comment.ToCharArray();
-                    for (int i = 0; i < charArray.Length; i++)
-                    {
-                        char ch = charArray[i];
-                        if (ch.Equals(',')) //finds the end of the observation id
-                        {
-                            endOfId = i;
-                        }
-                    }
-                    observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
-                    string actualComment = comment.Substring(endOfId + 2);
-                    CSVDatabase<String> csvDatabase = CSVDatabase<String>.getInstance(); //Skal ændres
-                    csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
-            }
-        }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine(e.Message);
-        }
 
-    }
-}
 
  
