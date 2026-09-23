@@ -129,13 +129,6 @@ public class Program
         });
 
 
-            /*commentCommand.SetAction(parseResult =>
-        {
-            SetCommentAction(parseResult, commentArgument);
-        }
-        );*/
-
-
         ParseResult parseResult = rootCommand.Parse(args);
         try
         {
@@ -220,6 +213,9 @@ public class Program
                 {
                     string comment = parseResult.GetValue(commentArgument);
                     string id = parseResult.GetValue(observationIdArgument);
+
+                    Console.WriteLine(comment);
+                    Console.WriteLine(id);
                     /*if (comment != null)
                     {
                         long observationId = 0;
@@ -236,9 +232,9 @@ public class Program
                         observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
                         string actualComment = comment.Substring(endOfId + 2);*/
                     //CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance(); //Skal ændres
-                        
-                    var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&observationId={id}", new {comment, id});
-                        
+                    
+                    var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&id={id}", new {comment, id});
+                    
                     //csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
                     
                 }
