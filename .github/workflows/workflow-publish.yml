@@ -4,10 +4,8 @@ name: Upload dotnet package
 
 on:
   push:
-    branches: 
-      - w3workflows
-    # tags:
-     # - '*'
+    tags:
+     - '*'
     #perhaps include tags like this (or maype that is for push?):
         #tags:
         #- "v*.*.*"
