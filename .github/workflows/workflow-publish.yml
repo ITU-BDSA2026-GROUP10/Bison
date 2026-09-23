@@ -3,8 +3,9 @@
 name: Upload dotnet package
 
 on:
-  release:
-    types: [Publish]
+  push:
+    tags:
+      - '*'
     #perhaps include tags like this (or maype that is for push?):
         #tags:
         #- "v*.*.*"
@@ -23,14 +24,9 @@ jobs:
           source-url: https://nuget.pkg.github.com/<owner>/index.json #this won't work until we figure out what to replace <owner> with, see: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry 
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Release
-        uses: softprops/action-gh-release@v3
-        if: github.ref_type == 'tag'
-      - run: dotnet build --configuration Release Bison.CLI
-      - name: Create the package
-        run: dotnet pack --configuration Release Bison.CLI
-      - name: Publish the package to GPR
-        run: dotnet nuget push Bison.CLI/bin/Release/*.nupkg
-        #Do we need to use ( i think it was in the lecture)?:
-            #- name: Release
-            #uses: softprops/action-gh-release@v3
+        name: Build
+      - run: dotnet build --no-restore
+        name: Test
+      - run: dotnet test --no-build --verbosity normal
+        name: Releases
+      - run : dotnet publish
