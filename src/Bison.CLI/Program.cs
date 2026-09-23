@@ -7,6 +7,9 @@ using SimpleDB;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.Net.Http.Json;
+using System.Net.Http.Headers;
+using System.Text.Json;
+
 
 public class Program
 {
@@ -18,6 +21,9 @@ public class Program
         RootCommand rootCommand = new RootCommand();
 
         HttpClient client = new HttpClient();
+        
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri("http://localhost:5252");
 
         Command readCommand = new("read");
@@ -34,48 +40,29 @@ public class Program
 
         Argument<string> observationArgument = new Argument<string>("observation");
         Argument<string> commentArgument = new Argument<string>("comment");
+        Argument<string> observationIdArgument = new Argument<string>("observationID");
         Argument<string> discussionArgument = new Argument<string>("observationId");
         Argument<string> locationArgument = new Argument<string>("location");
         Argument<string> locationArgument2 = new Argument<string>("location");
 
         observeCommand.Arguments.Add(observationArgument);
+        observeCommand.Arguments.Add(locationArgument);
         commentCommand.Arguments.Add(commentArgument);
+        commentCommand.Arguments.Add(observationIdArgument);
         discussionCommand.Arguments.Add(discussionArgument);
         locationCommand.Arguments.Add(locationArgument2);
 
-        readCommand.SetAction(async parseResult =>
-        {
-        try {
-            // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
-            var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
-            if (response != null)
-                UserInterface.printObservations(response);
-        } catch (HttpRequestException e)
-        {
-            Console.WriteLine("\nException Caught!");
-            Console.WriteLine("Message: {0} ", e.Message);
-        }
-        });
 
-        discussionCommand.SetAction(async parseResult =>
-        { 
-            try {
-                long ObservationId = long.Parse(parseResult.GetValue(discussionArgument));
-                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId = ObservationId}");
-                if (response != null)
-                    UserInterface.printDiscussion(ObservationId, response);
-            } catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message: {0} ", e.Message);
-            }
-        });
+        ReadCommands(readCommand, client);
+       
+        DiscussionCommands(discussionCommand, client, discussionArgument);
+        
+        ObserveCommands(observeCommand, client, observationArgument, locationArgument);
 
-<<<<<<< HEAD
-        observeCommand.SetAction( async parseResult =>
-=======
-        observeCommand.SetAction(async parseResult =>
->>>>>>> 8c3a6dbea49a9f4dbcde8b59821e9653ffcb7320
+        CommentCommands(commentCommand, client, commentArgument, observationIdArgument);
+
+        /*observeCommand.SetAction(async parseResult =>
+
         {
 
             /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
@@ -99,7 +86,7 @@ public class Program
                     Console.WriteLine(e.Message);
                 }*/
 
-            try
+            /*try
             {
                 string observation = parseResult.GetValue(observationArgument);
                 string location = parseResult.GetValue(locationArgument);
@@ -111,7 +98,7 @@ public class Program
             }
 
 
-        });
+        });*/
 
         locationCommand.SetAction(parseResult =>
         {
@@ -143,11 +130,11 @@ public class Program
         });
 
 
-            commentCommand.SetAction(parseResult =>
+           /* commentCommand.SetAction(parseResult =>
         {
             SetCommentAction(parseResult, commentArgument);
         }
-        );
+        );*/
 
 
         ParseResult parseResult = rootCommand.Parse(args);
@@ -167,6 +154,108 @@ public class Program
         return await parseResult.InvokeAsync();
     }
 
+    private static async void ObserveCommands(Command observeCommand, HttpClient client, Argument<string> observationArgument, Argument<string> locationArgument)
+    {
+        observeCommand.SetAction(async parseResult =>
+       {
+           Console.WriteLine("in observe command");
+           try
+           {
+               string observation = parseResult.GetValue(observationArgument);
+               string location = parseResult.GetValue(locationArgument);
+               
+               string jsonObservation = JsonSerializer.Serialize(observation);
+               
+               string jsonLocation = JsonSerializer.Serialize(location);
+               
+               var response = await client.PostAsJsonAsync($"http://localhost:5252/observation?observation={observation}&location={location}", new {observation, location});
+           } catch (HttpRequestException e)
+           {
+               Console.WriteLine("\nException Caught!");
+               Console.WriteLine("Message: {0} ", e.Message);
+           }
+       });
+
+    }
+
+    private static async void ReadCommands(Command readCommand, HttpClient client)
+    {
+     readCommand.SetAction(async parseResult =>
+        {
+        try {
+            // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
+            var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
+            if (response != null)
+                UserInterface.printObservations(response);
+        } catch (HttpRequestException e)
+        {
+            Console.WriteLine("\nException Caught!");
+            Console.WriteLine("Message: {0} ", e.Message);
+        }
+        });   
+    }
+    
+    private static async void DiscussionCommands(Command discussionCommand, HttpClient client, Argument<string> discussionArgument)
+    {
+        discussionCommand.SetAction(async parseResult =>
+        { 
+            try {
+                long ObservationId = long.Parse(parseResult.GetValue(discussionArgument));
+                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId = ObservationId}");
+                if (response != null)
+                    UserInterface.printDiscussion(ObservationId, response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
+        });
+    }
+   
+    public static void CommentCommands(Command commentCommand, HttpClient client, Argument<string> commentArgument, Argument<string> observationIdArgument)
+    {
+        commentCommand.SetAction(async parseResult =>
+        {
+            Console.WriteLine("in comment command");
+            try
+            {
+                if (parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
+                {
+                    string comment = parseResult.GetValue(commentArgument);
+                    string id = parseResult.GetValue(observationIdArgument);
+                    /*if (comment != null)
+                    {
+                        long observationId = 0;
+                        int endOfId = 0;
+                        char[] charArray = comment.ToCharArray();
+                        for (int i = 0; i < charArray.Length; i++)
+                        {
+                            char ch = charArray[i];
+                            if (ch.Equals(',')) //finds the end of the observation id
+                            {
+                                endOfId = i;
+                            }
+                        }
+                        observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
+                        string actualComment = comment.Substring(endOfId + 2);*/
+                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance(); //Skal ændres
+                        
+                        var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&observationId={id}", new {comment, id});
+                        
+                        //csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
+                    
+                }
+                else
+                {
+                    throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        });
+    }
 
     public static void SetLocationAction(ParseResult parseResult, Argument<string> locationArgument2)
      {
@@ -193,43 +282,7 @@ public class Program
                 Console.WriteLine(e.Message);
             }
     }
-    public static void SetCommentAction(ParseResult parseResult, Argument<string> commentArgument)
-    {
-        try
-        {
-            if (parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
-            {
-                string comment = parseResult.GetValue(commentArgument);
-                if (comment != null)
-                {
-                    long observationId = 0;
-                    int endOfId = 0;
-                    char[] charArray = comment.ToCharArray();
-                    for (int i = 0; i < charArray.Length; i++)
-                    {
-                        char ch = charArray[i];
-                        if (ch.Equals(',')) //finds the end of the observation id
-                        {
-                            endOfId = i;
-                        }
-                    }
-                    observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
-                    string actualComment = comment.Substring(endOfId + 2);
-                    CSVDatabase<String> csvDatabase = CSVDatabase<String>.getInstance(); //Skal ændres
-                    csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
-            }
-        }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-    }
 }
+
 
  
