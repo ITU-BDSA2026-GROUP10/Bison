@@ -18,6 +18,12 @@ app.MapGet("/comments", (long observationId) =>
     return databaseCom.ReadDiscussion("../Bison.CLI/bison_comment_cli_db.csv",observationId);
 });
 
+app.MapGet("/location", (string location) =>
+{
+    return databaseObs.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv");
+}
+);
+
 app.MapPost("/observation", (string observation,  string location) =>
 {
     Console.WriteLine("trying to post!!!");
