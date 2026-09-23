@@ -24,6 +24,8 @@ jobs:
           source-url: https://nuget.pkg.github.com/<owner>/index.json #this won't work until we figure out what to replace <owner> with, see: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry 
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        name: Restore
+      - run: dotnet restore
         name: Build
       - run: dotnet build --no-restore
         name: Test
