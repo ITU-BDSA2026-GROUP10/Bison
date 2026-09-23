@@ -60,6 +60,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
             long id = Counter(path);
         
             writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
+            //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.TimeStamp + "," + record.ID + "," + record.Location);
             
             writer.Close();
         }
