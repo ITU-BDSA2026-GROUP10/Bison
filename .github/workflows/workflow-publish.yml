@@ -34,3 +34,7 @@ jobs:
       - run : dotnet publish --runtime win-x64 --self-contained false
       - run : dotnet publish --runtime osx-x64 --self-contained false
       - run : dotnet publish --runtime linux-x64 --self-contained false
+      - uses: actions/upload-artifact@v7
+        with:
+          name: "windows executable"
+          path: Bison/src/Bison.CLI/bin/Release/net8.0/win-x64
