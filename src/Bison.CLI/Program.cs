@@ -71,7 +71,11 @@ public class Program
             }
         });
 
+<<<<<<< HEAD
         observeCommand.SetAction( async parseResult =>
+=======
+        observeCommand.SetAction(async parseResult =>
+>>>>>>> 8c3a6dbea49a9f4dbcde8b59821e9653ffcb7320
         {
 
             /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
