@@ -71,7 +71,7 @@ public class Program
             }
         });
 
-        observeCommand.SetAction(parseResult =>
+        observeCommand.SetAction( async parseResult =>
         {
 
             /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
