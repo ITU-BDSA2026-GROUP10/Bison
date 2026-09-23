@@ -105,7 +105,7 @@ public class Program
             {
                 string location = parseResult.GetValue(locationArgument2);
 
-                if ((location != null && !location.Equals("")))
+                if (location != null && !location.Equals(""))
                 {
                     CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
                     IEnumerable<Observations> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
@@ -129,11 +129,11 @@ public class Program
         });
 
 
-            commentCommand.SetAction(parseResult =>
+            /*commentCommand.SetAction(parseResult =>
         {
             SetCommentAction(parseResult, commentArgument);
         }
-        );
+        );*/
 
 
         ParseResult parseResult = rootCommand.Parse(args);
@@ -163,10 +163,6 @@ public class Program
                string observation = parseResult.GetValue(observationArgument);
                string location = parseResult.GetValue(locationArgument);
                
-               string jsonObservation = JsonSerializer.Serialize(observation);
-               
-               string jsonLocation = JsonSerializer.Serialize(location);
-               
                var response = await client.PostAsJsonAsync($"http://localhost:5252/observation?observation={observation}&location={location}", new {observation, location});
            } catch (HttpRequestException e)
            {
@@ -182,8 +178,10 @@ public class Program
      readCommand.SetAction(async parseResult =>
         {
         try {
+            Console.WriteLine("før response i read command");
             // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
             var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
+            Console.WriteLine("Efter response statement i read command");
             if (response != null)
                 UserInterface.printObservations(response);
         } catch (HttpRequestException e)
@@ -237,11 +235,11 @@ public class Program
                         }
                         observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
                         string actualComment = comment.Substring(endOfId + 2);*/
-                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance(); //Skal ændres
+                    //CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance(); //Skal ændres
                         
-                        var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&observationId={id}", new {comment, id});
+                    var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&observationId={id}", new {comment, id});
                         
-                        //csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
+                    //csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
                     
                 }
                 else
@@ -262,7 +260,7 @@ public class Program
             {
                 string location = parseResult.GetValue(locationArgument2);
 
-                if((location != null && !location.Equals("")))
+                if(location != null && !location.Equals(""))
                 {
                     CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
                     IEnumerable<Observations> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
@@ -281,6 +279,7 @@ public class Program
                 Console.WriteLine(e.Message);
             }
     }
+}
 
 
  

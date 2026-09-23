@@ -55,24 +55,30 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
     public void Store(T record, string path, string location) {
         using (StreamWriter writer = File.AppendText(path))
         {
-
-            long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter(path);
+        if(record is Observations ob && record != null)
+        {
+            //Observations ob = (Observations) record;
+            writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
+            //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.Timestamp + "," + record.ID + "," + record.Location);
+        }
+            /*long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+            long id = Counter(path);*/
         
-            writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
+            //writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
             //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.TimeStamp + "," + record.ID + "," + record.Location);
+            
             
             writer.Close();
         }
     }
 
-    public void StoreComment(T record, string observePath, long ObservationID)
+    public void StoreComment(T record, string observePath, string commentPath, long ObservationID)
     {
         long count = Counter(observePath);
         try{
             if(count >= ObservationID)
             {
-                using (StreamWriter writer = File.AppendText("bison_comment_cli_db.csv"))
+                using (StreamWriter writer = File.AppendText(commentPath))
                 {
                     long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
 
