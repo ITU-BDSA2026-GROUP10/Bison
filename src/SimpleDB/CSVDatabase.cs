@@ -24,10 +24,11 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     public IEnumerable<T> ReadObservation(string path, int? limit = null) {
         IEnumerable <T> objects;
-        var reader = new StreamReader(path);
+        StreamReader reader = new StreamReader(path);
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
         return objects;
+        
     }
  
 
@@ -55,12 +56,12 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
     public void Store(T record, string path, string location) {
         using (StreamWriter writer = File.AppendText(path))
         {
-        if(record is Observations ob && record != null)
-        {
-            //Observations ob = (Observations) record;
-            writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
-            //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.Timestamp + "," + record.ID + "," + record.Location);
-        }
+            if(record is Observations ob && record != null)
+            {
+                //Observations ob = (Observations) record;
+                writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
+                //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.Timestamp + "," + record.ID + "," + record.Location);
+            }
             /*long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
             long id = Counter(path);*/
         
@@ -80,9 +81,14 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
             {
                 using (StreamWriter writer = File.AppendText(commentPath))
                 {
-                    long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+                    if(record is Comment com && record != null)
+                    {
+                        writer.WriteLine(com.Author + ",\"" +  com.Observation + "\"," + com.Timestamp + "," + com.ObservationId);
+                    }
+                    //long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
 
-                    writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + ObservationID);
+                    //writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + ObservationID);
+                    
                     
                     writer.Close();
                 }

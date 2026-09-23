@@ -4,7 +4,7 @@ using SimpleDB;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 CSVDatabase<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
-CSVDatabase<string> databaseCom = CSVDatabase<string>.getInstance();
+CSVDatabase<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
 /*app.MapGet("/observations", () => new Observation("signe","Heron at DR Byen",1788161296,3));
 app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
 
@@ -36,9 +36,17 @@ app.MapPost("/comment", (string comment, string id) =>
 {
     string observationPath = "../Bison.CLI/bison_observe_cli_db.csv";
     string commentPath = "../Bison.CLI/bison_comment_cli_db.csv";
+    
     long idAsLong = long.Parse(id);
-    databaseCom.StoreComment(comment,observationPath, commentPath, idAsLong);
+    long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+    string userName = Environment.UserName;
+
+    Comment com = new Comment(userName, comment, localTime, idAsLong);
+
+    //databaseCom.StoreComment(comment,observationPath, commentPath, idAsLong);
     //databaseCom.StoreComment(comment,comment.Observation,comment.ObservationId);
+    
+    databaseCom.StoreComment(com, observationPath, commentPath, idAsLong);
 }); 
 
 app.MapPost("/hello", () =>

@@ -177,19 +177,19 @@ public class Program
     {
      readCommand.SetAction(async parseResult =>
         {
-        try {
-            Console.WriteLine("før response i read command");
-            // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
-            var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
-            Console.WriteLine("Efter response statement i read command");
-            if (response != null)
-                UserInterface.printObservations(response);
-        } catch (HttpRequestException e)
-        {
-            Console.WriteLine("\nException Caught!");
-            Console.WriteLine("Message: {0} ", e.Message);
-        }
-        });   
+            try {
+                Console.WriteLine("før response i read command");
+                // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
+                var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
+                Console.WriteLine("Efter response statement i read command");
+                if (response != null)
+                    UserInterface.printObservations(response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
+        });
     }
     
     private static async void DiscussionCommands(Command discussionCommand, HttpClient client, Argument<string> discussionArgument)
@@ -198,7 +198,7 @@ public class Program
         { 
             try {
                 long ObservationId = long.Parse(parseResult.GetValue(discussionArgument));
-                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId = ObservationId}");
+                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId}");
                 if (response != null)
                     UserInterface.printDiscussion(ObservationId, response);
             } catch (HttpRequestException e)
