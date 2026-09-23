@@ -62,6 +62,7 @@ public class Program
         CommentCommands(commentCommand, client, commentArgument, observationIdArgument);
 
         /*observeCommand.SetAction(async parseResult =>
+
         {
 
             /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
@@ -129,11 +130,11 @@ public class Program
         });
 
 
-            commentCommand.SetAction(parseResult =>
+           /* commentCommand.SetAction(parseResult =>
         {
             SetCommentAction(parseResult, commentArgument);
         }
-        );
+        );*/
 
 
         ParseResult parseResult = rootCommand.Parse(args);
@@ -281,6 +282,7 @@ public class Program
                 Console.WriteLine(e.Message);
             }
     }
+}
 
 
  

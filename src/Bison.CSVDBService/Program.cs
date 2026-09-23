@@ -35,12 +35,7 @@ app.MapPost("/observation", (string observation,  string location) =>
 
 app.MapPost("/comment", (Comment comment) =>
 {
-    databaseCom.StoreComment(comment,comment.Observation,comment.ObservationId);
-}); 
-
-app.MapPost("/hello", () =>
-{
-    return "hello";
+    databaseCom.StoreComment(comment, comment.Observation,comment.ObservationId);
 }); 
 
 app.Run();
