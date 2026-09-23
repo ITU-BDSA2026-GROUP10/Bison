@@ -4,8 +4,10 @@ name: Upload dotnet package
 
 on:
   push:
-    tags:
-      - '*'
+    branches: 
+      - w3workflows
+    # tags:
+     # - '*'
     #perhaps include tags like this (or maype that is for push?):
         #tags:
         #- "v*.*.*"
@@ -34,28 +36,11 @@ jobs:
       - run : dotnet publish --runtime win-x64 --self-contained false
       - run : dotnet publish --runtime osx-x64 --self-contained false
       - run : dotnet publish --runtime linux-x64 --self-contained false
-      - uses: actions/upload-artifact@v7
+      - uses: montudor/action-zip@v1
         with:
-          name: "windows executable"
-          path: src/Bison.CLI/bin/Release/net8.0/win-x64
-      - uses: actions/upload-artifact@v7
-        with:
-          name: "mac executable"
-          path: src/Bison.CLI/bin/Release/net8.0/osx-x64
-      - uses: actions/upload-artifact@v7
-        with:
-          name: "linux executable"
-          path: src/Bison.CLI/bin/Release/net8.0/linux-x64
+          args: zip -qq -r windows.zip src/Bison.CLI/bin/Release/net8.0/win-x64
       - name: Publish GitHub Release Windows
         uses: softprops/action-gh-release@v2
         with:
-          files: src/Bison.CLI/bin/Release/net8.0/win-x64
-      - name: Publish GitHub Release Mac
-        uses: softprops/action-gh-release@v2
-        with:
-          files: src/Bison.CLI/bin/Release/net8.0/osx-x64
-      - name: Publish GitHub Release Linux
-        uses: softprops/action-gh-release@v2
-        with:
-          files: src/Bison.CLI/bin/Release/net8.0/linux-x64
+          files: windows.zip
           
