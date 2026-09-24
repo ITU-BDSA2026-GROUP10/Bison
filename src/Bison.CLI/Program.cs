@@ -65,7 +65,6 @@ public class Program
             {
                 throw new ArgumentException("This action does not exist, please try a valid action");
             }
-            // parseResult.Invoke();
         }
         catch (ArgumentException e)
         {
