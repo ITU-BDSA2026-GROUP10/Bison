@@ -1,4 +1,5 @@
-class Parse
+/*
+class Parser
 {
     string taxonID, parentNameUsageID; //they can be this whole thing: MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea
     
@@ -15,11 +16,11 @@ class Parse
     string vernacularName; //their dainish name
     bool merged; // false, null or true
     */
-    static void Parse()
+    /*static void Parse()
     {
        
-    }
-    
+    }*/
+    /*
      public void ReadTaxonID(string path, int? limit = null) {
         IEnumerable <T> objects;
         var reader = new StreamReader(path);
@@ -38,3 +39,4 @@ class Parse
         }
     }
 }
+*/

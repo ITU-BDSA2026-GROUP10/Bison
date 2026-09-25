@@ -52,6 +52,22 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         }
         return comments;
     }
+
+    public static IEnumerable<T>  ReadTaxon()
+    {
+        string path = "../SimpleDB/taxons/data/joined.csv";
+        IEnumerable<T> taxons;
+        var reader = new StreamReader(path);
+        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        taxons = csv.GetRecords<T>();
+
+        if (taxons == null)
+        {
+            Console.WriteLine("Jeg er tom");
+        }
+
+        return taxons;
+    }
  
     public void Store(T record, string path, string location) {
         using (StreamWriter writer = File.AppendText(path))
