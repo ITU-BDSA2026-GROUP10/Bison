@@ -1,5 +1,16 @@
-Author,Observation,Timestamp,ID
-ropf,"A bird at DR Byen",1690891760,0
-adho,"I think that is a Heron at DR Byen",1690978778,1
-edka,"Ardea cinerea at DR Byen",1690979858,2
-signe,"Heron at DR Byen",1788161296,3
+Author,Observation,Timestamp,ID,Location
+ropf,"A bird at DR Byen",1690891760,0,DR Byen
+adho,"I think that is a Heron at DR Byen",1690978778,1,DR Byen
+edka,"Ardea cinerea at DR Byen",1690979858,2,DR Byen
+signe,"Heron at DR Byen",1788161296,3,DR Byen
+raaminraza,"Pengiun",1789844667,4,DR Byen
+teklasvane,"pigeon",1790176946,6,itu
+teklasvane,"pigeon",1790176946,7,itu
+teklasvane,"pigeon",1790178415,7,itu
+teklasvane,"pigeon",1790178415,8,itu
+teklasvane,"pingu",1790178471,9,ismejeri
+teklasvane,"pingu",1790178471,10,ismejeri
+teklasvane,"swallow",1790184737,11,ismejeriet
+teklasvane,"swallow",1790184737,12,ismejeriet
+sofiehelt,"1",1790240112,13,DR Byen
+sofiehelt,"Heron at Ismageriet",1790243138,16,Ismageriet
