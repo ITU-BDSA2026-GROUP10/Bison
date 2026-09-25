@@ -2,7 +2,7 @@ using System.Reflection.Metadata;
 
 namespace SimpleDB;
 
-interface IDatabaseRepository<T>
+public interface IDatabaseRepository<T>
 {
     public IEnumerable<T> ReadObservation(string path, int? limit = null);
 
@@ -11,4 +11,6 @@ interface IDatabaseRepository<T>
     public void Store(T record, string path, string location);
 
     public void StoreComment(T record, string observePath, string commentPath, long ObservationID);
+
+    public long GetNumberOfLinesInAFile(string path);
 }

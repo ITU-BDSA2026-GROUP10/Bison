@@ -3,8 +3,8 @@ using SimpleDB;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-CSVDatabase<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
-CSVDatabase<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
+IDatabaseRepository<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
+IDatabaseRepository<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
 /*app.MapGet("/observations", () => new Observation("signe","Heron at DR Byen",1788161296,3));
 app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
 
