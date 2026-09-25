@@ -15,7 +15,7 @@ public class Program
 {
     // https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-10.0
 
-    static async Task<int> Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
 
         RootCommand rootCommand = new RootCommand();
