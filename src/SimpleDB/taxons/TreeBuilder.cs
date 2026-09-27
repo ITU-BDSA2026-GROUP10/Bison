@@ -11,16 +11,19 @@ void build(IEnumerable<Taxon> taxons)
         {
             //maybe this is where we go through the list of records and then assign parents and children.
         
-        }
+            if (taxon.TaxonRank == "order")
+            {
+                tree.SetRoot(taxon);
+                tree.addChild(null, taxon); //parent should be null
+            } else if (taxon.TaxonRank == "family")
+            {
 
-        if (taxon.TaxonRank == "order")
-        {
-            tree.SetRoot(taxon);
-            tree.addChild(null, taxon); //parent should be null
-        } else if (taxon.TaxonRank == "family")
-        {
-            tree.addChild(taxon.parentNameUsageID, taxon);
-        } else if (taxon.TaxonRank == "genus")
+            tree.addChild(taxon.ParentNameUsageID, taxon);
+
+            } else if (taxon.TaxonRank == "genus") 
+            {
+            } 
+        }
 
         
     }

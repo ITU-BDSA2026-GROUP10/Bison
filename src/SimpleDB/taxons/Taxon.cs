@@ -2,21 +2,21 @@ public record Taxon(
     
 string TaxonID,
 
-string parentNameUsageID, //they can be this whole thing: MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea
+string ParentNameUsageID, //they can be this whole thing: MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea
 
-string? acceptedNameUsageID, //this is always null in the given csv file but maybe it will change later
+string? AcceptedNameUsageID, //this is always null in the given csv file but maybe it will change later
 
-string taxonomicStatus, //e.g. accepted or denied. maybe this should be a string?
+string TaxonomicStatus, //e.g. accepted or denied. maybe this should be a string?
 
-string taxonRank, //e.g. order, genus or family
+string TaxonRank, //e.g. order, genus or family
 
-string scientificName, //e.g. Pelecaniformes
+string ScientificName, //e.g. Pelecaniformes
 
-string? scientificNameAuthorship, 
+string? ScientificNameAuthorship, 
 
-string? language, //which is only indicated by three letters
+string? Language, //which is only indicated by three letters
 
-string? vernacularName, //their dainish name
+string? VernacularName, //their dainish name
 
-bool? merged); // false, null or true
+bool? Merged); // false, null or true
 //
