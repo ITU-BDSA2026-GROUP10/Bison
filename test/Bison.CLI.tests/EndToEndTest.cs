@@ -47,4 +47,35 @@ public async Task ProgramExistsCorrectlyAfterReadCommand ()
        //Assert
        Assert.Equal(0, result);
    }
+
+/*[Fact]
+public async Task ProgramReturnsCorrectOutputAfterReadCommand ()
+{
+    //Arrange
+    var args = new string[] { "read" };
+
+    var originalOutput = Console.Out;
+    var output = new StringWriter();
+    Console.SetOut(output);
+
+    //Få Bison.CSVDBService til at bruge test_observation.csv i stedet 
+
+    //Act
+    await Program.Main(args);
+    string result = output.ToString(); 
+
+    //Assert
+
+    //Sammenlign resultat med det forventede output fra test_observation.csv
+
+    Console.SetOut(originalOutput); //sætter consolen tilbage til normal igen
+
+}
+
+[Fact]
+public async Task ObserveCommandStoresPenguinInDatabase ()
+{
+    
+}*/
+
 }
