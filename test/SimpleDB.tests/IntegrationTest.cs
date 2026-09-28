@@ -8,7 +8,7 @@ public class IntegrationTest
     public void storedObservationsCanBeRetrieved ()
     {
         //Arrange
-        CSVDatabase <Observations> csvDatabase = new CSVDatabase <Observations> ();
+        CSVDatabase <Observations> csvDatabase = new CSVDatabase <Observations>.getInstance();
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
         List <Observations> observationsToBeStored = new List<Observations>();
         Observations observationToStore = new Observations(Environment.UserName,"A bird at DR Byen",timestamp,0);
@@ -32,7 +32,7 @@ public class IntegrationTest
     public void storedCommentsCanBeRetrieved ()
     {
         //Arrange
-        CSVDatabase<Comment> csvDatabase = new CSVDatabase <Comment> ();
+        CSVDatabase<Comment> csvDatabase = new CSVDatabase <Comment>.getInstance ();
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
         Comment commentToStore = new Comment(Environment.UserName, "spotted heron at DR byen", timestamp, 1);
         Comment commentForAssert = new Comment(Environment.UserName, commentToStore.ToString(), timestamp, 1);
