@@ -15,13 +15,9 @@ void build(IEnumerable<Taxon> taxons)
             {
                 tree.SetRoot(taxon);
                 tree.addChild(null, taxon); //parent should be null
-            } else if (taxon.TaxonRank == "family")
+            } else
             {
-
             tree.addChild(taxon.ParentNameUsageID, taxon);
-
-            } else if (taxon.TaxonRank == "genus") 
-            {
             } 
         }
 
