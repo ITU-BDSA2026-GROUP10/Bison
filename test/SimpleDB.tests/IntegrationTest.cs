@@ -22,7 +22,7 @@ public class IntegrationTest
         //IEnumerable<Observations> observations = csvDatabase.Read("test_observe_cli_db.csv");
 
         csvDatabase.Store(observationToStore,"integrationstest_observation.csv");
-        IEnumerable<Observations> observations = csvDatabase.Read("integrationstest_observation.csv");
+        IEnumerable<Observations> observations = csvDatabase.ReadObservation("integrationstest_observation.csv");
 
         //Assert
         Assert.Contains(observationForAssert, observations); 
@@ -42,7 +42,7 @@ public class IntegrationTest
         //IEnumerable <Comment> comments = csvDatabase.Read("test_comment_cli_db.csv");
 
         csvDatabase.StoreComment(commentToStore, "integrationstest_comment.csv", "integrationstest_observation.csv", 1);
-        IEnumerable <Comment> comments = csvDatabase.Read("integrationstest_comment.csv");
+        IEnumerable <Comment> comments = csvDatabase.ReadDiscussion("integrationstest_comment.csv");
         
         //Assert
         Assert.Contains(commentForAssert, comments);
