@@ -10,7 +10,7 @@ public class UnitTest1
         //Arange
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
         Comment comment = new Comment("teklasvane","sej fugl", timestamp,99);
-        CSVDatabase<Comment> database = new CSVDatabase<Comment>();
+        CSVDatabase<Comment> database = new CSVDatabase<Comment>.getInstance();
         
         //Act
         long before = database.GetNumberOfLinesInAFile("test_comment_cli_db.csv");
@@ -29,10 +29,10 @@ public class UnitTest1
         string author = "teklasvane";
 
         Observations observation = new Observations(author, "her er en sej fugl!", timestamp, 0);
-        CSVDatabase<Observations> observationsDatabase = new CSVDatabase<Observations>();
+        CSVDatabase<Observations> observationsDatabase = new CSVDatabase<Observations>.getInstance();
 
         Comment comment = new Comment(author,"sej fugl", timestamp,0);
-        CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>();
+        CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>.getInstance();
         
         //Act
         long beforeObservation = observationsDatabase.GetNumberOfLinesInAFile("test_observe_cli_db.csv");
