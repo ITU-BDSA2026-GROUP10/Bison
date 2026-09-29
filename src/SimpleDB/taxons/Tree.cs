@@ -17,28 +17,40 @@ class Tree {
     Node root;
     List<Node> taxonNodes;
     
-public Tree()
+    Dictionary<string, Taxon> idToTaxon = new Dictionary<string, Taxon>();
+    Dictionary<string, Taxon> vernacularNameToTaxon = new Dictionary<string, Taxon>();
+
+    public Tree()
+        {
+            taxonNodes = new List<Node>();
+        }
+
+
+    public void SetRoot(Node taxon)
+        {
+            if (root == null)
+            {
+                root = taxon;
+            }
+        }
+
+    public void addChild(Node Parent, Node taxon)
     {
-        taxonNodes = new List<Node>();
+        Parent.subtaxons.Add(taxon);
+        taxonNodes.Add(taxon);
     }
 
+    public List<Node> getNodes(){
+        return taxonNodes;
+    }
 
-public void SetRoot(Node taxon)
+    public void mapTaxonPairings(IEnumerable<Taxon> taxons)
     {
-        if (root == null)
+        foreach (var taxon in taxons)
         {
-            root = taxon;
+            idToTaxon.Add(taxon.TaxonID, taxon);
+            vernacularNameToTaxon.Add(taxon.VernacularName, taxon);
         }
     }
-
-public void addChild(Node Parent, Node taxon)
-{
-    Parent.subtaxons.Add(taxon);
-    taxonNodes.Add(taxon);
-}
-
-public List<Node> getNodes(){
-    return taxonNodes;
-}
 
 }
