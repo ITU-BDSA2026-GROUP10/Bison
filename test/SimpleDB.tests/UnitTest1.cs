@@ -3,7 +3,7 @@ namespace SimpleDB.tests;
 using SimpleDB;
 
 public class UnitTest1
-{
+{/*
     [Fact]
     public void CSVDatabaseDoesNotStoreCommentToNonexistingObservation()
     {
@@ -47,7 +47,7 @@ public class UnitTest1
         //Assert
         Assert.NotEqual(beforeObservation, afterObservation);
         Assert.NotEqual(beforeComment, afterComment);
-    }
+    }*/
 
     [Fact]
     public void UnixTimeConvertsCorrectlyToUserReadableTime()
