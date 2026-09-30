@@ -1,4 +1,4 @@
-dwc:taxonID,dwc:parentNameUsageID,dwc:acceptedNameUsageID,dwc:taxonomicStatus,dwc:taxonRank,dwc:scientificName,dwc:scientificNameAuthorship,dcterms:language,dwc:vernacularName,clb:merged
+taxonID,parentNameUsageID,acceptedNameUsageID,taxonomicStatus,taxonRank,scientificName,scientificNameAuthorship,language,vernacularName,merged
 MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea,MSTSNM:Arter:fe8365de-f785-ea11-aa77-501ac539d1ea,,accepted,order,Pelecaniformes,,dan,Årefodede,false
 MSTSNM:Arter:495067e4-f785-ea11-aa77-501ac539d1ea,MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea,,accepted,family,Ardeidae,,dan,Hejrer,false
 MSTSNM:Arter:a15367e4-f785-ea11-aa77-501ac539d1ea,MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea,,accepted,family,Fregatidae,,dan,Fregatfugle,false

@@ -14,7 +14,7 @@ void build(IEnumerable<Taxon> taxons)
         {
             //maybe this is where we go through the list of records and then assign parents and children.
             Node n = new Node(taxon);
-            if (taxon.TaxonRank == "order")
+            if (taxon.taxonRank == "order")
             {
                 tree.SetRoot(n);
                 //tree.addChild(null, taxon); //parent should be null

@@ -26,6 +26,11 @@ public class Program
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri("http://localhost:5252");
 
+        CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
+
+        database.ReadTaxon();
+        //Console.WriteLine(database.ReadTaxon());
+
         Command readCommand = new("read");
         Command observeCommand = new("observe");
         Command commentCommand = new("comment");

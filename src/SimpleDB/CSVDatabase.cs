@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Security.AccessControl;
 using System.Transactions;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -53,17 +55,18 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         return comments;
     }
 
-    public static IEnumerable<T>  ReadTaxon()
+    public IEnumerable<T>  ReadTaxon()
     {
-        string path = "../SimpleDB/taxons/data/joined.csv";
-        IEnumerable<T> taxons;
-        var reader = new StreamReader(path);
-        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        taxons = csv.GetRecords<T>();
+        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = embeddedProvider.GetFileInfo("joined.csv").CreateReadStream();
+        using var sr = new StreamReader(reader);
+        //var query = sr.ReadToEnd();
+        var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
+        IEnumerable<T> taxons = csv.GetRecords<T>();
 
-        if (taxons == null)
+        foreach (var taxon in taxons)
         {
-            Console.WriteLine("Jeg er tom");
+            Console.WriteLine(taxon);
         }
 
         return taxons;
