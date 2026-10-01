@@ -33,11 +33,12 @@ public static class UserInterface
         }
     }
     
-     public static void printProposals(string ID, IEnumerable<Taxon> taxons)
+     public static void printProposals(long ID, IEnumerable<Proposal> proposals)
     {
-        foreach(var r in taxons)
+        foreach(var r in proposals)
         {
-            Console.WriteLine();
+            if(r.ObservationId == ID)
+            Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.TaxonID);
         }
     }
 

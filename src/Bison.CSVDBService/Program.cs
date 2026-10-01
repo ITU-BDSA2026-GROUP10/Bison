@@ -26,6 +26,11 @@ app.MapGet("/location", (string location) =>
 }
 );
 
+/*app.MapGet("/proposals", (long observationId) =>
+{
+    return 
+});*/
+
 app.MapPost("/observation", (string observation,  string location) =>
 {
     Console.WriteLine("trying to post!!!");

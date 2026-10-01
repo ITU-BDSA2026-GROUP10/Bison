@@ -30,7 +30,7 @@ public class Program
         Command commentCommand = new("comment");
         Command discussionCommand = new("discussion");
         Command locationCommand = new("location");
-Command proposalCommand = new("proposal");
+        Command proposalCommand = new("proposal");
         Command proposalsCommand = new("proposals");
 
         rootCommand.Add(readCommand);
@@ -47,8 +47,8 @@ Command proposalCommand = new("proposal");
         Argument<string> discussionArgument = new Argument<string>("observationId");
         Argument<string> locationArgument = new Argument<string>("location");
         Argument<string> locationArgumentForLocationCommand = new Argument<string>("location");
-        Argument<string> proposalsArgument = new Argument<string>("observationID");
-        Argument<string> proposalArgument = new Argument<string>("taxonID");
+        Argument<string> proposalsArgument = new Argument<string>("observationId");
+        Argument<string> proposalArgument = new Argument<string>("taxonId");
 
         observeCommand.Arguments.Add(observationArgument);
         observeCommand.Arguments.Add(locationArgument);
@@ -82,15 +82,17 @@ Command proposalCommand = new("proposal");
         return await parseResult.InvokeAsync();
     }
     
-     private static async void ProposalsCommands(Command proposalCommand, HttpClient client, Argument<string> proposalArgument)
+    //this method prints the proposals that have the given obersation id.
+     private static async void ProposalsCommands(Command proposalsCommand, HttpClient client, Argument<string> proposalsArgument)
     {
-        proposalCommand.SetAction(async parseResult =>
+        proposalsCommand.SetAction(async parseResult =>
         {
             try {
-                string taxonID = parseResult.GetValue(proposalArgument);
-                var response = await client.GetFromJsonAsync<IEnumerable<Taxon>>("http://localhost:5252/taxons?taxonId={TaxonID}");
+                long ObservationId = long.Parse(parseResult.GetValue(proposalsArgument));
+               
+                var response = await client.GetFromJsonAsync<IEnumerable<Proposal>>("http://localhost:5252/proposals?observationId={ObservationId}");
                 if (response != null)
-                    UserInterface.printProposals(taxonID, response);
+                    UserInterface.printProposals(ObservationId, response);
             } catch (HttpRequestException e)
             {
                 Console.WriteLine("\nException Caught!");
