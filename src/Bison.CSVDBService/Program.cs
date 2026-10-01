@@ -7,6 +7,8 @@ CSVDatabase<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
 CSVDatabase<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
 /*app.MapGet("/observations", () => new Observation("signe","Heron at DR Byen",1788161296,3));
 app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
+CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
+database.ReadTaxon();
 
 app.MapGet("/observations", () =>
 {

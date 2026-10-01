@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
+    <EmbeddedResource Include="../../data/**/*" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,10 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Security.AccessControl;
-using System.Transactions;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
+using CsvHelper.Configuration;
+using taxons;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -52,23 +55,31 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         }
         return comments;
     }
+
+    public IEnumerable<Taxon>  ReadTaxon()
+    {
+        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = embeddedProvider.GetFileInfo("joined.csv").CreateReadStream();
+        using var sr = new StreamReader(reader);
+        var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
+        IEnumerable<Taxon> taxons = csv.GetRecords<Taxon>();
+        
+        List<Taxon> taxonsList = taxons.ToList<Taxon>();
+
+        TreeBuilder tb = new TreeBuilder();
+        tb.mapTaxonPairings(taxonsList);
+        tb.build(taxonsList);
+
+        return taxonsList;
+    }
  
     public void Store(T record, string path, string location) {
         using (StreamWriter writer = File.AppendText(path))
         {
             if(record is Observations ob && record != null)
             {
-                //Observations ob = (Observations) record;
                 writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
-                //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.Timestamp + "," + record.ID + "," + record.Location);
             }
-            /*long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter(path);*/
-        
-            //writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
-            //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.TimeStamp + "," + record.ID + "," + record.Location);
-            
-            
             writer.Close();
         }
     }
@@ -85,10 +96,6 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
                     {
                         writer.WriteLine(com.Author + ",\"" +  com.Observation + "\"," + com.Timestamp + "," + com.ObservationId);
                     }
-                    //long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-
-                    //writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + ObservationID);
-                    
                     
                     writer.Close();
                 }

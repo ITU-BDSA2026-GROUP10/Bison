@@ -10,7 +10,6 @@ using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-
 public class Program
 {
     // https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-10.0
