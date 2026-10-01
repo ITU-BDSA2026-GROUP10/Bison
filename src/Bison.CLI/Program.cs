@@ -10,7 +10,6 @@ using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-
 public class Program
 {
     // https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-10.0
@@ -25,11 +24,6 @@ public class Program
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri("http://localhost:5252");
-
-        CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
-
-        database.ReadTaxon();
-        //Console.WriteLine(database.ReadTaxon());
 
         Command readCommand = new("read");
         Command observeCommand = new("observe");

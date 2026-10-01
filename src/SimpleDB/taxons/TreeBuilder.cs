@@ -10,7 +10,8 @@ class TreeBuilder {
 void build(IEnumerable<Taxon> taxons)
     {
 
-        foreach (var taxon in taxons) 
+        
+        /*foreach (var taxon in taxons) 
         {
             //maybe this is where we go through the list of records and then assign parents and children.
             Node n = new Node(taxon);
@@ -22,7 +23,7 @@ void build(IEnumerable<Taxon> taxons)
             {
                 //tree.addChild(n.parent, n);
             } 
-        }
+        }*/
         
     }
     
