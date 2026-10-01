@@ -35,4 +35,12 @@ public static class UserInterface
             */
         }
     }
+    
+     public static void printProposals(string ID, IEnumerable<Taxon> taxons)
+    {
+        foreach(var r in taxons)
+        {
+            Console.WriteLine();
+        }
+    }
 }

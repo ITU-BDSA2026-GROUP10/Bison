@@ -30,12 +30,16 @@ public class Program
         Command commentCommand = new("comment");
         Command discussionCommand = new("discussion");
         Command locationCommand = new("location");
+Command proposalCommand = new("proposal");
+        Command proposalsCommand = new("proposals");
 
         rootCommand.Add(readCommand);
         rootCommand.Add(observeCommand);
         rootCommand.Add(commentCommand);
         rootCommand.Add(discussionCommand);
         rootCommand.Add(locationCommand);
+        rootCommand.Add(proposalCommand);
+        rootCommand.Add(proposalsCommand);
 
         Argument<string> observationArgument = new Argument<string>("observation");
         Argument<string> commentArgument = new Argument<string>("comment");
@@ -43,6 +47,8 @@ public class Program
         Argument<string> discussionArgument = new Argument<string>("observationId");
         Argument<string> locationArgument = new Argument<string>("location");
         Argument<string> locationArgumentForLocationCommand = new Argument<string>("location");
+        Argument<string> proposalsArgument = new Argument<string>("observationID");
+        Argument<string> proposalArgument = new Argument<string>("taxonID");
 
         observeCommand.Arguments.Add(observationArgument);
         observeCommand.Arguments.Add(locationArgument);
@@ -50,12 +56,15 @@ public class Program
         commentCommand.Arguments.Add(observationIdArgument);
         discussionCommand.Arguments.Add(discussionArgument);
         locationCommand.Arguments.Add(locationArgumentForLocationCommand);
+        proposalCommand.Arguments.Add(proposalArgument);
+        proposalsCommand.Arguments.Add(proposalsArgument);
 
         ReadCommands(readCommand, client);
         DiscussionCommands(discussionCommand, client, discussionArgument);
         ObserveCommands(observeCommand, client, observationArgument, locationArgument);
         CommentCommands(commentCommand, client, commentArgument, observationIdArgument);
         LocationCommands(locationCommand, client, locationArgumentForLocationCommand);
+        ProposalsCommands(proposalsCommand, client, proposalsArgument);
 
         ParseResult parseResult = rootCommand.Parse(args);
         try
@@ -71,6 +80,24 @@ public class Program
         }
 
         return await parseResult.InvokeAsync();
+    }
+    
+     private static async void ProposalsCommands(Command proposalCommand, HttpClient client, Argument<string> proposalArgument)
+    {
+        proposalCommand.SetAction(async parseResult =>
+        {
+            try {
+                string taxonID = parseResult.GetValue(proposalArgument);
+                var response = await client.GetFromJsonAsync<IEnumerable<Taxon>>("http://localhost:5252/taxons?taxonId={TaxonID}");
+                if (response != null)
+                    UserInterface.printProposals(taxonID, response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
+        }
+        );
     }
 
     private static async void ObserveCommands(Command observeCommand, HttpClient client, Argument<string> observationArgument, Argument<string> locationArgument)
