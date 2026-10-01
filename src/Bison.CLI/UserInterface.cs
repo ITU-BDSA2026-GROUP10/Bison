@@ -6,8 +6,7 @@ public static class UserInterface
     {
         foreach (var r in obs)
         {
-            DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
-            Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+            Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.Observation.Trim('\"'));
         }
     }
 
@@ -17,8 +16,7 @@ public static class UserInterface
         {
             if (r.ObservationId == id) 
             {
-                DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
-                Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+                Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.Observation.Trim('\"'));
             }
         } 
     }
@@ -28,8 +26,7 @@ public static class UserInterface
         foreach (var r in obs)
         {
             if (r.Location.Equals(location, StringComparison.OrdinalIgnoreCase)){
-                DateTime time = DateTimeOffset.FromUnixTimeSeconds(r.Timestamp).DateTime;
-                Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+                Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.Observation.Trim('\"'));
             }
             /*ignore case: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/strings/common-tasks/compare
             */
@@ -42,5 +39,11 @@ public static class UserInterface
         {
             Console.WriteLine();
         }
+    }
+
+    public static DateTime convertTime(long UnixTime)
+    {
+        DateTime time = DateTimeOffset.FromUnixTimeSeconds(UnixTime).DateTime;
+        return time;
     }
 }
