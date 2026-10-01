@@ -35,4 +35,18 @@ public class UnitTest1
         var result = command.Parse("Heron Ismageriet");
         Assert.Empty(result.Errors);
     }
+
+     [Fact]
+    public void UnixTimeConvertsCorrectlyToUserReadableTime()
+    {
+        //Arrange
+        long unixTime = 1789313646+7200;
+
+        //Act
+        DateTime dateTime = UserInterface.convertTime(unixTime);
+        string dateTimeString = dateTime.ToString();
+        
+        //Assert
+        Assert.Equal("13/09/2026 17.34.06", dateTimeString);
+    }
 }
