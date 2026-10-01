@@ -24,20 +24,6 @@ public void build(IEnumerable<Taxon> taxons)
             }
         }
         
-        /*foreach (var taxon in taxons) 
-        {
-            //maybe this is where we go through the list of records and then assign parents and children.
-            Node n = new Node(taxon);
-            if (taxon.taxonRank == "order")
-            {
-                tree.SetRoot(n);
-                //tree.addChild(null, taxon); //parent should be null
-            } else
-            {
-                //tree.addChild(n.parent, n);
-            } 
-        }*/
-        
     }
     
 public void mapTaxonPairings(IEnumerable<Taxon> taxons)
@@ -46,19 +32,6 @@ public void mapTaxonPairings(IEnumerable<Taxon> taxons)
         {
             if(!idToTaxon.ContainsKey(taxon.taxonID)) idToTaxon.Add(taxon.taxonID, taxon);
             if(!vernacularNameToTaxon.ContainsKey(taxon.vernacularName)) vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
-        }
-
-        /*foreach (var taxon in idToTaxon)
-        {
-            Console.WriteLine(taxon.Key + ": " + taxon.Value);
-        }*/
-    }
-void treeBuild(IEnumerable<Node> taxons)
-    {
-        foreach (var Node in taxons)
-        {
-            tree.SetRoot(Node); //because it will only assign when null and the first is always the root
-            //tree.addChild(Node.previous, Node);
         }
     }
 }

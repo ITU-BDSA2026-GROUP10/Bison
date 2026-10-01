@@ -5,7 +5,6 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Security.AccessControl;
-using System.Transactions;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using CsvHelper.Configuration;
@@ -79,17 +78,8 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         {
             if(record is Observations ob && record != null)
             {
-                //Observations ob = (Observations) record;
                 writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
-                //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.Timestamp + "," + record.ID + "," + record.Location);
             }
-            /*long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter(path);*/
-        
-            //writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
-            //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.TimeStamp + "," + record.ID + "," + record.Location);
-            
-            
             writer.Close();
         }
     }
@@ -106,10 +96,6 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
                     {
                         writer.WriteLine(com.Author + ",\"" +  com.Observation + "\"," + com.Timestamp + "," + com.ObservationId);
                     }
-                    //long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-
-                    //writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + ObservationID);
-                    
                     
                     writer.Close();
                 }
