@@ -8,6 +8,7 @@ using System.Security.AccessControl;
 using System.Transactions;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using CsvHelper.Configuration;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -55,18 +56,27 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         return comments;
     }
 
-    public IEnumerable<T>  ReadTaxon()
+    public IEnumerable<Taxon>  ReadTaxon()
     {
+        /*var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HeaderValidated = null,
+            MissingFieldFound = null
+        };*/
         var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
         using var reader = embeddedProvider.GetFileInfo("joined.csv").CreateReadStream();
         using var sr = new StreamReader(reader);
         //var query = sr.ReadToEnd();
+        //var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
         var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
-        IEnumerable<T> taxons = csv.GetRecords<T>();
-
+        IEnumerable<Taxon> taxons = csv.GetRecords<Taxon>();
+        //csv.Configuration.HeaderValidated = null;
+        
+        Console.WriteLine(taxons);
         foreach (var taxon in taxons)
         {
             Console.WriteLine(taxon);
+            Console.WriteLine(taxon.subtaxons);
         }
 
         return taxons;

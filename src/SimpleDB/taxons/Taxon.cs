@@ -16,7 +16,11 @@ string? scientificNameAuthorship,
 
 string? language, //which is only indicated by three letters
 
-string? vernacularName, //their dainish name
+string? vernacularName, //their danish name
 
-bool? merged); // false, null or true
-//
+bool? merged// false, null or true
+)
+{
+    public List<Taxon> subtaxons = new List<Taxon>();
+
+}; 
