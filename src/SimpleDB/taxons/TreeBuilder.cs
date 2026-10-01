@@ -1,15 +1,28 @@
 
 using System.Xml;
+using Microsoft.VisualBasic;
 
 
 namespace taxons;
-class TreeBuilder {
+public class TreeBuilder {
 
     Tree tree = new Tree();
+    Dictionary<string, Taxon> idToTaxon = new Dictionary<string, Taxon>();
+    Dictionary<string, Taxon> vernacularNameToTaxon = new Dictionary<string, Taxon>();
     
-void build(IEnumerable<Taxon> taxons)
+public void build(IEnumerable<Taxon> taxons)
     {
-
+        
+        foreach (var parent in taxons)
+        {
+            foreach(var child in taxons)
+            {
+                if(child.parentNameUsageID == parent.taxonID)
+                {
+                    parent.subtaxons.Add(child);
+                }
+            }
+        }
         
         /*foreach (var taxon in taxons) 
         {
@@ -27,6 +40,19 @@ void build(IEnumerable<Taxon> taxons)
         
     }
     
+public void mapTaxonPairings(IEnumerable<Taxon> taxons)
+    {
+        foreach (var taxon in taxons)
+        {
+            if(!idToTaxon.ContainsKey(taxon.taxonID)) idToTaxon.Add(taxon.taxonID, taxon);
+            if(!vernacularNameToTaxon.ContainsKey(taxon.vernacularName)) vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
+        }
+
+        /*foreach (var taxon in idToTaxon)
+        {
+            Console.WriteLine(taxon.Key + ": " + taxon.Value);
+        }*/
+    }
 void treeBuild(IEnumerable<Node> taxons)
     {
         foreach (var Node in taxons)

@@ -9,6 +9,7 @@ using System.Transactions;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using CsvHelper.Configuration;
+using taxons;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -58,28 +59,19 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     public IEnumerable<Taxon>  ReadTaxon()
     {
-        /*var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HeaderValidated = null,
-            MissingFieldFound = null
-        };*/
         var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
         using var reader = embeddedProvider.GetFileInfo("joined.csv").CreateReadStream();
         using var sr = new StreamReader(reader);
-        //var query = sr.ReadToEnd();
-        //var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
         var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
         IEnumerable<Taxon> taxons = csv.GetRecords<Taxon>();
-        //csv.Configuration.HeaderValidated = null;
         
-        Console.WriteLine(taxons);
-        foreach (var taxon in taxons)
-        {
-            Console.WriteLine(taxon);
-            Console.WriteLine(taxon.subtaxons);
-        }
+        List<Taxon> taxonsList = taxons.ToList<Taxon>();
 
-        return taxons;
+        TreeBuilder tb = new TreeBuilder();
+        tb.mapTaxonPairings(taxonsList);
+        tb.build(taxonsList);
+
+        return taxonsList;
     }
  
     public void Store(T record, string path, string location) {

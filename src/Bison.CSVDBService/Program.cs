@@ -9,9 +9,7 @@ CSVDatabase<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
 app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
 CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
 database.ReadTaxon();
-//TreeBuilder tb = new TreeBuilder();
-//tb.mapTaxonPairings(database.ReadTaxon());
-      
+
 app.MapGet("/observations", () =>
 {
     return databaseObs.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv");
