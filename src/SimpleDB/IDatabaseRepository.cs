@@ -12,5 +12,8 @@ public interface IDatabaseRepository<T>
 
     public void StoreComment(T record, string observePath, string commentPath, long ObservationID);
 
+    public void StoreProposal(T record, string proposalPath, string observePath, long ObservationID);
+
     public long GetNumberOfLinesInAFile(string path);
+
 }

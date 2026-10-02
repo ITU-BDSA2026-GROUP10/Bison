@@ -109,6 +109,33 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
             Console.WriteLine(e.Message);
         }
     }
+
+    public void StoreProposal(T record, string proposalPath, string observePath, long ObservationID)
+    {
+        long count = Counter(observePath);
+        
+        try{
+            if(count >= ObservationID)
+            {
+                using (StreamWriter writer = File.AppendText(proposalPath))
+                {
+                    if(record is Proposal pro && record != null)
+                    {
+                        writer.WriteLine(pro.Author + ",\"" +  pro.TaxonId + "\"," + pro.Timestamp + "," + pro.ObservationId);
+                    }
+                    
+                    writer.Close();
+                }
+            } else
+            {
+                throw new ArgumentException("The observation does not exist");
+            }
+        }
+        catch (ArgumentException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
     
     //Used https://github.com/JoshClose/CsvHelper/issues/948 as reference
    private long Counter(string path)

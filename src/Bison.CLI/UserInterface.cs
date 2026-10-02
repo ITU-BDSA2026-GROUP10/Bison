@@ -38,7 +38,7 @@ public static class UserInterface
         foreach(var r in proposals)
         {
             if(r.ObservationId == ID)
-            Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.TaxonID);
+            Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.TaxonId);
         }
     }
 
