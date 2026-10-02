@@ -11,7 +11,7 @@ on:
   pull_request:
     branches: [ "main" ]
     paths-ignore:
-      - '../test/*/*EndToEnd*.cs'
+      - '/home/runner/work/Bison/Bison/test/Bison.CLI.tests/Bison.CLI.tests.csproj'
 
 jobs:
   build_and_test:
