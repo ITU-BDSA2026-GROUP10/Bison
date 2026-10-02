@@ -10,9 +10,11 @@ on:
       - w3workflows
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '../test/*/*EndToEnd*.cs'
 
 jobs:
-  build:
+  build_and_test:
 
     runs-on: ubuntu-latest
 
