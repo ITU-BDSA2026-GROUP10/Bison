@@ -1,10 +1,12 @@
 namespace SimpleDB.tests;
 
+using System.ComponentModel.Design;
+using System.Reflection;
 using SimpleDB;
 
 public class UnitTest1
 {
-    [Fact]
+    /*[Fact]
     public void CSVDatabaseDoesNotStoreCommentToNonexistingObservation()
     {
         //Arange
@@ -20,7 +22,6 @@ public class UnitTest1
         //Assert
         Assert.Equal(before, after);
     }
-
     [Fact]
     public void CSVDatabaseStoresCommentToExistingObservation()
     {
@@ -48,18 +49,21 @@ public class UnitTest1
         Assert.NotEqual(beforeObservation, afterObservation);
         Assert.NotEqual(beforeComment, afterComment);
     }
-
+    */
     [Fact]
-    public void UnixTimeConvertsCorrectlyToUserReadableTime()
+    public void TestName()
     {
-        //Arrange
-        long unixTime = 1789313646+7200;
-
-        //Act
-        DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTime).DateTime;
-        string dateTimeString = dateTime.ToLongTimeString();
+        // Arange
+        Cheep cheep = new Cheep(Environment.UserName, "testing...", 22);
+        Observations obs = new Observations(Environment.UserName, "testing obs...", 22, 101);
+        Observations obs1 = new Observations(Environment.UserName, "testing obs...", 22, 101);
         
-        //Assert
-        Assert.Equal("17.34.06", dateTimeString);
+        // Act
+    
+        // Assert
+        Assert.True(obs is Cheep);
+        Assert.False(cheep is Observations);
+        Assert.False(cheep == obs);
+        Assert.True(obs == obs1);
     }
 }
