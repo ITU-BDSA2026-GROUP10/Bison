@@ -6,8 +6,7 @@ public static class UserInterface
     {
         foreach (var r in obs)
         {
-            DateTime time = GetDateTime(r.Timestamp);
-            Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+            Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.Observation.Trim('\"'));
         }
     }
 
@@ -17,8 +16,7 @@ public static class UserInterface
         {
             if (r.ObservationId == id) 
             {
-                DateTime time = GetDateTime(r.Timestamp);
-                Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+                Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.Observation.Trim('\"'));
             }
         } 
     }
@@ -35,13 +33,10 @@ public static class UserInterface
             */
         }
     }
- public static DateTime GetDateTime(long timestamp)
-    {
-        return DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
-    }
 
-    public static bool ObservationExists(long count, long ObservationID)
+    public static DateTime convertTime(long UnixTime)
     {
-        return count >= ObservationID;
+        DateTime time = DateTimeOffset.FromUnixTimeSeconds(UnixTime).DateTime;
+        return time;
     }
 }

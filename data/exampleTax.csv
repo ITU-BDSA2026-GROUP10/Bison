@@ -1,0 +1,11 @@
+taxonID,parentNameUsageID,acceptedNameUsageID,taxonomicStatus,taxonRank,scientificName,scientificNameAuthorship,language,vernacularName,merged
+ID1,ID2,,accepted,order,Pelecaniformes,,dan,Årefodede,false
+ID3,ID1,,accepted,family,Ardeidae,,dan,Hejrer,false
+ID4,ID1,,accepted,family,Fregatidae,,dan,Fregatfugle,false
+ID8,ID1,,accepted,family,Phalacrocoracidae,,dan,Skarver,false
+ID5,ID3,,accepted,genus,Ardea,,,,
+ID7,ID8,,accepted,genus,Phalacrocorax,,,,
+ID6,ID5,,accepted,species,Ardea alba,"Linnaeus, 1758",dan,Sølvhejre,false
+ID9,ID8,,accepted,species,Phalacrocorax carbo,"(Linnaeus, 1758)",dan,Skarv,false
+ID10,ID9,,accepted,subspecies,Phalacrocorax carbo carbo,"(Linnaeus, 1758)",dan,Storskarv,false
+ID11,ID9,,accepted,subspecies,Phalacrocorax carbo sinensis,"(Staunton, 1796)",dan,Mellemskarv,false

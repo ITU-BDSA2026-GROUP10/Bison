@@ -1,0 +1,40 @@
+# for more information see: https://docs.github.com/en/actions/tutorials/build-and-test-code/net#publishing-to-package-registries
+
+name: Upload dotnet package
+
+on:
+  push:
+    tags:
+     - '*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' 
+          source-url: https://nuget.pkg.github.com/<owner>/index.json 
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        name: Restore
+      - run: dotnet restore
+        name: Build
+      - run: dotnet build --no-restore
+        name: Test
+      - run: dotnet test --no-build --verbosity normal
+        name: Releases
+      - run : dotnet publish --runtime win-x64 --self-contained false
+      - run : dotnet publish --runtime osx-x64 --self-contained false
+      - run : dotnet publish --runtime linux-x64 --self-contained false
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r windows.zip src/Bison.CLI/bin/Release/net8.0/win-x64
+      - name: Publish GitHub Release Windows
+        uses: softprops/action-gh-release@v2
+        with:
+          files: windows.zip

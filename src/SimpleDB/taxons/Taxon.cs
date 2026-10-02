@@ -1,0 +1,26 @@
+public record Taxon(
+    
+string taxonID,
+
+string parentNameUsageID, //they can be this whole thing: MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea
+
+string? acceptedNameUsageID, //this is always null in the given csv file but maybe it will change later
+
+string taxonomicStatus, //e.g. accepted or denied. maybe this should be a string?
+
+string taxonRank, //e.g. order, genus or family
+
+string scientificName, //e.g. Pelecaniformes
+
+string? scientificNameAuthorship, 
+
+string? language, //which is only indicated by three letters
+
+string? vernacularName, //their danish name
+
+bool? merged// false, null or true
+)
+{
+    public List<Taxon> subtaxons = new List<Taxon>();
+
+}; 

@@ -5,7 +5,10 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Security.AccessControl;
-using System.Transactions;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
+using CsvHelper.Configuration;
+using taxons;
 
 sealed public class CSVDatabase<T> : IDatabaseRepository<T> 
 {
@@ -24,10 +27,11 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     public IEnumerable<T> ReadObservation(string path, int? limit = null) {
         IEnumerable <T> objects;
-        var reader = new StreamReader(path);
+        StreamReader reader = new StreamReader(path);
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
         return objects;
+        
     }
  
 
@@ -51,32 +55,47 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         }
         return comments;
     }
+
+    public IEnumerable<Taxon>  ReadTaxon()
+    {
+        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = embeddedProvider.GetFileInfo("joined.csv").CreateReadStream();
+        using var sr = new StreamReader(reader);
+        var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
+        IEnumerable<Taxon> taxons = csv.GetRecords<Taxon>();
+        
+        List<Taxon> taxonsList = taxons.ToList<Taxon>();
+
+        TreeBuilder tb = new TreeBuilder();
+        tb.mapTaxonPairings(taxonsList);
+        tb.build(taxonsList);
+
+        return taxonsList;
+    }
  
     public void Store(T record, string path, string location) {
         using (StreamWriter writer = File.AppendText(path))
         {
-
-            long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-            long id = Counter(path);
-        
-            writer.WriteLine(Environment.UserName + ",\"" + record + "\"," + localTime + "," + id + "," + location);
-            //writer.WriteLine(record.Author + ",\"" + record.Observation + "\"," + record.TimeStamp + "," + record.ID + "," + record.Location);
-            
+            if(record is Observations ob && record != null)
+            {
+                writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
+            }
             writer.Close();
         }
     }
 
-    public void StoreComment(T record, string observePath, long ObservationID)
+    public void StoreComment(T record, string observePath, string commentPath, long ObservationID)
     {
         long count = Counter(observePath);
         try{
             if(ObservationExists(count, ObservationID))
             {
-                using (StreamWriter writer = File.AppendText("bison_comment_cli_db.csv"))
+                using (StreamWriter writer = File.AppendText(commentPath))
                 {
-                    long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
-
-                    writer.WriteLine(Environment.UserName + ",\"" +  record + "\"," + localTime + "," + ObservationID);
+                    if(record is Comment com && record != null)
+                    {
+                        writer.WriteLine(com.Author + ",\"" +  com.Observation + "\"," + com.Timestamp + "," + com.ObservationId);
+                    }
                     
                     writer.Close();
                 }

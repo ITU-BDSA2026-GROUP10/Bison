@@ -10,12 +10,11 @@ using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-
 public class Program
 {
     // https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-10.0
 
-    static async Task<int> Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
 
         RootCommand rootCommand = new RootCommand();
@@ -43,99 +42,20 @@ public class Program
         Argument<string> observationIdArgument = new Argument<string>("observationID");
         Argument<string> discussionArgument = new Argument<string>("observationId");
         Argument<string> locationArgument = new Argument<string>("location");
-        Argument<string> locationArgument2 = new Argument<string>("location");
+        Argument<string> locationArgumentForLocationCommand = new Argument<string>("location");
 
         observeCommand.Arguments.Add(observationArgument);
         observeCommand.Arguments.Add(locationArgument);
         commentCommand.Arguments.Add(commentArgument);
         commentCommand.Arguments.Add(observationIdArgument);
         discussionCommand.Arguments.Add(discussionArgument);
-        locationCommand.Arguments.Add(locationArgument2);
-
+        locationCommand.Arguments.Add(locationArgumentForLocationCommand);
 
         ReadCommands(readCommand, client);
-       
         DiscussionCommands(discussionCommand, client, discussionArgument);
-        
         ObserveCommands(observeCommand, client, observationArgument, locationArgument);
-
         CommentCommands(commentCommand, client, commentArgument, observationIdArgument);
-
-        /*observeCommand.SetAction(async parseResult =>
-
-        {
-
-            /*if (parseResult.GetValue(observationArgument) != null && !parseResult.GetValue(observationArgument).Equals(""))
-                try
-                {
-                    string observation = parseResult.GetValue(observationArgument);
-                    string location = parseResult.GetValue(locationArgument);
-
-                    if ((observation != null && !observation.Equals("")) && (location != null && !location.Equals("")))
-                    {
-                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance();
-                        csvDatabase.Store(observation, "bison_observe_cli_db.csv", location);
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Observation or location cannot be null or empty string, please enter valid input.");
-                    }
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine(e.Message);
-                }*/
-
-            /*try
-            {
-                string observation = parseResult.GetValue(observationArgument);
-                string location = parseResult.GetValue(locationArgument);
-                var response = await client.GetFromJsonAsync<IEnumerable<Observations>>($"http://localhost:5252/observation?observation={observation=observation}");
-            } catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message: {0} ", e.Message);
-            }
-
-
-        });*/
-
-        locationCommand.SetAction(parseResult =>
-        {
-            try
-            {
-                string location = parseResult.GetValue(locationArgument2);
-
-                if ((location != null && !location.Equals("")))
-                {
-                    CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
-                    IEnumerable<Observations> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
-
-
-                    UserInterface.printObservationsByLocation(location, enumerator);
-
-                }
-                else
-                {
-                    throw new ArgumentException("Location cannot be null or empty string, please enter a valid location.");
-                }
-
-
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        
-        });
-
-
-           /* commentCommand.SetAction(parseResult =>
-        {
-            SetCommentAction(parseResult, commentArgument);
-        }
-        );*/
-
+        LocationCommands(locationCommand, client, locationArgumentForLocationCommand);
 
         ParseResult parseResult = rootCommand.Parse(args);
         try
@@ -144,7 +64,6 @@ public class Program
             {
                 throw new ArgumentException("This action does not exist, please try a valid action");
             }
-            parseResult.Invoke();
         }
         catch (ArgumentException e)
         {
@@ -158,15 +77,10 @@ public class Program
     {
         observeCommand.SetAction(async parseResult =>
        {
-           Console.WriteLine("in observe command");
            try
            {
                string observation = parseResult.GetValue(observationArgument);
                string location = parseResult.GetValue(locationArgument);
-               
-               string jsonObservation = JsonSerializer.Serialize(observation);
-               
-               string jsonLocation = JsonSerializer.Serialize(location);
                
                var response = await client.PostAsJsonAsync($"http://localhost:5252/observation?observation={observation}&location={location}", new {observation, location});
            } catch (HttpRequestException e)
@@ -182,17 +96,16 @@ public class Program
     {
      readCommand.SetAction(async parseResult =>
         {
-        try {
-            // using HttpResponseMessage response = await client.GetFromJsonAsync<List<T>>("http://localhost:5252/observations");
-            var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
-            if (response != null)
-                UserInterface.printObservations(response);
-        } catch (HttpRequestException e)
-        {
-            Console.WriteLine("\nException Caught!");
-            Console.WriteLine("Message: {0} ", e.Message);
-        }
-        });   
+            try {
+                var response = await client.GetFromJsonAsync<IEnumerable<Observations>>("http://localhost:5252/observations");
+                if (response != null)
+                    UserInterface.printObservations(response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
+        });
     }
     
     private static async void DiscussionCommands(Command discussionCommand, HttpClient client, Argument<string> discussionArgument)
@@ -201,7 +114,7 @@ public class Program
         { 
             try {
                 long ObservationId = long.Parse(parseResult.GetValue(discussionArgument));
-                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId = ObservationId}");
+                var response = await client.GetFromJsonAsync<IEnumerable<Comment>>($"http://localhost:5252/comments?observationId={ObservationId}");
                 if (response != null)
                     UserInterface.printDiscussion(ObservationId, response);
             } catch (HttpRequestException e)
@@ -212,43 +125,28 @@ public class Program
         });
     }
    
-    public static void CommentCommands(Command commentCommand, HttpClient client, Argument<string> commentArgument, Argument<string> observationIdArgument)
+    public static async void CommentCommands(Command commentCommand, HttpClient client, Argument<string> commentArgument, Argument<string> observationIdArgument)
     {
         commentCommand.SetAction(async parseResult =>
         {
-            Console.WriteLine("in comment command");
             try
             {
                 if (parseResult.GetValue(commentArgument) != null && !parseResult.GetValue(commentArgument).Equals(""))
                 {
                     string comment = parseResult.GetValue(commentArgument);
                     string id = parseResult.GetValue(observationIdArgument);
-                    /*if (comment != null)
-                    {
-                        long observationId = 0;
-                        int endOfId = 0;
-                        char[] charArray = comment.ToCharArray();
-                        for (int i = 0; i < charArray.Length; i++)
-                        {
-                            char ch = charArray[i];
-                            if (ch.Equals(',')) //finds the end of the observation id
-                            {
-                                endOfId = i;
-                            }
-                        }
-                        observationId = long.Parse(comment.Substring(0, endOfId)); //the id of the observation that this is a comment for
-                        string actualComment = comment.Substring(endOfId + 2);*/
-                        CSVDatabase<string> csvDatabase = CSVDatabase<string>.getInstance(); //Skal ændres
-                        
-                        var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&observationId={id}", new {comment, id});
-                        
-                        //csvDatabase.StoreComment(actualComment, "bison_observe_cli_db.csv", observationId); // Skal ændres?
-                    
+
+                    var response = await client.PostAsJsonAsync($"http://localhost:5252/comment?comment={comment}&id={id}", new {comment, id});
                 }
                 else
                 {
                     throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
                 }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
             }
             catch (ArgumentException e)
             {
@@ -257,32 +155,34 @@ public class Program
         });
     }
 
-    public static void SetLocationAction(ParseResult parseResult, Argument<string> locationArgument2)
-     {
-        try 
+    public static async void LocationCommands(Command locationCommand, HttpClient client, Argument<string> locationArgument2)
+    {
+        locationCommand.SetAction(async parseResult =>
+        {
+            try 
             {
                 string location = parseResult.GetValue(locationArgument2);
 
-                if((location != null && !location.Equals("")))
+                if(location != null && !location.Equals(""))
                 {
-                    CSVDatabase<Observations> csvDatabase = CSVDatabase<Observations>.getInstance();
-                    IEnumerable<Observations> enumerator = csvDatabase.ReadObservation("bison_observe_cli_db.csv");
-                    
-
-                    UserInterface.printObservationsByLocation(location, enumerator);
-
+                    var response = await client.GetFromJsonAsync<IEnumerable<Observations>>($"http://localhost:5252/location?location={location}");
+                    if (response != null)
+                        UserInterface.printObservationsByLocation(location, response);
                 } else
                 {
                     throw new ArgumentException("Location cannot be null or empty string, please enter a valid location.");
                 }
-    
-            
-            } catch (ArgumentException e)
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            } 
+            catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
             }
+        }
+        );
     }
 }
-
-
- 
