@@ -19,11 +19,11 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     private CSVDatabase() {} 
 
+    TreeBuilder tb = TreeBuilder.getInstance();
     public static CSVDatabase<T> getInstance() 
     {
         return instance;
     }
-     
 
     public IEnumerable<T> ReadObservation(string path, int? limit = null) {
         IEnumerable <T> objects;
@@ -31,7 +31,6 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
         return objects;
-        
     }
  
 
@@ -58,6 +57,8 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     public IEnumerable<Taxon>  ReadTaxon()
     {
+        Console.WriteLine("reading taxons");
+
         var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
         using var reader = embeddedProvider.GetFileInfo("joined.csv").CreateReadStream();
         using var sr = new StreamReader(reader);
@@ -66,7 +67,6 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         
         List<Taxon> taxonsList = taxons.ToList<Taxon>();
 
-        TreeBuilder tb = new TreeBuilder();
         tb.mapTaxonPairings(taxonsList);
         tb.build(taxonsList);
 
@@ -112,28 +112,33 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     public void StoreProposal(T record, string proposalPath, string observePath, long ObservationID)
     {
-        long count = Counter(observePath);
-        
-        try{
-            if(count >= ObservationID)
-            {
-                using (StreamWriter writer = File.AppendText(proposalPath))
+        if(record is Proposal pro && record != null)
+        {   
+            long count = Counter(observePath);
+            
+            try{
+                var set = new HashSet<string>(tb.getIdToTaxonDictionary().Keys);
+                if(!set.Contains(pro.TaxonId))
                 {
-                    if(record is Proposal pro && record != null)
+                    throw new ArgumentException("The taxonId does not exist");
+                }  
+                if(count >= ObservationID)
+                {
+                    using (StreamWriter writer = File.AppendText(proposalPath))
                     {
+                        
                         writer.WriteLine(pro.Author + ",\"" +  pro.TaxonId + "\"," + pro.Timestamp + "," + pro.ObservationId);
+                        writer.Close();
                     }
-                    
-                    writer.Close();
+                } else
+                {
+                    throw new ArgumentException("The observation does not exist");
                 }
-            } else
-            {
-                throw new ArgumentException("The observation does not exist");
             }
-        }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine(e.Message);
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
     
