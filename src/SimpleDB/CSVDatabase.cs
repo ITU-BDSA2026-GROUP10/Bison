@@ -27,18 +27,18 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
 
     public IEnumerable<T> ReadObservation(string path, int? limit = null) {
         IEnumerable <T> objects;
-        StreamReader reader = new StreamReader(path);
-        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        using StreamReader reader = new StreamReader(path);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
-        return objects;
+        List<T> objectsList = objects.ToList<T>();
+        return objectsList;
+        
     }
 
-
-    public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null)
-    {
-        IEnumerable<T> objects;
-        var reader = new StreamReader(path);
-        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+    public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null) {
+        IEnumerable <T> objects;
+        using var reader = new StreamReader(path);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
 
         List<T> comments = new List<T>();

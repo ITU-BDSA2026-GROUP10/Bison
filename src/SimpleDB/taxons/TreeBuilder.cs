@@ -37,10 +37,10 @@ public void mapTaxonPairings(IEnumerable<Taxon> taxons)
     {
         foreach (var taxon in taxons)
         {
-            if(!idToTaxon.ContainsKey(taxon.taxonID)) {
+            if(taxon.taxonID is not null && !idToTaxon.ContainsKey(taxon.taxonID)) {
                 idToTaxon.Add(taxon.taxonID, taxon);
             }
-            if (!vernacularNameToTaxon.ContainsKey(taxon.vernacularName))
+            if (taxon.vernacularName is not null && !vernacularNameToTaxon.ContainsKey(taxon.vernacularName))
             {
                 vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
             } 
