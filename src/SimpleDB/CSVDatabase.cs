@@ -32,27 +32,50 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         objects = csv.GetRecords<T>();
         return objects;
     }
- 
 
-    public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null) {
-        IEnumerable <T> objects;
+
+    public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null)
+    {
+        IEnumerable<T> objects;
         var reader = new StreamReader(path);
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
 
         List<T> comments = new List<T>();
-        foreach(var obj in objects)
+        foreach (var obj in objects)
         {
-            if(obj is Comment comment && obj != null)
+            if (obj is Comment comment && obj != null)
             {
                 long id = comment.ObservationId;
-                if(id == observationId)
+                if (id == observationId)
                 {
                     comments.Add(obj);
                 }
             }
         }
         return comments;
+    }
+
+    public IEnumerable<T> ReadProposals(string path, long observationId, int? limit = null)
+    {
+        IEnumerable<T> objects;
+        var reader = new StreamReader(path);
+        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        objects = csv.GetRecords<T>();
+
+        List<T> proposals = new List<T>();
+        foreach (var obj in objects)
+        {
+            if (obj is Proposal proposal && obj != null)
+            {
+                long id = proposal.ObservationId;
+                if (id == observationId)
+                {
+                    proposals.Add(obj);
+                }
+            }
+        }
+        return proposals;
     }
 
     public IEnumerable<Taxon>  ReadTaxon()

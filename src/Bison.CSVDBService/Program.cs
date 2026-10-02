@@ -27,10 +27,10 @@ app.MapGet("/location", (string location) =>
 }
 );
 
-/*app.MapGet("/proposals", (long observationId) =>
+app.MapGet("/proposals", (long observationId) =>
 {
-    return 
-});*/
+    return databasePro.ReadProposals("../Bison.CLI/bison_proposal_cli_db.csv", observationId);
+});
 
 app.MapPost("/proposal", (string taxonId, long observationId) => {
     string proposalpath = "../Bison.CLI/bison_proposal_cli_db.csv";

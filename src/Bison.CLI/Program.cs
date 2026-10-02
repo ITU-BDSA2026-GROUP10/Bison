@@ -234,11 +234,11 @@ public class Program
         proposalsCommand.SetAction(async parseResult =>
         {
             try {
-                long ObservationId = long.Parse(parseResult.GetValue(proposalsArgument));
+                long observationId = long.Parse(parseResult.GetValue(proposalsArgument));
                
-                var response = await client.GetFromJsonAsync<IEnumerable<Proposal>>("http://localhost:5252/proposals?observationId={ObservationId}");
+                var response = await client.GetFromJsonAsync<IEnumerable<Proposal>>($"http://localhost:5252/proposals?observationId={observationId}");
                 if (response != null)
-                    UserInterface.printProposals(ObservationId, response);
+                    UserInterface.printProposals(observationId, response);
             } catch (HttpRequestException e)
             {
                 Console.WriteLine("\nException Caught!");
