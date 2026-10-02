@@ -30,12 +30,16 @@ public class Program
         Command commentCommand = new("comment");
         Command discussionCommand = new("discussion");
         Command locationCommand = new("location");
+        Command proposalCommand = new("proposal");
+        Command proposalsCommand = new("proposals");
 
         rootCommand.Add(readCommand);
         rootCommand.Add(observeCommand);
         rootCommand.Add(commentCommand);
         rootCommand.Add(discussionCommand);
         rootCommand.Add(locationCommand);
+        rootCommand.Add(proposalCommand);
+        rootCommand.Add(proposalsCommand);
 
         Argument<string> observationArgument = new Argument<string>("observation");
         Argument<string> commentArgument = new Argument<string>("comment");
@@ -43,6 +47,9 @@ public class Program
         Argument<string> discussionArgument = new Argument<string>("observationId");
         Argument<string> locationArgument = new Argument<string>("location");
         Argument<string> locationArgumentForLocationCommand = new Argument<string>("location");
+        Argument<string> proposalArgument = new Argument<string>("taxonId");
+        Argument<string> proposalsArgument = new Argument<string>("observationId");
+        
 
         observeCommand.Arguments.Add(observationArgument);
         observeCommand.Arguments.Add(locationArgument);
@@ -50,12 +57,18 @@ public class Program
         commentCommand.Arguments.Add(observationIdArgument);
         discussionCommand.Arguments.Add(discussionArgument);
         locationCommand.Arguments.Add(locationArgumentForLocationCommand);
+        //proposal:
+        proposalCommand.Arguments.Add(proposalArgument);
+        proposalCommand.Arguments.Add(observationIdArgument);
+        proposalsCommand.Arguments.Add(proposalsArgument);
 
         ReadCommands(readCommand, client);
         DiscussionCommands(discussionCommand, client, discussionArgument);
         ObserveCommands(observeCommand, client, observationArgument, locationArgument);
         CommentCommands(commentCommand, client, commentArgument, observationIdArgument);
         LocationCommands(locationCommand, client, locationArgumentForLocationCommand);
+        ProposalCommand(proposalCommand, client, proposalArgument, observationIdArgument);
+        ProposalsCommands(proposalsCommand, client, proposalsArgument);
 
         ParseResult parseResult = rootCommand.Parse(args);
         try
@@ -72,6 +85,7 @@ public class Program
 
         return await parseResult.InvokeAsync();
     }
+
 
     private static async void ObserveCommands(Command observeCommand, HttpClient client, Argument<string> observationArgument, Argument<string> locationArgument)
     {
@@ -181,6 +195,54 @@ public class Program
             catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+        );
+    }
+
+    private static async void ProposalCommand(Command proposalCommand, HttpClient client, Argument<string> proposalArgument, Argument<string> observationIdArgument)
+    {
+        proposalCommand.SetAction(async parseResult =>
+        {
+            try
+            {
+                if (parseResult.GetValue(proposalArgument) != null && !parseResult.GetValue(proposalArgument).Equals(""))
+                {
+                    string taxonId = parseResult.GetValue(proposalArgument);
+                    string observationId = parseResult.GetValue(observationIdArgument);
+
+                    var response = await client.PostAsJsonAsync($"http://localhost:5252/proposal?taxonId={taxonId}&observationId={observationId}", new {taxonId, observationId});
+                }
+                else
+                {
+                    throw new ArgumentException("Comment cannot be null or empty string, please enter a valid observation.");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        });
+    }
+    private static async void ProposalsCommands(Command proposalsCommand, HttpClient client, Argument<string> proposalsArgument)
+    {
+        proposalsCommand.SetAction(async parseResult =>
+        {
+            try {
+                long observationId = long.Parse(parseResult.GetValue(proposalsArgument));
+               
+                var response = await client.GetFromJsonAsync<IEnumerable<Proposal>>($"http://localhost:5252/proposals?observationId={observationId}");
+                if (response != null)
+                    UserInterface.printProposals(observationId, response);
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message: {0} ", e.Message);
             }
         }
         );

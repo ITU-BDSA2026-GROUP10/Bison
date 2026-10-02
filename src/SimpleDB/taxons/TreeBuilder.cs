@@ -4,15 +4,22 @@ using Microsoft.VisualBasic;
 
 
 namespace taxons;
-public class TreeBuilder {
+sealed public class TreeBuilder {
+
+    private static readonly TreeBuilder instance = new TreeBuilder();
 
     Tree tree = new Tree();
-    Dictionary<string, Taxon> idToTaxon = new Dictionary<string, Taxon>();
+    public Dictionary<string, Taxon> idToTaxon = new Dictionary<string, Taxon>();
     Dictionary<string, Taxon> vernacularNameToTaxon = new Dictionary<string, Taxon>();
+
+    public static TreeBuilder getInstance()
+    {
+        return instance;
+    }
     
 public void build(IEnumerable<Taxon> taxons)
     {
-        
+        Console.WriteLine("building tree!!");
         foreach (var parent in taxons)
         {
             foreach(var child in taxons)
@@ -30,8 +37,18 @@ public void mapTaxonPairings(IEnumerable<Taxon> taxons)
     {
         foreach (var taxon in taxons)
         {
-            if(!idToTaxon.ContainsKey(taxon.taxonID)) idToTaxon.Add(taxon.taxonID, taxon);
-            if(!vernacularNameToTaxon.ContainsKey(taxon.vernacularName)) vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
+            if(!idToTaxon.ContainsKey(taxon.taxonID)) {
+                idToTaxon.Add(taxon.taxonID, taxon);
+            }
+            if (!vernacularNameToTaxon.ContainsKey(taxon.vernacularName))
+            {
+                vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
+            } 
         }
+    }
+
+    public Dictionary<string, Taxon> getIdToTaxonDictionary()
+    {  
+        return idToTaxon;
     }
 }
