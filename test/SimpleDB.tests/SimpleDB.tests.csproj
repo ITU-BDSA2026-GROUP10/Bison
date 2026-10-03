@@ -31,9 +31,14 @@
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
 
+  <None Update="test_proposal.csv">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+
   <None Update="test_observation.csv">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
+
 </ItemGroup>
 
 </Project>

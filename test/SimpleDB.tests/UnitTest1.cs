@@ -63,4 +63,21 @@ public class UnitTest1
         //Assert
         Assert.Equal("17.34.06", dateTimeString);
     }
+
+    [Fact]
+    public void CSVDatabaseDoesNotStoreProposalToNonexistingObservation()
+    {
+       //Arange
+        long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
+        Proposal proposal = new Proposal("raaminraza","cute penguin", timestamp,88);
+        CSVDatabase<Proposal> database = CSVDatabase<Proposal>.getInstance();
+        
+        //Act
+        long before = database.GetNumberOfLinesInAFile("test_proposal.csv");
+        database.StoreProposal(proposal, "test_proposal.csv", "test_observation.csv", 88);
+        long after = database.GetNumberOfLinesInAFile("test_proposal.csv");
+        
+        //Assert
+        Assert.Equal(before, after); 
+    }
 }
