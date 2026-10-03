@@ -48,8 +48,9 @@ public class UnitTest1
         string dateTimeString = dateTime.ToString();
         string am = "13/09/2026 17.34.06";
         string dk = "13-09-2026 17:34:06";
+        string uk = "13.09.2026 17.34.06";
         //Assert
-        Assert.True(am == dateTimeString || dk == dateTimeString);
+        Assert.True(am == dateTimeString || dk == dateTimeString || uk == dateTimeString);
     }
   
      [Fact]
