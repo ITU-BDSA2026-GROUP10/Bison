@@ -55,8 +55,8 @@ public class UnitTest1
     {
         // Arange
         Cheep cheep = new Cheep(Environment.UserName, "testing...", 22);
-        Observations obs = new Observations(Environment.UserName, "testing obs...", 22, 101);
-        Observations obs1 = new Observations(Environment.UserName, "testing obs...", 22, 101);
+        Observations obs = new Observations(Environment.UserName, "testing obs...", 22, 101, "ITU");
+        Observations obs1 = new Observations(Environment.UserName, "testing obs...", 22, 101, "ITU");
         
         // Act
     
