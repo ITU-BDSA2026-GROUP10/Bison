@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 IDatabaseRepository<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
 IDatabaseRepository<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
+IDatabaseRepository<Proposal> databasePro = CSVDatabase<Proposal>.getInstance();
 /*app.MapGet("/observations", () => new Observation("signe","Heron at DR Byen",1788161296,3));
 app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
 CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
@@ -25,6 +26,20 @@ app.MapGet("/location", (string location) =>
     return databaseObs.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv");
 }
 );
+
+app.MapGet("/proposals", (long observationId) =>
+{
+    return databasePro.ReadProposals("../Bison.CLI/bison_proposal_cli_db.csv", observationId);
+});
+
+app.MapPost("/proposal", (string taxonId, long observationId) => {
+    string proposalpath = "../Bison.CLI/bison_proposal_cli_db.csv";
+    string observationPath = "../Bison.CLI/bison_observe_cli_db.csv";
+    long localTime = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200; //+7200 is to make the time match our time-zone
+    string userName = Environment.UserName;
+    Proposal pro = new Proposal(userName, taxonId, localTime, observationId);
+    databasePro.StoreProposal(pro, proposalpath, observationPath, observationId);
+});
 
 app.MapPost("/observation", (string observation,  string location) =>
 {
@@ -55,11 +70,6 @@ app.MapPost("/comment", (string comment, string id) =>
     //databaseCom.StoreComment(comment,comment.Observation,comment.ObservationId);
     
     databaseCom.StoreComment(com, observationPath, commentPath, idAsLong);
-}); 
-
-app.MapPost("/hello", () =>
-{
-    return "hello";
 }); 
 
 app.Run();
