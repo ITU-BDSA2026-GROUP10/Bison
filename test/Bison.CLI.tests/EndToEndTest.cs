@@ -3,7 +3,6 @@ global using Xunit;
 
 using System.CommandLine;
 using Bison.CLI;
-using Bison.CLI;
 using System.Net;
 using System.Net.Http;
 
