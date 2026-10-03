@@ -117,4 +117,23 @@ public class UnitTest1
         Assert.NotEqual(beforeProposal, afterProposal);
     }
 
+    [Fact]
+    public void CSVDatabaseDoesNotStoreProposalWithInvalidTaxonId()
+    {
+       //Arange
+        long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
+
+        Proposal proposal = new Proposal("raaminraza", "invalidTaxonId", timestamp, 0);
+
+        CSVDatabase<Proposal> database = CSVDatabase<Proposal>.getInstance();
+        database.ReadTaxon();
+        
+        //Act
+        long before = database.GetNumberOfLinesInAFile("test_proposal.csv");
+        database.StoreProposal(proposal, "test_proposal.csv", "test_observation.csv", 0);
+        long after = database.GetNumberOfLinesInAFile("test_proposal.csv");
+        
+        //Assert
+        Assert.Equal(before, after); 
+    }
 }
