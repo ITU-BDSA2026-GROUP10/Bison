@@ -26,11 +26,19 @@ public static class UserInterface
         foreach (var r in obs)
         {
             if (r.Location.Equals(location, StringComparison.OrdinalIgnoreCase)){
-                DateTime time = GetDateTime(r.Timestamp);
-                Console.WriteLine(r.Author + " @ " + time + ": " + r.Observation.Trim('\"'));
+                Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.Observation.Trim('\"'));
             }
             /*ignore case: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/strings/common-tasks/compare
             */
+        }
+    }
+    
+     public static void printProposals(long ID, IEnumerable<Proposal> proposals)
+    {
+        foreach(var r in proposals)
+        {
+            if(r.ObservationId == ID)
+            Console.WriteLine(r.Author + " @ " + convertTime(r.Timestamp) + ": " + r.TaxonId);
         }
     }
 
