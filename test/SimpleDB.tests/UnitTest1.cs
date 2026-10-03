@@ -69,8 +69,12 @@ public class UnitTest1
     {
        //Arange
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
-        Proposal proposal = new Proposal("raaminraza","cute penguin", timestamp,88);
+        string taxonId = "MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea";
+
+        Proposal proposal = new Proposal("raaminraza", taxonId, timestamp, 88);
+
         CSVDatabase<Proposal> database = CSVDatabase<Proposal>.getInstance();
+        database.ReadTaxon();
         
         //Act
         long before = database.GetNumberOfLinesInAFile("test_proposal.csv");
@@ -80,4 +84,37 @@ public class UnitTest1
         //Assert
         Assert.Equal(before, after); 
     }
+
+    [Fact]
+    public void CSVDatabaseStoresProposalToExistingObservation()
+    {
+        //Arange
+        CSVDatabase<Proposal> proposalDatabase = CSVDatabase<Proposal>.getInstance();
+        proposalDatabase.ReadTaxon();
+
+        long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + 7200;
+        string author = "raaminraza";
+        string taxonId = "MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea";
+
+        Observations observation = new Observations(author, "her er en sej penguin!", timestamp, 0, "ITU");
+        CSVDatabase<Observations> observationsDatabase = CSVDatabase<Observations>.getInstance();
+
+        Proposal proposal = new Proposal(author,taxonId, timestamp,0);
+        
+        //Act
+        long beforeObservation = observationsDatabase.GetNumberOfLinesInAFile("test_observation.csv");
+        long beforeProposal = proposalDatabase.GetNumberOfLinesInAFile("test_proposal.csv");
+
+        observationsDatabase.Store(observation, "test_observation.csv", "ITU");
+        proposalDatabase.StoreProposal(proposal, "test_proposal.csv", "test_observation.csv", 0);
+
+        long afterObservation = observationsDatabase.GetNumberOfLinesInAFile("test_observation.csv");
+        long afterProposal = proposalDatabase.GetNumberOfLinesInAFile("test_proposal.csv");
+
+
+        //Assert
+        Assert.NotEqual(beforeObservation, afterObservation);
+        Assert.NotEqual(beforeProposal, afterProposal);
+    }
+
 }
