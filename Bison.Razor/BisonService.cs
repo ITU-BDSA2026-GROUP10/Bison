@@ -4,6 +4,8 @@ public interface IObservationService
 {
     public List<ObservationViewModel> GetObservations();
     public List<ObservationViewModel> GetObservationsFromAuthor(string author);
+
+    public void writeObservations();
 }
 
 public class ObservationService : IObservationService
@@ -11,10 +13,19 @@ public class ObservationService : IObservationService
     // These would normally be loaded from a database for example
     private static readonly List<ObservationViewModel> _obs = new()
         {
-            new ObservationViewModel("Peter", "I saw a heron", UnixTimeStampToDateTimeString(1690892208)),
-            new ObservationViewModel("Paul", "There is a bison on Amager", UnixTimeStampToDateTimeString(1690895308)),
+            
+            //new DBFacade().writeObservations(),
+            //new DBFacade(),
+            /*new ObservationViewModel("Peter", "I saw a heron", UnixTimeStampToDateTimeString(1690892208)),
+            new ObservationViewModel("Paul", "There is a bison on Amager", UnixTimeStampToDateTimeString(1690895308)),*/
+
         };
 
+    public void writeObservations()
+    {
+        DBFacade dbf = new DBFacade();
+        dbf.writeObservations();
+    }
     public List<ObservationViewModel> GetObservations()
     {
         return _obs;
