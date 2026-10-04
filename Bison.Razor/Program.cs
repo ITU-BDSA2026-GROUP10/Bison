@@ -1,7 +1,7 @@
 using System.Data;
 using Microsoft.Data.Sqlite;
 
-var sqlDBFilePath = "/tmp/bison.db"; //this does not work if the file does not exists:(
+/*var sqlDBFilePath = "/tmp/bison.db"; //this does not work if the file does not exists:(
 var sqlQuery = @"SELECT * FROM observation ORDER by observation.pub_date desc";
 
 using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
@@ -27,8 +27,8 @@ using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
             Console.WriteLine($"{reader.GetName(i)}: {values[i]}");
     }
 }
-
-/*var builder = WebApplication.CreateBuilder(args);
+*/
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -53,4 +53,3 @@ app.UseRouting();
 app.MapRazorPages();
 
 app.Run();
-*/
