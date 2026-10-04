@@ -15,6 +15,7 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet()
     {
+        _service.writeObservations();
         Observations = _service.GetObservations();
         return Page();
     }
