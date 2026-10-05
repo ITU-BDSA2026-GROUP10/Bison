@@ -10,17 +10,20 @@ public interface IObservationService
 
 public class ObservationService : IObservationService
 {
+    DBFacade dbf;
     // These would normally be loaded from a database for example
-    private static readonly List<ObservationViewModel> _obs = new()
-        {
-            
+    private readonly List<ObservationViewModel> _obs;
+    public ObservationService()
+    {
+        _obs = 
+            dbf.writeObservations()
             //new DBFacade().writeObservations(),
             //new DBFacade(),
             /*new ObservationViewModel("Peter", "I saw a heron", UnixTimeStampToDateTimeString(1690892208)),
             new ObservationViewModel("Paul", "There is a bison on Amager", UnixTimeStampToDateTimeString(1690895308)),*/
 
-        };
-
+        ;
+    }
     public void writeObservations()
     {
         DBFacade dbf = new DBFacade();
