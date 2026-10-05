@@ -10,7 +10,7 @@ public interface IObservationService
 
 public class ObservationService : IObservationService
 {
-    DBFacade dbf;
+    DBFacade dbf = new DBFacade();
     // These would normally be loaded from a database for example
     private readonly List<ObservationViewModel> _obs;
     public ObservationService()

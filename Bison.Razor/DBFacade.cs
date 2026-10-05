@@ -2,7 +2,7 @@ using System.Data;
 using Microsoft.Data.Sqlite;
 public class DBFacade
 {
-    string sqlDBFilePath = "/Users/teklasvane/Desktop/3. semester/Analysis, Design and Software Architecture/Bison/Bison.Razor/bison.db"; //this does not work if the file does not exists:(
+    string sqlDBFilePath = "bison.db"; //this does not work if the file does not exists:(
     string sqlQuery = @"SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id;";
     List<ObservationViewModel> list;
 
