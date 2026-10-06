@@ -39,18 +39,9 @@ public class DBFacade
                     {
                         timestamp = dataRecord[i].ToString();
                     }
-                    //list.Add(new ObservationViewModel{dataRecord.GetName(i), dataRecord[i]});
-                    Console.WriteLine($"{dataRecord.GetName(i)}: {dataRecord[i]}");
                 }
 
                 list.Add(new ObservationViewModel(user_name, message, timestamp));
-
-                // See https://learn.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqldatareader.getvalues?view=dotnet-plat-ext-7.0
-                // for documentation on how to retrieve complete columns from query results
-                /*Object[] values = new Object[reader.FieldCount];
-                int fieldCount = reader.GetValues(values);
-                for (int i = 0; i < fieldCount; i++)
-                    Console.WriteLine($"{reader.GetName(i)}: {values[i]}");*/
             }
             return list;
         }
