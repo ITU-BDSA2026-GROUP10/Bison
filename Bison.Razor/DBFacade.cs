@@ -1,11 +1,27 @@
 using System.Data;
+using System;
 using Microsoft.Data.Sqlite;
+using System.IO;
 public class DBFacade
 {
-    string sqlDBFilePath = "bison.db"; //this does not work if the file does not exists:(
+    
+    string sqlDBFilePath;
     string sqlQuery = @"SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id;";
     List<ObservationViewModel> list;
 
+    public DBFacade()
+    {
+        
+        if(Environment.GetEnvironmentVariable("BISONDBPATH") != null)
+        {
+            sqlDBFilePath = Environment.GetEnvironmentVariable("BISONDBPATH");
+        } else
+        {
+            sqlDBFilePath = Path.GetTempPath()+ "mybison.db";
+            //FileStream fs = File.Create(sqlDBFilePath);
+        }
+    }
+    
     public List<ObservationViewModel> writeObservations()
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
