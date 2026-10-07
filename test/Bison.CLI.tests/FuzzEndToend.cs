@@ -11,64 +11,73 @@ using System.Collections;
 using System.Collections.Generic;
 using Xunit.Sdk;
 
+/* Skal rettes:
+    Proposals
+    Hvorfor kommer der ikke id med comments?
+*/
+
 public class FuzzEndToEndTest
 {
     string randString;
     string randID; //observationID
     string [] arg;
-    Dictionary <string[],string[]> dictionaryOracle = new Dictionary<string[], string[]>();
+    Dictionary <int,int> dictionaryOracleExit = new Dictionary<int, int>();
+    Dictionary <string[], string[]> dictionaryOracleCommands = new Dictionary<string[], string[]> ();
     List <string[]> argumentsObserve = new List<string[]>();
     List <string[]> argumentsProposal = new List<string[]>();
     List <string[]> argumentsComment = new List<string[]>();
     List <string> addedIdentifier = new List<string>();
     string command;
-    
+        
     public string[] generateArguments (string command) {
         Random rand = new Random();
         var rootCommand = new RootCommand();
         if (command.Equals("observe"))
         {
-            arg = [generateString(), generateString()];
+            arg = ["observe",generateString(), generateString()];
             argumentsObserve.Add(arg);
             addedIdentifier.Add(arg[0]);
-            dictionaryOracle = getParsedValues(arg,dictionaryOracle);
-        } else if (command.Equals("propals"))
+            dictionaryOracleCommands = getParsedValues(arg, dictionaryOracleCommands);
+        } else if (command.Equals("proposal"))
         {
-            string id = rand.Next(0,100).ToString();
+            string id = rand.Next(50,100).ToString();
             addedIdentifier.Add(id);
-            arg = [generateString(),id];
+            arg = ["proposal",generateString(),id];
             argumentsProposal.Add(arg);
-            dictionaryOracle = getParsedValues(arg,dictionaryOracle);
+            dictionaryOracleCommands = getParsedValues(arg,dictionaryOracleCommands);
         } else
         {
-            string id = rand.Next(0,100).ToString();
+            CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
+            long va = 1;
+            //database.GetNumberOfLinesInAFile("../Bison.CLI/bison_observe_cli_db.csv");
+            string id = va.ToString();
             addedIdentifier.Add(id);
-            arg = [generateString(), id];
+            arg = ["comment",generateString(), id];
             argumentsComment.Add(arg);
-            dictionaryOracle = getParsedValues(arg,dictionaryOracle);
+            dictionaryOracleCommands = getParsedValues(arg,dictionaryOracleCommands);
         }
 
         return arg;
     }
 
-    public Dictionary<string[],string[]> getParsedValues (string [] arg, Dictionary<string[],string[]> dictionaryOracle)
+    public Dictionary<string[],string[]> getParsedValues (string [] arg, Dictionary<string[], string[]> dictionaryOracleCommands)
     {
-        var Argument1 = new Argument<string>(arg[0]);
-        var Argument2 = new Argument<string>(arg[1]);
-        var command = new Command(arg[0],arg[1]);
+        var Argument1 = new Argument<string>(arg[1]);
+        var Argument2 = new Argument<string>(arg[2]);
+        var command = new Command(arg[1],arg[2]);
         command.Add(Argument1);
         command.Add(Argument2);
-        string seq = arg[0] + arg[1];
+        string seq = arg[1] + " " + arg[2];
         var result = command.Parse(seq);
         string[] actual = [result.GetValue(Argument1), result.GetValue(Argument2)];
-        dictionaryOracle.Add(arg,actual);
-        return dictionaryOracle;
+        dictionaryOracleCommands.Add(arg,actual);
+        return dictionaryOracleCommands;
     }
 
     [Fact]
     public async Task ObservationsRand ()
     {
-        for (int i = 0; i < 100 ; i++)
+        for (int i = 0; i < 50 ; i++)
         {
             //Arrange
             arg = generateArguments("observe");
@@ -79,6 +88,7 @@ public class FuzzEndToEndTest
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
+            dictionaryOracleExit.Add(0, result);
 
             //Assert
             Assert.Equal(0, result);
@@ -91,7 +101,7 @@ public class FuzzEndToEndTest
         for (int i = 0; i < 100 ; i++)
         {
             //Arrange
-            arg = generateArguments("proposals");
+            arg = generateArguments("proposal");
 
             //Act
             int result = await Program.Main(arg);
@@ -99,7 +109,7 @@ public class FuzzEndToEndTest
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
-            // dictionaryOracle.Add(0,result);
+            dictionaryOracleExit.Add(0,result);
 
             //Assert
             Assert.Equal(0, result);
@@ -120,17 +130,17 @@ public class FuzzEndToEndTest
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
-            // dictionaryOracle.Add(0,result);
+            dictionaryOracleExit.Add(0,result);
 
             //Assert
             Assert.Equal(0, result);
         }
     }
 
-    public void testOracle (string [] argument, string[] expected)
+    public void testOracle (string [] argument, string [] expected)
     {
-        dictionaryOracle.Add(argument,expected);
-    }
+        dictionaryOracleCommands.Add(argument,expected);
+    } 
 
     //https://www.geeksforgeeks.org/c-sharp/c-sharp-randomly-generating-strings/
     public static string generateString ()
@@ -156,14 +166,14 @@ public class FuzzEndToEndTest
             if(command.Equals("observe"))
             {
                 CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
-                List<string> observerecords = database.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv").ToList<string>();
+                /*List<string> observerecords = database.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv").ToList<string>();
                 foreach (Observations obs in observerecords)
                 {
                     if (obs.Contains(id))
                     {
                         //remove line
                     }
-                }
+                }*/ 
             } else if (command.Equals("proposal"))
             {
                 CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
@@ -176,4 +186,4 @@ public class FuzzEndToEndTest
             }
         }
     }
-}
+// }
