@@ -1,6 +1,6 @@
 global using Xunit;
 
-
+using CsvHelper;
 using System.CommandLine;
 using Bison.CLI;
 using System.Net;
@@ -10,49 +10,48 @@ using SimpleDB;
 using System.Collections;
 using System.Collections.Generic;
 using Xunit.Sdk;
-
-/* Skal rettes:
-    Proposals
-    Hvorfor kommer der ikke id med comments?
-*/
+using System.Runtime.CompilerServices;
+using System.Globalization;
+using System.Reflection;
 
 public class FuzzEndToEndTest
 {
-    string randString;
-    string randID; //observationID
     string [] arg;
     Dictionary <int,int> dictionaryOracleExit = new Dictionary<int, int>();
     Dictionary <string[], string[]> dictionaryOracleCommands = new Dictionary<string[], string[]> ();
     List <string[]> argumentsObserve = new List<string[]>();
     List <string[]> argumentsProposal = new List<string[]>();
     List <string[]> argumentsComment = new List<string[]>();
-    List <string> addedIdentifier = new List<string>();
-    string command;
+    List <string> addedIdentifierObs = new List<string>();
+    List <string> addedIdentifierCom = new List<string>();
+    List <string> addedIdentifierPro = new List<string>();
+    long startObsId;
+    long endObsID;
         
-    public string[] generateArguments (string command) {
+    private string[] generateArguments (string command) {
         Random rand = new Random();
         var rootCommand = new RootCommand();
         if (command.Equals("observe"))
         {
             arg = ["observe", generateString(), generateString()];
             argumentsObserve.Add(arg);
-            addedIdentifier.Add(arg[0]);
             dictionaryOracleCommands = getParsedValues(arg, dictionaryOracleCommands);
         } else if (command.Equals("proposal"))
         {
-            string id = rand.Next(50,100).ToString();
-            addedIdentifier.Add(id);
-            arg = ["proposal",generateString(),id];
+            string id = "1"; // these tests only write proposals to observation with id 1
+            addedIdentifierPro.Add(id);
+            var taxonId = generateTaxonID();
+            arg = ["proposal",taxonId,id];
+            addedIdentifierPro.Add(taxonId);
             argumentsProposal.Add(arg);
             dictionaryOracleCommands = getParsedValues(arg,dictionaryOracleCommands);
         } else
         {
-            CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
-            long va = 1;
-            //database.GetNumberOfLinesInAFile("../Bison.CLI/bison_observe_cli_db.csv");
-            string id = va.ToString();
-            addedIdentifier.Add(id);
-            arg = ["comment",generateString(), id];
+            string id = "1"; //this test only comments to observation with id 1
+            addedIdentifierCom.Add(id);
+            var randString = generateString();
+            arg = ["comment",randString, id];
+            addedIdentifierCom.Add(randString);
             argumentsComment.Add(arg);
             dictionaryOracleCommands = getParsedValues(arg,dictionaryOracleCommands);
         }
@@ -78,17 +77,34 @@ public class FuzzEndToEndTest
         for (int i = 0; i < 50 ; i++)
         {
             //Arrange
+            var path = "../../../../../src/Bison.CLI/bison_observe_cli_db.csv";
+            CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
+            List<Observations> observerecords = database.ReadObservation(path).ToList<Observations>();
+            startObsId = database.GetNumberOfLinesInAFile(path);
+            
             arg = generateArguments("observe");
+
 
             //Act
             int result = await Program.Main(arg);
-
+            
+            //Arrange
+            endObsID = database.GetNumberOfLinesInAFile(path);
+            for (long j = startObsId; j < endObsID; j++)
+            {
+                addedIdentifierObs.Add(j.ToString());
+            }
+            
+            //Act
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
 
             //Assert
             Assert.Equal(0, result);
+            
+            //Cleanup
+            //editObsFile(path);
         }
     }
 
@@ -109,6 +125,10 @@ public class FuzzEndToEndTest
 
             //Assert
             Assert.Equal(0, result);
+            
+            //Cleanup
+            var path = "../../../../../src/Bison.CLI/bison_proposal_cli_db.csv";
+            //editProFile(path);
         }
     }
 
@@ -129,6 +149,10 @@ public class FuzzEndToEndTest
 
             //Assert
             Assert.Equal(0, result);
+            
+            //Cleanup
+            var path = "../../../../../src/Bison.CLI/bison_comment_cli_db.csv";
+            //editComFile(path);
         }
     }
 
@@ -154,31 +178,81 @@ public class FuzzEndToEndTest
         }
         return str;
     }
-
-    public void cleanUpCsv (List <string> addedIdentifier, string command)
+    
+    public static string generateTaxonID()
     {
-        foreach (string id in addedIdentifier){
-            if(command.Equals("observe"))
-            {
-                CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
-                /*List<string> observerecords = database.ReadObservation("../Bison.CLI/bison_observe_cli_db.csv").ToList<string>();
-                foreach (Observations obs in observerecords)
-                {
-                    if (obs.Contains(id))
-                    {
-                        //remove line
-                    }
-                }*/ 
-            } else if (command.Equals("proposal"))
-            {
-                CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
-                List<Taxon> taxonrecords = database.ReadProposals("../Bison.CLI/bison_proposal_cli_db.csv", long.Parse(id)).ToList<Taxon>();
-            } else
-            {
-                CSVDatabase<Comment> database = CSVDatabase<Comment>.getInstance();
-                List<Comment> taxonrecords = database.ReadDiscussion("../Bison.CLI/bison_comment_cli_db.csv", long.Parse(id)).ToList<Comment>();
-            }
+        //nothing here yet
+        return "MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea"; //just until we have the actual method
+    }
+    
+    /*
+    These methods are based on https://stackoverflow.com/questions/64036022/c-sharp-how-to-delete-certain-rows-from-a-csv-file-and-save-it-as-a-new-csv-usin#64047685
+    The purpose is to give a file and it will delete the inserted test data from the file
+    */
+    private void editObsFile(string path)
+    {   
+        CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
+        List<Observations> observerecords = database.ReadObservation(path).ToList<Observations>();
+        
+        for (int i = 0; i < observerecords.Count(); i++)
+        {
+            var id = observerecords[i].ID.ToString();
+            if (addedIdentifierObs.Contains(id))
+            { //this doesnt account for duplicates of observations
+                observerecords.RemoveAt(i);
             }
         }
+        
+        using (var writer = new StreamWriter(path))
+        using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        {
+            csvWriter.WriteRecords(observerecords);
+            //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
+        }
     }
-// }
+    
+    private void editProFile(string path)
+    {
+        CSVDatabase<Proposal> database = CSVDatabase<Proposal>.getInstance();
+        List<Proposal> proposalrecords = database.ReadProposals(path, 1).ToList<Proposal>();
+        
+        for (int i = 0; i < proposalrecords.Count(); i++)
+        {
+            var taxonId = proposalrecords[i].TaxonId;
+            var id = proposalrecords[i].ObservationId.ToString();
+            if (addedIdentifierPro.Contains(id) && addedIdentifierPro.Contains(taxonId))
+            { //we cannot remove proposals only based on their obs id since it would remove more than the ones from the test
+                proposalrecords.RemoveAt(i);
+            }
+        }     
+                
+        using (var writer = new StreamWriter(path))
+        using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        {
+            csvWriter.WriteRecords(proposalrecords);
+            //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
+        }
+    }
+    
+    private void editComFile(string path)
+    {
+        CSVDatabase<Comment> database = CSVDatabase<Comment>.getInstance();
+        List<Comment> commentrecords = database.ReadDiscussion(path, 1).ToList<Comment>();
+        for (int i = 0; i < commentrecords.Count(); i++)
+        {
+            var comment = commentrecords[i].Observation;
+            var id = commentrecords[i].ObservationId.ToString();
+            if (addedIdentifierCom.Contains(id) && addedIdentifierCom.Contains(comment))
+            { //we cannot remove comments on simply their obs id since that would remove more than the ones from this test
+                commentrecords.RemoveAt(i);
+            }
+        }
+                    
+        using (var writer = new StreamWriter(path))
+        using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        {
+            csvWriter.WriteRecords(commentrecords);
+            //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
+        }
+    }
+}
