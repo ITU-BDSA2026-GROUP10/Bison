@@ -1,8 +1,9 @@
-﻿@page "/"
+﻿@page "/page={p:int}"
 @model Bison.Razor.Pages.PublicModel
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
+    var routeName = HttpContext.GetRouteValue("p");
 }
 
 <div>
