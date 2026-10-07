@@ -76,6 +76,6 @@ public async Task ProgramReturnsCorrectOutputAfterReadCommand ()
 public async Task ObserveCommandStoresPenguinInDatabase ()
 {
     
-}*/
+} */
 
 }

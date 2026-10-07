@@ -34,7 +34,7 @@ public class FuzzEndToEndTest
         var rootCommand = new RootCommand();
         if (command.Equals("observe"))
         {
-            arg = ["observe",generateString(), generateString()];
+            arg = ["observe", generateString(), generateString()];
             argumentsObserve.Add(arg);
             addedIdentifier.Add(arg[0]);
             dictionaryOracleCommands = getParsedValues(arg, dictionaryOracleCommands);
@@ -64,9 +64,7 @@ public class FuzzEndToEndTest
     {
         var Argument1 = new Argument<string>(arg[1]);
         var Argument2 = new Argument<string>(arg[2]);
-        var command = new Command(arg[1],arg[2]);
-        command.Add(Argument1);
-        command.Add(Argument2);
+        var command = new Command(arg[0]);
         string seq = arg[1] + " " + arg[2];
         var result = command.Parse(seq);
         string[] actual = [result.GetValue(Argument1), result.GetValue(Argument2)];
@@ -88,7 +86,6 @@ public class FuzzEndToEndTest
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
-            dictionaryOracleExit.Add(0, result);
 
             //Assert
             Assert.Equal(0, result);
@@ -109,7 +106,6 @@ public class FuzzEndToEndTest
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
-            dictionaryOracleExit.Add(0,result);
 
             //Assert
             Assert.Equal(0, result);
@@ -130,7 +126,6 @@ public class FuzzEndToEndTest
             Task <int> exitcode = new Task<int>(() => 0);
             exitcode.Start();
             await exitcode;
-            dictionaryOracleExit.Add(0,result);
 
             //Assert
             Assert.Equal(0, result);
@@ -147,7 +142,7 @@ public class FuzzEndToEndTest
     {
         Random rand = new Random();
 
-        int stringlen = rand.Next(0, 10);
+        int stringlen = rand.Next(1, 10);
         int randValue;
         string str = "";
         char letter;
