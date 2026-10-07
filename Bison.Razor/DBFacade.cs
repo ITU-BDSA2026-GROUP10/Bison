@@ -3,18 +3,20 @@ using Microsoft.Data.Sqlite;
 public class DBFacade
 {
     string sqlDBFilePath = "bison.db"; //this does not work if the file does not exists:(
-    string sqlQuery = @"SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id;";
+    string sqlQuery;
     List<ObservationViewModel> list;
 
-    public List<ObservationViewModel> writeObservations()
+    public List<ObservationViewModel> getObservationsFromDatabase(string query)
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
+            sqlQuery = query;
             list = new List<ObservationViewModel>();
 
             connection.Open();
 
             var command = connection.CreateCommand();
+            
             command.CommandText = sqlQuery;
 
             using var reader = command.ExecuteReader();
@@ -41,7 +43,7 @@ public class DBFacade
                     }
                 }
 
-                list.Add(new ObservationViewModel(user_name, message, timestamp));
+                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
             }
             return list;
         }
