@@ -16,9 +16,15 @@ public class ObservationService : IObservationService
     public List<ObservationViewModel> GetObservations(int page)
     {
         int numberOfObs = 32;
+
+        if (page == 0) 
+        {
+            page = 1;
+        }
+
         _obs = 
             dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id"
-            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * page +";");
+            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";");
         return _obs;
     }
 
