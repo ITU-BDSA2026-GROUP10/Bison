@@ -6,7 +6,7 @@ public class DBFacade
     string sqlQuery;
     List<ObservationViewModel> list;
 
-    public List<ObservationViewModel> getObservationsFromDatabase(string query)
+    public List<ObservationViewModel> getObservationsFromDatabase(string query, string? author = null)
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
@@ -18,6 +18,9 @@ public class DBFacade
             var command = connection.CreateCommand();
             
             command.CommandText = sqlQuery;
+
+            //https://learn.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlparametercollection.addwithvalue?view=netframework-4.8.1
+            command.Parameters.AddWithValue("@author", author);
 
             using var reader = command.ExecuteReader();
             
