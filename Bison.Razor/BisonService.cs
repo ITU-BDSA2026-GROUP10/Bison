@@ -3,7 +3,7 @@ public record ObservationViewModel(string Author, string Message, string Timesta
 public interface IObservationService
 {
     public List<ObservationViewModel> GetObservations(int page);
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author);
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page);
 
 }
 
@@ -28,10 +28,24 @@ public class ObservationService : IObservationService
         return _obs;
     }
 
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author)
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page)
     {
         // filter by the provided author name
-        return _obs.Where(x => x.Author == author).ToList();
+
+        int numberOfObs = 32;
+
+        if (page == 0) 
+        {
+            page = 1;
+        }
+
+        _obs = 
+            dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id" + 
+            " AND user.username = @author" + 
+            $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";", author);
+        return _obs;
+
+        //return _obs.Where(x => x.Author == author).ToList();
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
