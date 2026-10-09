@@ -19,7 +19,7 @@ public class DBFacade
             sqlDBFilePath = Path.GetTempPath()+ "mybison.db";
         }
 
-        /*using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
             connection.Open();
 
@@ -29,7 +29,7 @@ public class DBFacade
 
             command.CommandText = File.ReadAllText("data/dump.sql");
             command.ExecuteNonQuery();
-        }*/
+        }
     }
     
     public List<ObservationViewModel> writeObservations()
