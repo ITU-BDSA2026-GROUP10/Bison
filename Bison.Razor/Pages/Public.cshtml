@@ -1,8 +1,9 @@
-﻿@page "/"
+﻿@page "/obs"
 @model Bison.Razor.Pages.PublicModel
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
+    //var routeName = HttpContext.GetRouteValue("page");
 }
 
 <div>
@@ -16,7 +17,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/@obs.Author">@obs.Author</a>
+                            <a href="/obs/@obs.Author">@obs.Author</a>
                         </strong>
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>

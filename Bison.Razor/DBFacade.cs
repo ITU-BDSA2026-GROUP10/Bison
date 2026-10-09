@@ -32,16 +32,21 @@ public class DBFacade
         }
     }
     
-    public List<ObservationViewModel> writeObservations()
+    public List<ObservationViewModel> getObservationsFromDatabase()
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
+            sqlQuery = query;
             list = new List<ObservationViewModel>();
 
             connection.Open();
 
             var command = connection.CreateCommand();
+            
             command.CommandText = sqlQuery;
+
+            //https://learn.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlparametercollection.addwithvalue?view=netframework-4.8.1
+            command.Parameters.AddWithValue("@author", author);
 
             using var reader = command.ExecuteReader();
             
@@ -67,7 +72,7 @@ public class DBFacade
                     }
                 }
 
-                list.Add(new ObservationViewModel(user_name, message, timestamp));
+                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
             }
             return list;
         }
