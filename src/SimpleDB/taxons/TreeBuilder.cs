@@ -8,7 +8,6 @@ sealed public class TreeBuilder {
 
     private static readonly TreeBuilder instance = new TreeBuilder();
 
-    Tree tree = new Tree();
     public Dictionary<string, Taxon> idToTaxon = new Dictionary<string, Taxon>();
     Dictionary<string, Taxon> vernacularNameToTaxon = new Dictionary<string, Taxon>();
 

@@ -15,7 +15,7 @@ using System.Reflection;
 
 public class FuzzEndToEndTest
 {
-    string [] arg;
+    string []? arg;
     Dictionary <int,int> dictionaryOracleExit = new Dictionary<int, int>();
     Dictionary <string[], string[]> dictionaryOracleCommands = new Dictionary<string[], string[]> ();
     List <string[]> argumentsObserve = new List<string[]>();
@@ -126,7 +126,7 @@ public class FuzzEndToEndTest
             Assert.Equal(0, result);
             
             //Cleanup
-            var path = "../../../../../src/Bison.CLI/bison_proposal_cli_db.csv";
+            //var path = "../../../../../src/Bison.CLI/bison_proposal_cli_db.csv";
             //editProFile(path);
         }
     }
@@ -150,7 +150,7 @@ public class FuzzEndToEndTest
             Assert.Equal(0, result);
             
             //Cleanup
-            var path = "../../../../../src/Bison.CLI/bison_comment_cli_db.csv";
+            //var path = "../../../../../src/Bison.CLI/bison_comment_cli_db.csv";
             //editComFile(path);
         }
     }
