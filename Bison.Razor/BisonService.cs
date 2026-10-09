@@ -4,7 +4,8 @@ public interface IObservationService
 {
     public List<ObservationViewModel> GetObservations(int page);
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page);
-
+    
+    public List<ObservationViewModel> GetObservationFromID(int id, int page);
 }
 
 public class ObservationService : IObservationService
@@ -46,6 +47,26 @@ public class ObservationService : IObservationService
         return _obs;
 
         //return _obs.Where(x => x.Author == author).ToList();
+    }
+
+    public List<ObservationViewModel> GetObservationFromID(int id, int page)
+    {
+        int numberOfObs = 32;
+
+        if (id == 0) 
+        {
+            return GetObservations(1);
+        } else if (page == 0)
+        {
+            page = 1;
+        }
+
+        
+
+        _obs = 
+            dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id and observation_id = " + id
+            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";");
+        return _obs;
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
