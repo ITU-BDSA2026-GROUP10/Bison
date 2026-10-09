@@ -1,12 +1,11 @@
-/*global using Xunit;
-
+global using Xunit;
+global using SimpleDB;
 using CsvHelper;
 using System.CommandLine;
 using Bison.CLI;
 using System.Net;
 using System.Net.Http;
 using Microsoft.VisualBasic;
-using SimpleDB;
 using System.Collections;
 using System.Collections.Generic;
 using Xunit.Sdk;
@@ -29,7 +28,6 @@ public class FuzzEndToEndTest
     long endObsID;
         
     private string[] generateArguments (string command) {
-        Random rand = new Random();
         var rootCommand = new RootCommand();
         if (command.Equals("observe"))
         {
@@ -63,10 +61,11 @@ public class FuzzEndToEndTest
     {
         var Argument1 = new Argument<string>(arg[1]);
         var Argument2 = new Argument<string>(arg[2]);
+        var ArgumentCommand = new Argument<string>(arg[0]);
         var command = new Command(arg[0]);
-        string seq = arg[1] + " " + arg[2];
+        string seq = arg[0] + " " + arg[1] + " " + arg[2];
         var result = command.Parse(seq);
-        string[] actual = [result.GetValue(Argument1), result.GetValue(Argument2)];
+        string[] actual = [result.GetValue(ArgumentCommand), result.GetValue(Argument1), result.GetValue(Argument2)];
         dictionaryOracleCommands.Add(arg,actual);
         return dictionaryOracleCommands;
     }
@@ -156,9 +155,13 @@ public class FuzzEndToEndTest
         }
     }
 
-    public void testOracle (string [] argument, string [] expected)
+     [Fact]
+    public void testOracle ()
     {
-        dictionaryOracleCommands.Add(argument,expected);
+        foreach (KeyValuePair<string [], string []> entry in dictionaryOracleCommands)
+        {
+            Assert.True(entry.Key == entry.Value);
+        }
     } 
 
     //https://www.geeksforgeeks.org/c-sharp/c-sharp-randomly-generating-strings/
@@ -181,7 +184,12 @@ public class FuzzEndToEndTest
     
     public static string generateTaxonID()
     {
-        //nothing here yet
+        /*Random rand = new Random();
+        Treebuilder tb = Treebuilder.getInstance();
+        HashSet<string> set = tb.getIdToTaxonDictionary.Keys;
+        string element = set.ElementAtOrDefault(rand.Next(set.Count()));
+        return element;*/
+        //okay so the above is commented-out because this class for some reason doesnt recognize TreeBuilder but this is how it would work to give random taxons.
         return "MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea"; //just until we have the actual method
     }
     
@@ -189,7 +197,7 @@ public class FuzzEndToEndTest
     These methods are based on https://stackoverflow.com/questions/64036022/c-sharp-how-to-delete-certain-rows-from-a-csv-file-and-save-it-as-a-new-csv-usin#64047685
     The purpose is to give a file and it will delete the inserted test data from the file
     */
-    /*
+    
     private void editObsFile(string path)
     {   
         CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
@@ -204,12 +212,21 @@ public class FuzzEndToEndTest
             }
         }
         
-        using (var writer = new StreamWriter(path))
-        using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        {
-            csvWriter.WriteRecords(observerecords);
+       
+            foreach (var obs in observerecords)
+            {
+                database.Store(obs, path, obs.Location);
+            }
+            /*csvWriter.NextRecord();
+            csvWriter.WriteHeader<Observations>();
+            csvWriter.NextRecord();
+            foreach (var record in observerecords)
+            {
+                csvWriter.WriteRecord(record);
+                csvWriter.NextRecord();
+            }*/
             //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
-        }
+        
     }
     
     private void editProFile(string path)
@@ -256,4 +273,4 @@ public class FuzzEndToEndTest
             //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
         }
     }
-}*/
+}
