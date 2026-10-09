@@ -1,13 +1,38 @@
 using System.Data;
+using System;
 using Microsoft.Data.Sqlite;
 using Bison.Razor.BisonService;
 namespace Bison.Razor;
 public class DBFacade
 {
-    string sqlDBFilePath = "bison.db"; //this does not work if the file does not exists:(
-    string sqlQuery;
+    
+    string sqlDBFilePath;
+    string sqlQuery = @"SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id;";
     List<ObservationViewModel> list;
 
+    public DBFacade()
+    {   
+        if(Environment.GetEnvironmentVariable("BISONDBPATH") != null)
+        {
+            sqlDBFilePath = Environment.GetEnvironmentVariable("BISONDBPATH");
+        } else
+        {
+            sqlDBFilePath = Path.GetTempPath()+ "mybison.db";
+        }
+
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = File.ReadAllText("data/schema.sql");
+            command.ExecuteNonQuery();
+
+            command.CommandText = File.ReadAllText("data/dump.sql");
+            command.ExecuteNonQuery();
+        }
+    }
+    
     public List<ObservationViewModel> getObservationsFromDatabase(string query, string? author = null)
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
