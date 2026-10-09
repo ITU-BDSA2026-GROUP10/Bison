@@ -30,9 +30,9 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
         using StreamReader reader = new StreamReader(path);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         objects = csv.GetRecords<T>();
+        Console.WriteLine("!!!!!!!!!!!!!!!!! " + objects);
         List<T> objectsList = objects.ToList<T>();
         return objectsList;
-        
     }
 
     public IEnumerable<T> ReadDiscussion(string path, long observationId, int? limit = null) {
@@ -51,6 +51,8 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
                 {
                     comments.Add(obj);
                 }
+            } else {
+                Console.WriteLine("!!!!!!! FEJL");
             }
         }
         return comments;
@@ -111,7 +113,7 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
     {
         long count = Counter(observePath);
         try{
-            if(count >= ObservationID)
+            if(ObservationExists(count, ObservationID))
             {
                 using (StreamWriter writer = File.AppendText(commentPath))
                 {
@@ -183,5 +185,10 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
    public long GetNumberOfLinesInAFile(string path)
     {
         return Counter(path);
+    }
+
+    public bool ObservationExists(long count, long ObservationID)
+    {
+        return count >= ObservationID;
     }
 }

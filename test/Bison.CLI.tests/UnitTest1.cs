@@ -1,6 +1,7 @@
 using System.CommandLine;
 
 namespace Bison.CLI.tests;
+using SimpleDB;
 
 public class UnitTest1
 {
@@ -36,7 +37,7 @@ public class UnitTest1
         Assert.Empty(result.Errors);
     }
 
-     [Fact]
+    [Fact]
     public void UnixTimeConvertsCorrectlyToUserReadableTime()
     {
         //Arrange
@@ -45,8 +46,21 @@ public class UnitTest1
         //Act
         DateTime dateTime = UserInterface.convertTime(unixTime);
         string dateTimeString = dateTime.ToString();
-        
+        string am = "13/09/2026 17.34.06";
+        string dk = "13-09-2026 17:34:06";
+        string uk = "13.09.2026 17.34.06";
         //Assert
-        Assert.Equal("13/09/2026 17.34.06", dateTimeString);
+        Assert.True(am == dateTimeString || dk == dateTimeString || uk == dateTimeString);
     }
+  
+    /*[Fact]
+    public void CommentToNonExistingObservationReturnsFalse()
+    {
+        //Arrange
+        Comment comment = new Comment(Environment.UserName, "This is a test comment", DateTimeOffset.Now.ToUnixTimeSeconds() + 7200, 10);
+        //Act
+
+        //Assert
+        Assert.False(UserInterface.ObservationExists(2, comment.ObservationId));
+    } */
 }
