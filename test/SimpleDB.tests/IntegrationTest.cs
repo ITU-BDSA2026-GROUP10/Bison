@@ -50,7 +50,7 @@ public class IntegrationTest
         Assert.Contains(observationForAssert, observations); 
     }*/
 
-    /*[Fact] !!!!  Kan rettes til så den måske virker!!!!
+    [Fact] 
     public void storedObservationsCanBeRetrieved2 ()
     {
         //Arrange
@@ -59,8 +59,8 @@ public class IntegrationTest
         string author = "teklasvane";
         
         Observations observationToStore = new Observations(author,"A bird at DR Byen",timestamp,0,"ITU");
-        
-        string path = "/Users/raaminraza/Desktop/Analysis, Design and Software Architecture/Bison-1/test/SimpleDB.tests/bin/Debug/net8.0/test_observation.csv";
+
+        string path = "test_observation.csv";
         
         //Act
         csvDatabase.Store(observationToStore, path, "ITU"); //"integrationstest_observation.csv"
@@ -68,7 +68,7 @@ public class IntegrationTest
 
         //Assert
         Assert.Contains(observationToStore, observations); 
-    }*/
+    }
 
     /*[Fact]
     public void storedCommentsCanBeRetrieved ()
