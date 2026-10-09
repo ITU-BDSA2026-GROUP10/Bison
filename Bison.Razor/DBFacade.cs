@@ -52,13 +52,10 @@ public class DBFacade
         }
     }
 
-    public List<ObservationViewModel> getObservationCommentsProposals(string [] queries, string? author = null)
+    public List<ObservationViewModel> getObservationCommentsProposals(string query, string? author = null)
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
-            string ObservationQuery = queries[0];
-            string CommentQuery = queries[1];
-            string ProposalQuery = queries[2];
 
             list = new List<ObservationViewModel>();
 
@@ -66,7 +63,7 @@ public class DBFacade
 
             var command = connection.CreateCommand();
             
-            command.CommandText = ObservationQuery;
+            command.CommandText = query;
 
             command.Parameters.AddWithValue("@author", author);
 
@@ -90,64 +87,9 @@ public class DBFacade
                     } else if (dataRecord.GetName(i) == "pub_date")
                     {
                         timestamp = dataRecord[i].ToString();
-                    }
-                }
-
-                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
-            }
-            var command2 = connection.CreateCommand();
-            
-            command2.CommandText = CommentQuery;
-            
-            using var reader2 = command2.ExecuteReader();
-            
-            while (reader2.Read())
-            {
-                string user_name = "";
-                string message = "";
-                string timestamp = "";
-
-                var dataRecord = (IDataRecord)reader;
-                for (int i = 0; i < dataRecord.FieldCount; i++)
-                {
-                    if (dataRecord.GetName(i) == "username")
-                    {
-                        user_name = (string) dataRecord[i];
-                    } else if (dataRecord.GetName(i) == "text")
-                    {
-                        message =  (string) dataRecord[i];
-                    } else if (dataRecord.GetName(i) == "pub_date_c")
-                    {
-                        timestamp = dataRecord[i].ToString();
-                    }
-                }
-
-                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
-            }
-            var command3 = connection.CreateCommand();
-            
-            command3.CommandText = ProposalQuery;
-            
-            using var reader3 = command3.ExecuteReader();
-            
-            while (reader3.Read())
-            {
-                string user_name = "";
-                string message = "";
-                string timestamp = "";
-
-                var dataRecord = (IDataRecord)reader;
-                for (int i = 0; i < dataRecord.FieldCount; i++)
-                {
-                    if (dataRecord.GetName(i) == "username")
-                    {
-                        user_name = (string) dataRecord[i];
                     } else if (dataRecord.GetName(i) == "taxon_id")
                     {
-                        message =  (string) dataRecord[i];
-                    } else if (dataRecord.GetName(i) == "pub_date_p")
-                    {
-                        timestamp = dataRecord[i].ToString();
+                        message = (string) dataRecord[i].ToString();
                     }
                 }
 
