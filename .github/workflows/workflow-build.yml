@@ -11,7 +11,8 @@ on:
   pull_request:
     branches: [ "main" ]
     paths-ignore:
-      - 'Bison/test/Bison.CLI.tests/*EndTo*nd*'
+      - 'Bison/test/Bison.CLI.tests/*EndTo*nd*.cs'
+      - 'Bison/test/Bison.CLI.tests/GlobalUsings.cs'
 
 jobs:
   build_and_test:
