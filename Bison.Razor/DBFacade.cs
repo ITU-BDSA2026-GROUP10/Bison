@@ -1,5 +1,7 @@
 using System.Data;
 using Microsoft.Data.Sqlite;
+using Bison.Razor.BisonService;
+namespace Bison.Razor;
 public class DBFacade
 {
     string sqlDBFilePath = "bison.db"; //this does not work if the file does not exists:(
