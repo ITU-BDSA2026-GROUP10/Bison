@@ -1,12 +1,11 @@
 global using Xunit;
-
+global using SimpleDB;
 using CsvHelper;
 using System.CommandLine;
 using Bison.CLI;
 using System.Net;
 using System.Net.Http;
 using Microsoft.VisualBasic;
-using SimpleDB;
 using System.Collections;
 using System.Collections.Generic;
 using Xunit.Sdk;
@@ -180,7 +179,12 @@ public class FuzzEndToEndTest
     
     public static string generateTaxonID()
     {
-        //nothing here yet
+        /*Random rand = new Random();
+        Treebuilder tb = Treebuilder.getInstance();
+        HashSet<string> set = tb.getIdToTaxonDictionary.Keys;
+        string element = set.ElementAtOrDefault(rand.Next(set.Count()));
+        return element;*/
+        //okay so the above is commented-out because this class for some reason doesnt recognize TreeBuilder but this is how it would work to give random taxons.
         return "MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea"; //just until we have the actual method
     }
     
