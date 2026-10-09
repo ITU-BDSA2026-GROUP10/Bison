@@ -506,12 +506,12 @@ INSERT INTO observation VALUES(497,1,'One Great Blue Heron on the flooded field 
 INSERT INTO observation VALUES(498,2,'A Glossy Ibis wading through the reed bed. Bare skin on the face and head.',1790811961);
 INSERT INTO observation VALUES(499,3,'Several Grey Herons feeding together at the lagoon. Hunts alone along the edge of the water.',1790813500);
 INSERT INTO observation VALUES(500,3,'Great Egret on the pond at the edge of town. Nests in colonies, often in trees near water.',1790896667);
-insert into proposal values(1,'MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea', 1790950607, 10);
-insert into proposal values (2,'MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea', 1790951815, 20);
-insert into proposal values (3,'MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea', 1790951841, 30);
-insert into proposal values (4,'MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea', 1790953178, 40);
-insert into proposal values (5,'MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea', 1790953195, 50);
-insert into proposal values (6, 'MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea', 1790953288, 60);
+insert into proposal values(0,1,'MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea', 1790950607, 10);
+insert into proposal values (1,2,'MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea', 1790951815, 20);
+insert into proposal values (2,3,'MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea', 1790951841, 30);
+insert into proposal values (3,4,'MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea', 1790953178, 40);
+insert into proposal values (4,5,'MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea', 1790953195, 50);
+insert into proposal values (5,6, 'MSTSNM:Arter:eeb1f9f3-f785-ea11-aa77-501ac539d1ea', 1790953288, 60);
 insert into comment values (0,7,'hej',1789379614,70);
 insert into comment values (1,1,'pingvin',1790183245, 80);
 insert into comment values (2,2,'cool', 1790183927, 90);
