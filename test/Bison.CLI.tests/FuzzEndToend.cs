@@ -61,10 +61,11 @@ public class FuzzEndToEndTest
     {
         var Argument1 = new Argument<string>(arg[1]);
         var Argument2 = new Argument<string>(arg[2]);
+        var ArgumentCommand = new Argument<string>(arg[0]);
         var command = new Command(arg[0]);
-        string seq = arg[1] + " " + arg[2];
+        string seq = arg[0] + " " + arg[1] + " " + arg[2];
         var result = command.Parse(seq);
-        string[] actual = [result.GetValue(Argument1), result.GetValue(Argument2)];
+        string[] actual = [result.GetValue(ArgumentCommand), result.GetValue(Argument1), result.GetValue(Argument2)];
         dictionaryOracleCommands.Add(arg,actual);
         return dictionaryOracleCommands;
     }
@@ -154,9 +155,13 @@ public class FuzzEndToEndTest
         }
     }
 
-    public void testOracle (string [] argument, string [] expected)
+     [Fact]
+    public void testOracle ()
     {
-        dictionaryOracleCommands.Add(argument,expected);
+        foreach (KeyValuePair<string [], string []> entry in dictionaryOracleCommands)
+        {
+            Assert.True(entry.Key == entry.Value);
+        }
     } 
 
     //https://www.geeksforgeeks.org/c-sharp/c-sharp-randomly-generating-strings/
