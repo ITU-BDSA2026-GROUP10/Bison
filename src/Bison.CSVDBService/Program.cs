@@ -6,8 +6,6 @@ var app = builder.Build();
 IDatabaseRepository<Observations> databaseObs = CSVDatabase<Observations>.getInstance();
 IDatabaseRepository<Comment> databaseCom = CSVDatabase<Comment>.getInstance();
 IDatabaseRepository<Proposal> databasePro = CSVDatabase<Proposal>.getInstance();
-/*app.MapGet("/observations", () => new Observation("signe","Heron at DR Byen",1788161296,3));
-app.MapPost("/observations", (Observation observation) => database.Store(observation,"bison_observe_cli_db.csv")); */
 CSVDatabase<Taxon> database = CSVDatabase<Taxon>.getInstance();
 database.ReadTaxon();
 
@@ -73,15 +71,3 @@ app.MapPost("/comment", (string comment, string id) =>
 }); 
 
 app.Run();
-
-/*static Observation getObservation(string Author, string Message, long Timestamp, long ID)
-{
-return new Observation(Author,Message,Timestamp,ID);
-}
-
-static XmlComment getComment(string Author, string Message, long Timestamp, long ID)
-{
-return new Observation(Author,Message,Timestamp,ID);
-} */
-
-
