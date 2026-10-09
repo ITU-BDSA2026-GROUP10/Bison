@@ -4,9 +4,13 @@
 
 ## How to run the application
 > cd src/Bison.CSVDBService
-> dotnet run
+
+> dotnet 
+
 then in a new terminal window:
+
 > cd src/Bison.CLI
+
 > dotnet run -- read
 
 > dotnet run -- observe "your observation" "your location"
@@ -22,10 +26,16 @@ then in a new terminal window:
 > dotnet run -- proposals "observation id"
 
 ## How to run tests
-> cd src/Bison.CSVDBService'
-> dotnet run'
-then in a new terminal window:
-> cd test/Bison.CLI.tests'
-> dotnet test'
-> cd test/SimpleDB.tests'
-> dotnet test'
+> cd src/Bison.CSVDBService
+
+> dotnet run
+
+then in a new terminal window
+
+> cd test/Bison.CLI.tests
+
+> dotnet test
+
+> cd test/SimpleDB.tests
+
+> dotnet test
