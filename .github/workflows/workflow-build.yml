@@ -10,9 +10,11 @@ on:
       - w3workflows
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'Bison/test/Bison.CLI.tests/*'
 
 jobs:
-  build:
+  build_and_test:
 
     runs-on: ubuntu-latest
 

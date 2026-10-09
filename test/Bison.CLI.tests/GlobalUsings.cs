@@ -22,9 +22,6 @@ public class GlobalUsings
         var response = await client.PostAsJsonAsync($"http://localhost:5252/observation?observation={observation}&location={location}", new {observation, location});
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        /*var observations = await response.Content.ReadFromJsonAsync<List<Observations>>();
-        Assert.NotNull(observations);
-        Assert.NotEmpty(observations); */
     }       
 
     [Fact]
