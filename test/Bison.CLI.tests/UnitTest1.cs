@@ -37,7 +37,7 @@ public class UnitTest1
         Assert.Empty(result.Errors);
     }
 
-     [Fact]
+    [Fact]
     public void UnixTimeConvertsCorrectlyToUserReadableTime()
     {
         //Arrange
