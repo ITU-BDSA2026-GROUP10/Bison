@@ -37,7 +37,7 @@ public class UnitTest1
         Assert.Empty(result.Errors);
     }
 
-     [Fact]
+    [Fact]
     public void UnixTimeConvertsCorrectlyToUserReadableTime()
     {
         //Arrange
@@ -53,7 +53,7 @@ public class UnitTest1
         Assert.True(am == dateTimeString || dk == dateTimeString || uk == dateTimeString);
     }
   
-     [Fact]
+    /*[Fact]
     public void CommentToNonExistingObservationReturnsFalse()
     {
         //Arrange
@@ -61,6 +61,6 @@ public class UnitTest1
         //Act
 
         //Assert
-        //Assert.False(UserInterface.ObservationExists(2, comment.ObservationId));
-    }
+        Assert.False(UserInterface.ObservationExists(2, comment.ObservationId));
+    } */
 }

@@ -58,7 +58,7 @@ public async Task ProgramReturnsCorrectOutputAfterReadCommand ()
     var output = new StringWriter();
     Console.SetOut(output);
 
-    //Få Bison.CSVDBService til at bruge test_observation.csv i stedet 
+    
 
     //Act
     await Program.Main(args);
@@ -66,9 +66,9 @@ public async Task ProgramReturnsCorrectOutputAfterReadCommand ()
 
     //Assert
 
-    //Sammenlign resultat med det forventede output fra test_observation.csv
+   
 
-    Console.SetOut(originalOutput); //sætter consolen tilbage til normal igen
+    Console.SetOut(originalOutput); 
 
 }
 
@@ -76,6 +76,6 @@ public async Task ProgramReturnsCorrectOutputAfterReadCommand ()
 public async Task ObserveCommandStoresPenguinInDatabase ()
 {
     
-}*/
+} */
 
 }
