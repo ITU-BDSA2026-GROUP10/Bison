@@ -29,7 +29,6 @@ public class FuzzEndToEndTest
     long endObsID;
         
     private string[] generateArguments (string command) {
-        Random rand = new Random();
         var rootCommand = new RootCommand();
         if (command.Equals("observe"))
         {
@@ -203,12 +202,21 @@ public class FuzzEndToEndTest
             }
         }
         
-        using (var writer = new StreamWriter(path))
-        using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        {
-            csvWriter.WriteRecords(observerecords);
+       
+            foreach (var obs in observerecords)
+            {
+                database.Store(obs, path, obs.Location);
+            }
+            /*csvWriter.NextRecord();
+            csvWriter.WriteHeader<Observations>();
+            csvWriter.NextRecord();
+            foreach (var record in observerecords)
+            {
+                csvWriter.WriteRecord(record);
+                csvWriter.NextRecord();
+            }*/
             //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
-        }
+        
     }
     
     private void editProFile(string path)
