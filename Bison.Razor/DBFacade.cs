@@ -10,16 +10,26 @@ public class DBFacade
     List<ObservationViewModel> list;
 
     public DBFacade()
-    {
-        
+    {   
         if(Environment.GetEnvironmentVariable("BISONDBPATH") != null)
         {
             sqlDBFilePath = Environment.GetEnvironmentVariable("BISONDBPATH");
         } else
         {
             sqlDBFilePath = Path.GetTempPath()+ "mybison.db";
-            //FileStream fs = File.Create(sqlDBFilePath);
         }
+
+        /*using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = File.ReadAllText("data/schema.sql");
+            command.ExecuteNonQuery();
+
+            command.CommandText = File.ReadAllText("data/dump.sql");
+            command.ExecuteNonQuery();
+        }*/
     }
     
     public List<ObservationViewModel> writeObservations()
