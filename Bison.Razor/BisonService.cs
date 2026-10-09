@@ -61,11 +61,20 @@ public class ObservationService : IObservationService
             page = 1;
         }
 
-        
+       // _obs = 
+           // dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id and observation_id = " + id
+           // + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";");
+            
+        string[] queries = new string[3];
+        queries[0] = "SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id and observation.observation_id = " + id
+            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";";
+        queries[1] = "SELECT observation.*, user.* FROM observation, user, comment WHERE observation.author_id = user.user_id and observation.observation_id = " + id + " and observation.observation_id = comment.observation_id"
+            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";";
 
-        _obs = 
-            dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id and observation_id = " + id
-            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";");
+        queries[2] = "SELECT observation.*, user.* FROM observation, user, proposal WHERE observation.author_id = user.user_id and observation.observation_id = " + id + " and observation.observation_id = proposal.observation_id"
+            + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";";
+
+        _obs = dbf.getObservationCommentsProposals(queries);
         return _obs;
     }
 
