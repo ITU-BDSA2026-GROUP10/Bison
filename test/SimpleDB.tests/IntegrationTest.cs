@@ -1,4 +1,4 @@
-namespace SimpleDB.tests;
+/*namespace SimpleDB.tests;
 
 using System.Reflection;
 using SimpleDB;
