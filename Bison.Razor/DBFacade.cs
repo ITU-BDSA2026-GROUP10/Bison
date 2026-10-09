@@ -32,7 +32,7 @@ public class DBFacade
         }
     }
     
-    public List<ObservationViewModel> getObservationsFromDatabase()
+    public List<ObservationViewModel> getObservationsFromDatabase(string query, string? author = null)
     {
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
