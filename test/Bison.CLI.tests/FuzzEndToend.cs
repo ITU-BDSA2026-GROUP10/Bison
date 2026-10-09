@@ -1,4 +1,4 @@
-global using Xunit;
+/*global using Xunit;
 
 using CsvHelper;
 using System.CommandLine;
@@ -189,6 +189,7 @@ public class FuzzEndToEndTest
     These methods are based on https://stackoverflow.com/questions/64036022/c-sharp-how-to-delete-certain-rows-from-a-csv-file-and-save-it-as-a-new-csv-usin#64047685
     The purpose is to give a file and it will delete the inserted test data from the file
     */
+    /*
     private void editObsFile(string path)
     {   
         CSVDatabase<Observations> database = CSVDatabase<Observations>.getInstance();
@@ -255,4 +256,4 @@ public class FuzzEndToEndTest
             //this isn't writing the records correctly into the file so instead use the store method from csvdatabase
         }
     }
-}
+}*/
