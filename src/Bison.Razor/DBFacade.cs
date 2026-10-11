@@ -28,10 +28,10 @@ public class DBFacade
 
             var command = connection.CreateCommand();
             command.CommandText = File.ReadAllText("data/schema.sql");
-            command.ExecuteNonQuery();
+            //command.ExecuteNonQuery();
 
             command.CommandText = File.ReadAllText("data/dump.sql");
-            command.ExecuteNonQuery();
+            //command.ExecuteNonQuery();
         }
     }
     
