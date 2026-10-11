@@ -1,5 +1,7 @@
 using Bison.Razor;
 using Bison.Razor.BisonService;
+using Microsoft.EntityFrameworkCore;
+using Bison.Razor.PostRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddSingleton<IObservationService, ObservationService>();
 builder.Services.AddSingleton<DBFacade>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
-var? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
 
 var app = builder.Build();

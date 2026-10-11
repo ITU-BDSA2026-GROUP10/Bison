@@ -1,6 +1,7 @@
-using System.Formats.Tar;
-
 namespace Bison.Razor.PostRepository;
+using DataModel;
+using Microsoft.EntityFrameworkCore;
+
 //DTO
 
 public class ObservationDTO
@@ -14,17 +15,17 @@ public class ObservationDTO
 // Interface
     public interface IPostRepository
     {
-        Task<List<Post>> ReadPostsByAuthor(int AuthorID);
-        Task<List<Post>> ReadPosts();
-        Task<List<Post>> ReadPost(int PostID);
+        public Task<List<Post>> ReadPostsByAuthor(int AuthorID);
+        public Task<List<ObservationDTO>> ReadPosts(int page);
+        public Task<List<Post>> ReadPost(int PostID);
     }
 
     // Implementation
     public class PostRepository : IPostRepository
     {
-        private readonly BisonDbContext _context;
+        private readonly BisonDBContext _context;
 
-        public PostRepository(BisonDbContext context)
+        public PostRepository(BisonDBContext context)
         {
             _context = context;
         }
@@ -43,10 +44,10 @@ public class ObservationDTO
                 page = 1;
             }
             // Define the query - with our setup, EF Core translates this to an SQLite query in the background
-            var query = dbContext.Posts
-                        .Select(observation => new {observation.observation_id, observation.text, observation.author_id, observation.pub_date})
-                        .Include(c => c.Author) //maybe this needs to be changed idk
-                        .OrderByDescending(observation => observation.pub_date)
+            var query = _context.Posts
+                        .Select(observation => new {observation.PostID, observation.Text, observation.Author, observation.Timestamp})
+                        //.Include(c => c.Author) //maybe this needs to be changed idk
+                        .OrderByDescending(observation => observation.Timestamp)
                         .Skip(page * numberOfObs).Take(numberOfObs);
             // Execute the query and store the results
             var result = await query.ToListAsync();
@@ -58,15 +59,16 @@ public class ObservationDTO
                 {
                     Text = obs.Text,
                     PostID = obs.PostID,
-                    AuthorID = obs.AuthorID,
-                    Timestamp = obs.Timestamp
+                    AuthorID = obs.Author.AuthorID,
+                    //make timestamp an int!
+                    //Timestamp = obs.Timestamp 
                 });
             }
 
             return posts;
         }
 
-        private async Task<int> ReadPost(int PostID)
+        public async Task<List<Post>> ReadPost(int PostID)
         {
             return new List<Post>();
         }
