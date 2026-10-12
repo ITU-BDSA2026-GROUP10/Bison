@@ -1,21 +1,29 @@
 namespace Bison.Razor.BisonService;
+using Bison.Razor.PostRepository;
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 public interface IObservationService
 {
-    public List<ObservationViewModel> GetObservations(int page);
+    public Task<List<ObservationViewModel>> GetObservations(int page);
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page);
     
-    public List<ObservationViewModel> GetObservationFromID(int id, int page);
+    public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
 }
 
 public class ObservationService : IObservationService
 {
     DBFacade dbf = new DBFacade();
+    private PostRepositoryClass postRepository;
+    
     // These would normally be loaded from a database for example
     private /*readonly*/List<ObservationViewModel> _obs;
 
-    public List<ObservationViewModel> GetObservations(int page)
+    public ObservationService(PostRepositoryClass postRepository)
+    {
+        this.postRepository = postRepository;
+    }
+
+    public async Task<List<ObservationViewModel>> GetObservations(int page)
     {
         int numberOfObs = 32;
 
@@ -24,10 +32,19 @@ public class ObservationService : IObservationService
             page = 1;
         }
 
-        _obs = 
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+        var observationDTOs = await postRepository.ReadPosts(/*page*/);
+
+        foreach (var DTO in observationDTOs)
+        {
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, "123"));
+        }
+
+        /*_obs = 
             dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id"
             + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";");
-        return _obs;
+        return _obs;*/
+        return observations;
     }
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page)
@@ -41,22 +58,24 @@ public class ObservationService : IObservationService
             page = 1;
         }
 
-        _obs = 
+        /*_obs = 
             dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id" + 
             " AND user.username = @author" + 
             $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";", author);
-        return _obs;
+        return _obs;*/
+
+        return new List<ObservationViewModel>();
 
         //return _obs.Where(x => x.Author == author).ToList();
     }
 
-    public List<ObservationViewModel> GetObservationFromID(int id, int page)
+    public async Task<List<ObservationViewModel>> GetObservationFromID(int id, int page)
     {
         int numberOfObs = 32;
 
         if (id == 0) 
         {
-            return GetObservations(1);
+            return await GetObservations(1); //has to include await since we're returning a task
         } else if (page == 0)
         {
             page = 1;
@@ -92,8 +111,12 @@ public class ObservationService : IObservationService
 
         string query3 = "SELECT observation.*, user.* FROM observation, user, comment WHERE observation.author_id = user.user_id and observation_id = " + id
             + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";";*/
-        _obs = dbf.getObservationCommentsProposals(queries);
-        return _obs;
+        
+        /*_obs = dbf.getObservationCommentsProposals(queries);
+        return _obs;*/
+
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+        return observations; 
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)

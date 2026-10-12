@@ -16,7 +16,7 @@ public class ObIdModel : PageModel
 
     public ActionResult OnGet([FromQuery] int id, [FromQuery] int page)
     {
-        Observations = _service.GetObservationFromID(id, page);
+       // Observations = _service.GetObservationFromID(id, page);
         return Page();
     }
 }

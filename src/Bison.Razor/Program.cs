@@ -7,9 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<IObservationService, ObservationService>();
+
+builder.Services.AddScoped<IPostRepository, PostRepositoryClass>();
+
+builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddSingleton<DBFacade>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
+
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
 
