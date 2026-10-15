@@ -1,6 +1,5 @@
 namespace DataModel;
-
-public class Post
+public class Post : Author
 {
     public int PostID {get; set;}
     public string Text {get; set;}
