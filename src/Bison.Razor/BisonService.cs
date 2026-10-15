@@ -1,11 +1,12 @@
 namespace Bison.Razor.BisonService;
 using Bison.Razor.PostRepository;
+
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 public interface IObservationService
 {
     public Task<List<ObservationViewModel>> GetObservations(int page);
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page);
+    public Task<List<ObservationViewModel>> GetObservationsFromAuthor(int AuthorID, int page);
     
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
 }
@@ -23,6 +24,7 @@ public class ObservationService : IObservationService
         this.postRepository = postRepository;
     }
 
+
     public async Task<List<ObservationViewModel>> GetObservations(int page)
     {
         int numberOfObs = 32;
@@ -33,30 +35,33 @@ public class ObservationService : IObservationService
         }
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
-        var observationDTOs = await postRepository.ReadPosts(/*page*/);
+        var observationDTOs = await postRepository.ReadPosts();
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, "123"));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.Timestamp));
         }
+
+        return observations;
 
         /*_obs = 
             dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id"
             + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";");
         return _obs;*/
-        return observations;
-    }
+        // return observations;
+    } 
 
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page)
-    {
+    public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(int AuthorID, int page) {
         // filter by the provided author name
 
-        int numberOfObs = 32;
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+        var observationDTOs = await postRepository.ReadPostsByAuthor(AuthorID);
 
-        if (page == 0) 
+        foreach (var DTO in observationDTOs)
         {
-            page = 1;
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.Timestamp));
         }
+
 
         /*_obs = 
             dbf.getObservationsFromDatabase("SELECT observation.*, user.* FROM observation, user WHERE observation.author_id = user.user_id" + 
@@ -64,7 +69,7 @@ public class ObservationService : IObservationService
             $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";", author);
         return _obs;*/
 
-        return new List<ObservationViewModel>();
+        return observations;
 
         //return _obs.Where(x => x.Author == author).ToList();
     }

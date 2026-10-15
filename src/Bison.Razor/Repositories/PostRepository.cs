@@ -15,10 +15,13 @@ public class PostRepositoryClass : IPostRepository
 
     public async Task<List<PostDTO>> ReadPostsByAuthor(int AuthorID)
     {
+        var query = _context.Posts
+        .Include(observation => observation.Author) //maybe this needs to be changed idk
+        .Where(observation => observation.AuthorID == AuthorID);
         return new List<PostDTO>();
     }
 
-    public async Task<List<PostDTO>> ReadPosts(int AuthorID)
+    public async Task<List<PostDTO>> ReadPosts()
     {
             /*int numberOfObs = 32;
             
@@ -28,10 +31,10 @@ public class PostRepositoryClass : IPostRepository
             }*/
             // Define the query - with our setup, EF Core translates this to an SQLite query in the background
             var query = _context.Posts
+            .Include(obs => obs.Author);
                         // .Join(Authors, observation => observation.Author.AuthorID == Author.AuthorID)
                         // .Where(observation => observation.Author.AuthorID == User.user_id)
-                        .Include(observation => observation.Author) //maybe this needs to be changed idk
-                        .Where(observation => observation.Author == AuthorID);
+        
                         //.OrderByDescending(observation => observation.Timestamp);
                         /*.Select(observation => new {observation.PostID, observation.Text, observation.Author, observation.Timestamp})
                         .Skip(page * numberOfObs).Take(numberOfObs);*/
