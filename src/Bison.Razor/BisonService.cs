@@ -6,14 +6,14 @@ public record ObservationViewModel(string Author, string Message, string Timesta
 public interface IObservationService
 {
     public Task<List<ObservationViewModel>> GetObservations(int page);
-    public Task<List<ObservationViewModel>> GetObservationsFromAuthor(int AuthorID, int page);
+    public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
     
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
 }
 
 public class ObservationService : IObservationService
 {
-    DBFacade dbf = new DBFacade();
+    //DBFacade dbf = new DBFacade();
     private IPostRepository postRepository;
     
     // These would normally be loaded from a database for example
@@ -35,7 +35,7 @@ public class ObservationService : IObservationService
         }
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
-        var observationDTOs = await postRepository.ReadPosts();
+        var observationDTOs = await postRepository.ReadPosts(page);
 
         foreach (var DTO in observationDTOs)
         {
@@ -51,11 +51,16 @@ public class ObservationService : IObservationService
         // return observations;
     } 
 
-    public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(int AuthorID, int page) {
+    public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page) {
         // filter by the provided author name
 
+       if (page == 0)
+        {
+            page = 1;
+        }
+
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
-        var observationDTOs = await postRepository.ReadPostsByAuthor(AuthorID);
+        var observationDTOs = await postRepository.ReadPostsByAuthor(author, page);
 
         foreach (var DTO in observationDTOs)
         {
@@ -76,6 +81,7 @@ public class ObservationService : IObservationService
 
     public async Task<List<ObservationViewModel>> GetObservationFromID(int id, int page)
     {
+
         int numberOfObs = 32;
 
         if (id == 0) 

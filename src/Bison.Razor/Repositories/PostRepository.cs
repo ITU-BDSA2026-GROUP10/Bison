@@ -13,25 +13,45 @@ public class PostRepositoryClass : IPostRepository
         _context = context;
     }
 
-    public async Task<List<PostDTO>> ReadPostsByAuthor(int AuthorID)
+    public async Task<List<PostDTO>> ReadPostsByAuthor(string author, int page)
     {
+        int numberOfObs = 32;
+
         var query = _context.Posts
         .Include(observation => observation.Author) //maybe this needs to be changed idk
-        .Where(observation => observation.AuthorID == AuthorID);
-        return new List<PostDTO>();
+        .Where(observation => observation.Author.Name == author)
+        .OrderByDescending(observation => observation.Timestamp)
+        .Skip((page-1) * numberOfObs).Take(numberOfObs);
+
+        var result = await query.ToListAsync();
+
+        List<PostDTO> posts = new List<PostDTO>();
+            foreach (var obs in result)
+            {
+                posts.Add(new PostDTO
+                {
+                    Text = obs.Text,
+                    PostID = obs.PostID,
+                    AuthorName = obs.Author.Name,
+                    //AuthorID = obs.Author.AuthorID,
+                    //make timestamp an int!
+                    Timestamp = obs.Timestamp.ToString() 
+                });
+            }
+
+            return posts;
     }
 
-    public async Task<List<PostDTO>> ReadPosts()
+    public async Task<List<PostDTO>> ReadPosts(int page)
     {
-            /*int numberOfObs = 32;
+            int numberOfObs = 32;
             
-            if (page == 0) 
-            {
-                page = 1;
-            }*/
+        
             // Define the query - with our setup, EF Core translates this to an SQLite query in the background
             var query = _context.Posts
-            .Include(obs => obs.Author);
+            .Include(obs => obs.Author)
+            .OrderByDescending(observation => observation.Timestamp)
+            .Skip((page-1) * numberOfObs).Take(numberOfObs);
                         // .Join(Authors, observation => observation.Author.AuthorID == Author.AuthorID)
                         // .Where(observation => observation.Author.AuthorID == User.user_id)
         
@@ -48,10 +68,10 @@ public class PostRepositoryClass : IPostRepository
                 {
                     Text = obs.Text,
                     PostID = obs.PostID,
-                    AuthorName = obs.Author.Name
+                    AuthorName = obs.Author.Name,
                     //AuthorID = obs.Author.AuthorID,
                     //make timestamp an int!
-                    //Timestamp = obs.Timestamp 
+                    Timestamp = obs.Timestamp.ToString()
                 });
             }
 

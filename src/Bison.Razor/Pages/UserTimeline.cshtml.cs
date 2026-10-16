@@ -15,9 +15,9 @@ public class UserTimelineModel : PageModel
         _service = service;
     }
 
-    public async Task<ActionResult> OnGet([FromRoute] int AuthorID, [FromQuery] int page)
+    public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
     {
-        Task <List<ObservationViewModel>> obsTask = _service.GetObservationsFromAuthor(AuthorID,page);
+        Task <List<ObservationViewModel>> obsTask = _service.GetObservationsFromAuthor(author,page);
         Observations = await obsTask;
         return Page();
     }
