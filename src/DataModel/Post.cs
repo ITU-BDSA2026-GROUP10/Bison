@@ -1,8 +1,9 @@
 namespace DataModel;
-public class Post : Author
+public class Post
 {
     public int PostID {get; set;}
     public string Text {get; set;}
     public DateTime Timestamp {get; set;}
+    public int AuthorID { get; set; }
     public Author Author {get; set;}
 }
