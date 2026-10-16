@@ -1,3 +1,5 @@
+namespace Bison.Razor.PostRepository;
+
 using DataModel;
 
 public interface IPostRepository

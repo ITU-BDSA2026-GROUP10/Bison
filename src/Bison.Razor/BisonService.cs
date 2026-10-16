@@ -14,12 +14,12 @@ public interface IObservationService
 public class ObservationService : IObservationService
 {
     DBFacade dbf = new DBFacade();
-    private PostRepositoryClass postRepository;
+    private IPostRepository postRepository;
     
     // These would normally be loaded from a database for example
     private /*readonly*/List<ObservationViewModel> _obs;
 
-    public ObservationService(PostRepositoryClass postRepository)
+    public ObservationService(IPostRepository postRepository)
     {
         this.postRepository = postRepository;
     }
