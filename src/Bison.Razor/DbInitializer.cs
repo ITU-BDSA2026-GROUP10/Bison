@@ -57,7 +57,7 @@ public static class DbInitializer
             var tPhalacrocoraxCarboSinensis = new Taxon() { TaxonId = 46, dwc_TaxonID = "MSTSNM:Arter:c4cdcafa-f785-ea11-aa77-501ac539d1ea", VernacularName = "Mellemskarv", Parent = tPhalacrocoraxCarbo };
 
             var taxons = new List<Taxon>() { tPelecaniformes, tArdeidae, tFregatidae, tPelecanidae, tPhalacrocoracidae, tSulidae, tThreskiornithidae, tArdea, tArdeola, tBotaurus, tBubulcus, tEgretta, tIxobrychus, tNycticorax, tFregata, tPelecanus, tGulosus, tMicrocarbo, tPhalacrocorax, tMorus, tSula, tGeronticus, tPlatalea, tPlegadis, tArdeaAlba, tArdeaCinerea, tArdeaIbis, tArdeaPurpurea, tArdeolaRalloides, tBotaurusLentiginosus, tBotaurusMinutus, tBotaurusStellaris, tEgrettaGarzetta, tNycticoraxNycticorax, tFregataMagnificens, tPelecanusCrispus, tGulosusAristotelis, tMicrocarboPygmaeus, tPhalacrocoraxCarbo, tMorusBassanus, tSulaLeucogaster, tGeronticusEremita, tPlataleaLeucorodia, tPlegadisFalcinellus, tPhalacrocoraxCarboCarbo, tPhalacrocoraxCarboSinensis };
-            foreach (var t in taxons) t.Parent?.Children.Add(t);
+            foreach (var t in taxons) t.Parent?.Children?.Add(t);
 
             // Authors
             var a1 = new Author() { AuthorId = 1, Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Posts = new List<Post>() };
@@ -517,8 +517,8 @@ public static class DbInitializer
             posts.AddRange(comments);
             posts.AddRange(proposals);
             foreach (var post in posts) post.Author.Posts.Add(post);
-            foreach (var c in comments) c.Observation.Comments.Add(c);
-            foreach (var p in proposals) p.Observation.Proposals.Add(p);
+            foreach (var c in comments) c.Observation.Comments?.Add(c);
+            foreach (var p in proposals) p.Observation.Proposals?.Add(p);
 
             bisonContext.Taxons.AddRange(taxons);
             bisonContext.Authors.AddRange(authors);
