@@ -11,6 +11,7 @@ public class PostRepositoryClass : IPostRepository
     public PostRepositoryClass(BisonDBContext context)
     {
         _context = context;
+        DbInitializer.SeedDatabase(_context);
     }
 
     public async Task<List<PostDTO>> ReadPostsByAuthor(string author, int page)
@@ -20,7 +21,7 @@ public class PostRepositoryClass : IPostRepository
         var query = _context.Posts
         .Include(observation => observation.Author) //maybe this needs to be changed idk
         .Where(observation => observation.Author.Name == author)
-        .OrderByDescending(observation => observation.Timestamp)
+        .OrderByDescending(observation => observation.TimeStamp)
         .Skip((page-1) * numberOfObs).Take(numberOfObs);
 
         var result = await query.ToListAsync();
@@ -31,11 +32,11 @@ public class PostRepositoryClass : IPostRepository
                 posts.Add(new PostDTO
                 {
                     Text = obs.Text,
-                    PostID = obs.PostID,
+                    PostId = obs.PostId,
                     AuthorName = obs.Author.Name,
                     //AuthorID = obs.Author.AuthorID,
                     //make timestamp an int!
-                    Timestamp = obs.Timestamp.ToString() 
+                    TimeStamp = obs.TimeStamp.ToString() 
                 });
             }
 
@@ -50,7 +51,7 @@ public class PostRepositoryClass : IPostRepository
             // Define the query - with our setup, EF Core translates this to an SQLite query in the background
             var query = _context.Posts
             .Include(obs => obs.Author)
-            .OrderByDescending(observation => observation.Timestamp)
+            .OrderByDescending(observation => observation.TimeStamp)
             .Skip((page-1) * numberOfObs).Take(numberOfObs);
                         // .Join(Authors, observation => observation.Author.AuthorID == Author.AuthorID)
                         // .Where(observation => observation.Author.AuthorID == User.user_id)
@@ -67,11 +68,11 @@ public class PostRepositoryClass : IPostRepository
                 posts.Add(new PostDTO
                 {
                     Text = obs.Text,
-                    PostID = obs.PostID,
+                    PostId = obs.PostId,
                     AuthorName = obs.Author.Name,
                     //AuthorID = obs.Author.AuthorID,
                     //make timestamp an int!
-                    Timestamp = obs.Timestamp.ToString()
+                    TimeStamp = obs.TimeStamp.ToString()
                 });
             }
 

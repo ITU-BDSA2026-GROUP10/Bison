@@ -39,7 +39,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.Timestamp));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp));
         }
 
         return observations;
@@ -64,7 +64,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.Timestamp));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp));
         }
 
 
