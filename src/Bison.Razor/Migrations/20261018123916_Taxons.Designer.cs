@@ -72,7 +72,6 @@ namespace Bison.Razor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("VernacularName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("dwc_TaxonID")

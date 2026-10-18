@@ -45,8 +45,8 @@ namespace Bison.Razor.Migrations
                 {
                     TaxonId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    VernacularName = table.Column<string>(type: "TEXT", nullable: false),
                     dwc_TaxonID = table.Column<string>(type: "TEXT", nullable: false),
+                    VernacularName = table.Column<string>(type: "TEXT", nullable: true),
                     ParentTaxonId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
