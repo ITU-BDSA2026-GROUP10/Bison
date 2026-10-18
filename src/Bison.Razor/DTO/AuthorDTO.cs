@@ -1,4 +1,4 @@
-
+namespace DTO;
 public class AuthorDTO
 {
     public int AuthorID {get; set;}

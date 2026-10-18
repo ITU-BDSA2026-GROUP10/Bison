@@ -1,5 +1,4 @@
 namespace Bison.Razor.BisonService;
-using Bison.Razor.PostRepository;
 
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 

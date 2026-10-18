@@ -1,4 +1,4 @@
-
+namespace DTO;
 public class PostDTO : AuthorDTO
 {
     public int PostId {get; set;}

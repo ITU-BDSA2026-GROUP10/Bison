@@ -19,7 +19,7 @@ namespace Bison.Razor.Migrations
 
             modelBuilder.Entity("DataModel.Author", b =>
                 {
-                    b.Property<int>("AuthorID")
+                    b.Property<int>("AuthorId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -31,48 +31,86 @@ namespace Bison.Razor.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AuthorID");
+                    b.HasKey("AuthorId");
 
                     b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("DataModel.Post", b =>
                 {
-                    b.Property<int>("PostID")
+                    b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AuthorID")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Timestamp")
+                    b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("PostID");
+                    b.HasKey("PostId");
 
-                    b.HasIndex("AuthorID");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("DataModel.Taxon", b =>
+                {
+                    b.Property<int>("TaxonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ParentTaxonId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("VernacularName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("dwc_TaxonID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TaxonId");
+
+                    b.HasIndex("ParentTaxonId");
+
+                    b.ToTable("Taxons");
                 });
 
             modelBuilder.Entity("DataModel.Post", b =>
                 {
                     b.HasOne("DataModel.Author", "Author")
                         .WithMany("Posts")
-                        .HasForeignKey("AuthorID")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("DataModel.Taxon", b =>
+                {
+                    b.HasOne("DataModel.Taxon", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentTaxonId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("DataModel.Author", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("DataModel.Taxon", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

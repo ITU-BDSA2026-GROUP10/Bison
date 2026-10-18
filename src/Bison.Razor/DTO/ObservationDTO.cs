@@ -1,4 +1,4 @@
-
+namespace DTO;
 public class ObservationDTO
 { //TODO: DOUBLE CHECK THIS 
     public int PostID {get; set;}
