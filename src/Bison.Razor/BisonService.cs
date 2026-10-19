@@ -122,10 +122,16 @@ public class ObservationService : IObservationService
         string query3 = "SELECT observation.*, user.* FROM observation, user, comment WHERE observation.author_id = user.user_id and observation_id = " + id
             + $" ORDER BY observation.pub_date DESC LIMIT " + numberOfObs + " OFFSET " + numberOfObs * (page-1) +";";*/
         
+        //til den gamle ting:
         /*_obs = dbf.getObservationCommentsProposals(queries);
         return _obs;*/
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
+        var observationDTOs = await postRepository.ReadPostWithID(id);
+        foreach (var DTO in observationDTOs)
+        {
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp));
+        }
         return observations; 
     }
 

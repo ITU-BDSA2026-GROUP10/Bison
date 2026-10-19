@@ -14,9 +14,9 @@ public class ObIdModel : PageModel
         _service = service;
     }
 
-    public ActionResult OnGet([FromQuery] int id, [FromQuery] int page)
+    public async Task<ActionResult> OnGet([FromQuery] int id, [FromQuery] int page)
     {
-       // Observations = _service.GetObservationFromID(id, page);
+        Observations = await _service.GetObservationFromID(id, page);
         return Page();
     }
 }
