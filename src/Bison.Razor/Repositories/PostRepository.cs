@@ -24,13 +24,13 @@ public class PostRepositoryClass : IPostRepository
 
     public async Task<List<PostDTO>> ReadPostWithID(int ID)
     {
-        var query = _context.Posts
+        var observationQuery = _context.Posts
             .Include(observation => observation.Author)
             .Where(observation => observation.PostId == ID);
 
-        var result = await query.ToListAsync();
+        var observationResult = await observationQuery.ToListAsync();
         var posts = new List<PostDTO>();
-        foreach (var obs in result)
+        foreach (var obs in observationResult)
         {
             Console.WriteLine("------------------" + obs.Text + " " + obs.PostId + " " + obs.Author.Name);
             posts.Add(new PostDTO
@@ -43,7 +43,23 @@ public class PostRepositoryClass : IPostRepository
             });
         }
 
-        
+        var commentQuery = _context.Comments
+            .Include(comment => comment.Observation.Author)
+            .Include(comment => comment.Observation)
+            .Where(comment => comment.PostId == ID);
+
+        var commentResult = await commentQuery.ToListAsync();
+        foreach (var obs in commentResult)
+        {
+            posts.Add(new PostDTO
+            {
+                Text = obs.Text,
+                PostId = obs.PostId,
+                AuthorName = obs.Author.Name,
+                //make timestamp an int!
+                TimeStamp = obs.TimeStamp.ToString() 
+            });
+        }
 
         return posts;
     }

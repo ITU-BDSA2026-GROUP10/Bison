@@ -45,6 +45,11 @@ namespace Bison.Razor.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -57,6 +62,10 @@ namespace Bison.Razor.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
+
+                    b.HasDiscriminator().HasValue("Post");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("DataModel.Taxon", b =>
@@ -82,6 +91,56 @@ namespace Bison.Razor.Migrations
                     b.ToTable("Taxons");
                 });
 
+            modelBuilder.Entity("DataModel.Comment", b =>
+                {
+                    b.HasBaseType("DataModel.Post");
+
+                    b.Property<int>("ObservationPostId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("ObservationPostId");
+
+                    b.HasDiscriminator().HasValue("Comment");
+                });
+
+            modelBuilder.Entity("DataModel.Observation", b =>
+                {
+                    b.HasBaseType("DataModel.Post");
+
+                    b.Property<int>("TaxonId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("TaxonId");
+
+                    b.HasDiscriminator().HasValue("Observation");
+                });
+
+            modelBuilder.Entity("DataModel.Proposal", b =>
+                {
+                    b.HasBaseType("DataModel.Post");
+
+                    b.Property<int>("ObservationPostId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TaxonId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("ObservationPostId");
+
+                    b.HasIndex("TaxonId");
+
+                    b.ToTable("Posts", t =>
+                        {
+                            t.Property("ObservationPostId")
+                                .HasColumnName("Proposal_ObservationPostId");
+
+                            t.Property("TaxonId")
+                                .HasColumnName("Proposal_TaxonId");
+                        });
+
+                    b.HasDiscriminator().HasValue("Proposal");
+                });
+
             modelBuilder.Entity("DataModel.Post", b =>
                 {
                     b.HasOne("DataModel.Author", "Author")
@@ -102,6 +161,47 @@ namespace Bison.Razor.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("DataModel.Comment", b =>
+                {
+                    b.HasOne("DataModel.Observation", "Observation")
+                        .WithMany("Comments")
+                        .HasForeignKey("ObservationPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Observation");
+                });
+
+            modelBuilder.Entity("DataModel.Observation", b =>
+                {
+                    b.HasOne("DataModel.Taxon", "Taxon")
+                        .WithMany()
+                        .HasForeignKey("TaxonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Taxon");
+                });
+
+            modelBuilder.Entity("DataModel.Proposal", b =>
+                {
+                    b.HasOne("DataModel.Observation", "Observation")
+                        .WithMany("Proposals")
+                        .HasForeignKey("ObservationPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataModel.Taxon", "Taxon")
+                        .WithMany()
+                        .HasForeignKey("TaxonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Observation");
+
+                    b.Navigation("Taxon");
+                });
+
             modelBuilder.Entity("DataModel.Author", b =>
                 {
                     b.Navigation("Posts");
@@ -110,6 +210,13 @@ namespace Bison.Razor.Migrations
             modelBuilder.Entity("DataModel.Taxon", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("DataModel.Observation", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Proposals");
                 });
 #pragma warning restore 612, 618
         }
