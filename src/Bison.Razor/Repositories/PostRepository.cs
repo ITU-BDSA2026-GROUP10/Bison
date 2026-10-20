@@ -43,7 +43,7 @@ public class PostRepositoryClass : IPostRepository
             });
         }
 
-        var commentQuery = _context.Comments
+        /*var commentQuery = _context.Comments
             .Include(comment => comment.Observation.Author)
             .Include(comment => comment.Observation)
             .Where(comment => comment.PostId == ID);
@@ -59,7 +59,7 @@ public class PostRepositoryClass : IPostRepository
                 //make timestamp an int!
                 TimeStamp = obs.TimeStamp.ToString() 
             });
-        }
+        }*/
 
         return posts;
     }

@@ -523,6 +523,8 @@ public static class DbInitializer
             bisonContext.Taxons.AddRange(taxons);
             bisonContext.Authors.AddRange(authors);
             bisonContext.Posts.AddRange(posts);
+            /*bisonContext.Comments.AddRange(comments);
+            bisonContext.Proposals.AddRange(proposals);*/
             bisonContext.SaveChanges();
         }
     }
