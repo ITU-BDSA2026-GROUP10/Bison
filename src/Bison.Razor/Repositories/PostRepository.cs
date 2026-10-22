@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 public interface IPostRepository
 {
-    public Task<List<PostDTO>> ReadPostWithID(int ID);
+    public Task<List<CommentDTO>> ReadCommentsWithID(int ID);
     public Task<List<PostDTO>> ReadPostsByAuthor(string author, int page);
-    public Task<List<PostDTO>> ReadPosts(int page);
-    public Task<List<PostDTO>> ReadPost(int PostID);
+    public Task<List<ObservationDTO>> ReadPosts(int page);
+    public Task<List<ObservationDTO>> ReadPost(int PostID);
+    public Task<List<ObservationDTO>> ReadPostWithID(int ID);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -22,46 +23,31 @@ public class PostRepositoryClass : IPostRepository
         DbInitializer.SeedDatabase(_context);
     }
 
-    public async Task<List<PostDTO>> ReadPostWithID(int ID)
+    public async Task<List<CommentDTO>> ReadCommentsWithID(int ID)
     {
-        var observationQuery = _context.Posts
-            .Include(observation => observation.Author)
-            .Where(observation => observation.PostId == ID);
+    
+        var commentQuery = _context.Comments
+        .Include(comment => comment.Author)
+        .Include(comment => comment.Text)
+        .Where(comment => comment.PostId == ID);
 
-        var observationResult = await observationQuery.ToListAsync();
-        var posts = new List<PostDTO>();
-        foreach (var obs in observationResult)
+        var result = await commentQuery.ToListAsync();
+
+        List<CommentDTO> comments = new List<CommentDTO>();
+        foreach (var comment in result)
         {
-            Console.WriteLine("------------------" + obs.Text + " " + obs.PostId + " " + obs.Author.Name);
-            posts.Add(new PostDTO
+            comments.Add(new CommentDTO
             {
-                Text = obs.Text,
-                PostId = obs.PostId,
-                AuthorName = obs.Author.Name,
-                //make timestamp an int!
-                TimeStamp = obs.TimeStamp.ToString() 
+                ObservationID = comment.PostId,
+                AuthorID = comment.AuthorId,
+                AuthorName = comment.Author.Name,
+                Text = comment.Text,
+                TimeStamp = comment.TimeStamp.ToString()
             });
         }
 
-        /*var commentQuery = _context.Comments
-            .Include(comment => comment.Observation.Author)
-            .Include(comment => comment.Observation)
-            .Where(comment => comment.PostId == ID);
+        return comments;
 
-        var commentResult = await commentQuery.ToListAsync();
-        foreach (var obs in commentResult)
-        {
-            posts.Add(new PostDTO
-            {
-                Text = obs.Text,
-                PostId = obs.PostId,
-                AuthorName = obs.Author.Name,
-                //make timestamp an int!
-                TimeStamp = obs.TimeStamp.ToString() 
-            });
-        }*/
-
-        return posts;
     }
 
     public async Task<List<PostDTO>> ReadPostsByAuthor(string author, int page)
@@ -93,13 +79,13 @@ public class PostRepositoryClass : IPostRepository
         return posts;
     }
 
-    public async Task<List<PostDTO>> ReadPosts(int page)
+    public async Task<List<ObservationDTO>> ReadPosts(int page)
     {
         int numberOfObs = 32;
         
     
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
-        var query = _context.Posts
+        var query = _context.Observations
         .Include(obs => obs.Author)
         .OrderByDescending(observation => observation.TimeStamp)
         .Skip((page-1) * numberOfObs).Take(numberOfObs);
@@ -112,15 +98,15 @@ public class PostRepositoryClass : IPostRepository
         // Execute the query and store the results
         var result = await query.ToListAsync();
 
-        List<PostDTO> posts = new List<PostDTO>();
+        List<ObservationDTO> posts = new List<ObservationDTO>();
         foreach (var obs in result)
         {
-            posts.Add(new PostDTO
+            posts.Add(new ObservationDTO
             {
-                Text = obs.Text,
-                PostId = obs.PostId,
+                PostID = obs.PostId,
+                AuthorID = obs.Author.AuthorId,
                 AuthorName = obs.Author.Name,
-                //AuthorID = obs.Author.AuthorID,
+                Text = obs.Text,
                 //make timestamp an int!
                 TimeStamp = obs.TimeStamp.ToString()
             });
@@ -129,8 +115,50 @@ public class PostRepositoryClass : IPostRepository
         return posts;
     }
 
-        public async Task<List<PostDTO>> ReadPost(int PostID)
+    public async Task<List<ObservationDTO>> ReadPostWithID(int ID)
+    {
+        var observationQuery = _context.Observations
+            .Include(observation => observation.Author)
+            .Where(observation => observation.PostId == ID);
+
+        var observationResult = await observationQuery.ToListAsync();
+        var posts = new List<ObservationDTO>();
+        foreach (var obs in observationResult)
         {
-            return new List<PostDTO>();
+            posts.Add(new ObservationDTO
+            {
+                PostID = obs.PostId,
+                AuthorID = obs.Author.AuthorId,
+                AuthorName = obs.Author.Name,
+                Text = obs.Text,
+                //make timestamp an int!
+                TimeStamp = obs.TimeStamp.ToString()
+            });
         }
+        return posts;
+    }
+
+    public async Task<List<ObservationDTO>> ReadPost(int PostID)
+    {
+        var query = _context.Observations
+        .Include(observation => observation.Author)
+        .Include(observation => observation.Taxon)
+        .Where(observation => observation.PostId == PostID);
+
+        var observationResult = await query.ToListAsync();
+        var posts = new List<ObservationDTO>();
+        foreach (var obs in observationResult)
+        {
+            posts.Add(new ObservationDTO
+            {
+                PostID = obs.PostId,
+                AuthorID = obs.Author.AuthorId,
+                AuthorName = obs.Author.Name,
+                Text = obs.Text,
+                //make timestamp an int!
+                TimeStamp = obs.TimeStamp.ToString()
+            });
+        }
+        return posts;
+    }
 }

@@ -130,7 +130,7 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadPostWithID(id);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
         }
         return observations; 
     }

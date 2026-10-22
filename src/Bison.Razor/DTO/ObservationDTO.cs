@@ -6,5 +6,5 @@ public class ObservationDTO
     public string AuthorName {get; set;}
     //public int AuthorID {get; set;}
     public string Text {get; set;} = "";
-    public int Timestamp {get; set;}
+    public string TimeStamp {get; set;}
 }
