@@ -12,6 +12,8 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPosts(int page);
     //public Task<List<ObservationDTO>> ReadPost(int PostID);
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
+    public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
+    
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -147,7 +149,7 @@ public class PostRepositoryClass : IPostRepository
 
         var result = await commentQuery.ToListAsync();
 
-        List<CommentDTO> comments = new List<CommentDTO>();
+        /*List<CommentDTO> comments = new List<CommentDTO>();
         
         foreach (var comment in result)
         {
@@ -161,7 +163,18 @@ public class PostRepositoryClass : IPostRepository
             });
         }
 
-        return comments;
+        return comments;*/
+        return GetCommentDTOs(result);
+    }
+
+    public async Task<List<ProposalDTO>> ReadProposalsWithID(int ID)
+    {
+        var proposalQuery = _context.Proposals
+        .Include(proposal => proposal.Author)
+        .Where(proposal => proposal.Observation.PostId == ID);
+        var result = await proposalQuery.ToListAsync();
+
+        return GetProposalDTOs(result);
     }
 
     private List<ObservationDTO> GetObservationDTO(List<Observation> queryResult)
@@ -181,5 +194,41 @@ public class PostRepositoryClass : IPostRepository
         }
         return posts;
     }
+    
+    private List<CommentDTO> GetCommentDTOs(List<Comment> queryResult)
+    {
+        List<CommentDTO> comments = new List<CommentDTO>();
+        
+        foreach (var comment in queryResult)
+        {
+            comments.Add(new CommentDTO
+            {
+                ObservationID = comment.PostId,
+                AuthorID = comment.AuthorId,
+                AuthorName = comment.Author.Name,
+                Text = comment.Text,
+                TimeStamp = comment.TimeStamp.ToString()
+            });
+        }
 
+        return comments;
+    }
+
+    private List<ProposalDTO> GetProposalDTOs(List<Proposal> queryResult)
+    {
+        var proposals = new List<ProposalDTO>();
+        
+        foreach (var proposal in queryResult)
+        {
+            proposals.Add(new ProposalDTO
+            {
+                AuthorName = proposal.Author.Name,
+                Text = proposal.Text,
+                //Taxon = proposal.Taxon,
+                TimeStamp = proposal.TimeStamp.ToString()
+            });
+        }
+
+        return proposals;
+    }
 }
