@@ -8,13 +8,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IObservationService, ObservationService>();
-builder.Services.AddSingleton<DBFacade>();
+builder.Services.AddScoped<DBFacade>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddScoped<IPostRepository, PostRepositoryClass>();
 
 var app = builder.Build();
+
+// Create a disposable service scope
+using (var scope = app.Services.CreateScope())
+{
+    // From the scope, get an instance of our database context.
+    // Through the `using` keyword, we make sure to dispose it after we are done.
+    using var context = scope.ServiceProvider.GetService<BisonDBContext>();
+    // Execute the migration from code.
+    context.Database.Migrate();
+    DbInitializer.SeedDatabase(context);
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

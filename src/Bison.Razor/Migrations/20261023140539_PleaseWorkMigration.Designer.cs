@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bison.Razor.Migrations
 {
     [DbContext(typeof(BisonDBContext))]
-    [Migration("20261019155726_commentsAndProposals")]
-    partial class commentsAndProposals
+    [Migration("20261023140539_PleaseWorkMigration")]
+    partial class PleaseWorkMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

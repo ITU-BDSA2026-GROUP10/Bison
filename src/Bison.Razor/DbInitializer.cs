@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Bison.Razor;
 using DataModel;
 
@@ -6,8 +7,25 @@ public static class DbInitializer
 {
     public static void SeedDatabase(BisonDBContext bisonContext)
     {
+        /*Console.WriteLine("!!!!!!!!!");
+        if (bisonContext.Authors.Any())
+        {
+            Console.WriteLine("there are authors");
+            Console.WriteLine(bisonContext.Authors.Count());
+        }
+        
+        if (bisonContext.Posts.Any())
+        {
+            Console.WriteLine("there are posts");
+            Console.WriteLine("so many posts: " + bisonContext.Posts.Count());
+            Console.WriteLine("so many observations: " + bisonContext.Observations.Count());
+            Console.WriteLine("so many comments: " + bisonContext.Comments.Count());
+            Console.WriteLine("so many proposals: " + bisonContext.Proposals.Count());
+        } */
+        
         if (!(bisonContext.Authors.Any() && bisonContext.Posts.Any()))
         {
+            Console.WriteLine("inside the if");
             // Taxons, the parent of Pelecaniformes is null.
             var tPelecaniformes = new Taxon() { TaxonId = 1, dwc_TaxonID = "MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Årefodede", Parent = null };
             var tArdeidae = new Taxon() { TaxonId = 2, dwc_TaxonID = "MSTSNM:Arter:495067e4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Hejrer", Parent = tPelecaniformes };
@@ -525,7 +543,12 @@ public static class DbInitializer
             bisonContext.Posts.AddRange(posts);
             bisonContext.Comments.AddRange(comments);
             bisonContext.Proposals.AddRange(proposals);
+            bisonContext.Observations.AddRange(observations);
             bisonContext.SaveChanges();
+            Console.WriteLine("number of posts in db initializer" + posts.Count);
+            Console.WriteLine("number of observations in db initializer" + observations.Count);
+            Console.WriteLine("number of proposals in db initializer" + proposals.Count);
+            Console.WriteLine("number of comments in db initializer" + comments.Count);
         }
     }
 }

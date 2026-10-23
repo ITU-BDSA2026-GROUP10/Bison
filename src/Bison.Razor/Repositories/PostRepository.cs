@@ -20,7 +20,6 @@ public class PostRepositoryClass : IPostRepository
     public PostRepositoryClass(BisonDBContext context)
     {
         _context = context;
-        DbInitializer.SeedDatabase(_context);
     }
 
     public async Task<List<CommentDTO>> ReadCommentsWithID(int ID)
@@ -54,7 +53,7 @@ public class PostRepositoryClass : IPostRepository
     {
         int numberOfObs = 32;
 
-        var query = _context.Posts
+        var query = _context.Observations
         .Include(observation => observation.Author) //maybe this needs to be changed idk
         .Where(observation => observation.Author.Name == author)
         .OrderByDescending(observation => observation.TimeStamp)
@@ -83,7 +82,6 @@ public class PostRepositoryClass : IPostRepository
     {
         int numberOfObs = 32;
         
-    
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Observations
         .Include(obs => obs.Author)
@@ -97,10 +95,13 @@ public class PostRepositoryClass : IPostRepository
                     .Skip(page * numberOfObs).Take(numberOfObs);*/
         // Execute the query and store the results
         var result = await query.ToListAsync();
-
+        Console.WriteLine("HELLO!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Console.WriteLine("number of observations: " + result.Count);
+        
         List<ObservationDTO> posts = new List<ObservationDTO>();
         foreach (var obs in result)
         {
+            Console.WriteLine("observations tekst er: " + obs.Text);
             posts.Add(new ObservationDTO
             {
                 PostID = obs.PostId,
@@ -111,6 +112,8 @@ public class PostRepositoryClass : IPostRepository
                 TimeStamp = obs.TimeStamp.ToString()
             });
         }
+
+        
 
         return posts;
     }
