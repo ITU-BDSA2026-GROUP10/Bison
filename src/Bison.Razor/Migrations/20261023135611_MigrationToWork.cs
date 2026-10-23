@@ -5,7 +5,7 @@
 namespace Bison.Razor.Migrations
 {
     /// <inheritdoc />
-    public partial class Taxon : Migration
+    public partial class MigrationToWork : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

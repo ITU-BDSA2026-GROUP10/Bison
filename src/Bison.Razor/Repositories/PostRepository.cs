@@ -82,9 +82,8 @@ public class PostRepositoryClass : IPostRepository
     {
         int numberOfObs = 32;
         
-    
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
-        var query = _context.Posts
+        var query = _context.Observations
         .Include(obs => obs.Author)
         .OrderByDescending(observation => observation.TimeStamp)
         .Skip((page-1) * numberOfObs).Take(numberOfObs);

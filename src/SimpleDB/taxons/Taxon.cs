@@ -16,7 +16,7 @@ string? scientificNameAuthorship,
 
 string? language, //which is only indicated by three letters
 
-string? VernacularName, //their danish name
+string? vernacularName, //their danish name
 
 bool? merged// false, null or true
 )
