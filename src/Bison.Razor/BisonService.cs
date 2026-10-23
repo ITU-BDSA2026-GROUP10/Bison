@@ -132,6 +132,12 @@ public class ObservationService : IObservationService
         {
             observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
         }
+        var commentDTOs = await postRepository.ReadCommentsWithID(id);
+        foreach (var DTO in commentDTOs)
+        {
+            Console.WriteLine("---------TEXT: "+DTO.Text);
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
+        }
         return observations; 
     }
 
