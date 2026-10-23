@@ -49,7 +49,7 @@ class Tree {
         foreach (var taxon in taxons)
         {
             idToTaxon.Add(taxon.taxonID, taxon);
-            vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
+            vernacularNameToTaxon.Add(taxon.VernacularName, taxon); //vernacularName
         }
     }
 

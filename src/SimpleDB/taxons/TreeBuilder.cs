@@ -40,9 +40,9 @@ public void mapTaxonPairings(IEnumerable<Taxon> taxons)
             if(taxon.taxonID is not null && !idToTaxon.ContainsKey(taxon.taxonID)) {
                 idToTaxon.Add(taxon.taxonID, taxon);
             }
-            if (taxon.vernacularName is not null && !vernacularNameToTaxon.ContainsKey(taxon.vernacularName))
+            if (taxon.VernacularName is not null && !vernacularNameToTaxon.ContainsKey(taxon.VernacularName))
             {
-                vernacularNameToTaxon.Add(taxon.vernacularName, taxon);
+                vernacularNameToTaxon.Add(taxon.VernacularName, taxon);
             } 
         }
     }
