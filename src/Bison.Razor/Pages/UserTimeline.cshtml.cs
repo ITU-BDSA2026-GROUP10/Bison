@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Razor.BisonService;
+using System.Threading.Tasks;
 
 namespace Bison.Razor.Pages;
 
@@ -14,9 +15,10 @@ public class UserTimelineModel : PageModel
         _service = service;
     }
 
-    public ActionResult OnGet([FromRoute] string author, [FromQuery] int page)
+    public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
     {
-        Observations = _service.GetObservationsFromAuthor(author, page);
+        Task <List<ObservationViewModel>> obsTask = _service.GetObservationsFromAuthor(author,page);
+        Observations = await obsTask;
         return Page();
     }
 }

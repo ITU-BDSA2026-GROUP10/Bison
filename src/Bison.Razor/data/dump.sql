@@ -1,10 +1,10 @@
-INSERT INTO user VALUES(1,'Adrian','adrian.hoff@example.dk','NkHcSyMc0tSOGhuLdjfoWSZhce+w+AkBU4H0V/Rew7g=');
-INSERT INTO user VALUES(2,'Mette','mette.brandt@example.dk','URuAsQ1VAx9Wz0AsGCpaOKgVJt+sgwaU+9qyF8e7Riw=');
-INSERT INTO user VALUES(3,'Johan','johan.hansen@example.com','wVmFADw+1ThWnMGEtUvO/rSnNzUYuCRQud1cEXgVW2I=');
-INSERT INTO user VALUES(4,'Wendy','wendy.clarke@example.org','7j+pU9/1hEmpPypwIvcKIs5dB0ipy1lkzPZOAxEQ08Q=');
-INSERT INTO user VALUES(5,'Kasper','kasper.lund@example.dk','+G7FWR4mBwdDHy2hnOVJIbkvksTj4+jaKPBkD6+ljD4=');
-INSERT INTO user VALUES(6,'Laura','laura.neumann@example.de','zBUNihtfhKqJvg31hG5cuf23LChuMD695PYG456Y8LQ=');
-INSERT INTO user VALUES(7,'Yuki','yuki.tanaka@example.jp','W5FfqlkE3+AB+m7JgSF2wxe7ybL4suDTTuckUk+cFRo=');
+INSERT INTO authors VALUES(1,'Adrian','adrian.hoff@example.dk','NkHcSyMc0tSOGhuLdjfoWSZhce+w+AkBU4H0V/Rew7g=');
+INSERT INTO authors VALUES(2,'Mette','mette.brandt@example.dk','URuAsQ1VAx9Wz0AsGCpaOKgVJt+sgwaU+9qyF8e7Riw=');
+INSERT INTO authors VALUES(3,'Johan','johan.hansen@example.com','wVmFADw+1ThWnMGEtUvO/rSnNzUYuCRQud1cEXgVW2I=');
+INSERT INTO authors VALUES(4,'Wendy','wendy.clarke@example.org','7j+pU9/1hEmpPypwIvcKIs5dB0ipy1lkzPZOAxEQ08Q=');
+INSERT INTO authors VALUES(5,'Kasper','kasper.lund@example.dk','+G7FWR4mBwdDHy2hnOVJIbkvksTj4+jaKPBkD6+ljD4=');
+INSERT INTO authors VALUES(6,'Laura','laura.neumann@example.de','zBUNihtfhKqJvg31hG5cuf23LChuMD695PYG456Y8LQ=');
+INSERT INTO authors VALUES(7,'Yuki','yuki.tanaka@example.jp','W5FfqlkE3+AB+m7JgSF2wxe7ybL4suDTTuckUk+cFRo=');
 
 INSERT INTO observation VALUES(1,1,'Found a Glossy Ibis in the marsh behind the dunes. Bare skin on the face and head.',1772608313);
 INSERT INTO observation VALUES(2,7,'The Dalmatian Pelicans are back on the lake. Very large bird with a long bill and a stretchy throat pouch.',1772630176);
