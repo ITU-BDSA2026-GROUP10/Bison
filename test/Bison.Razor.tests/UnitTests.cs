@@ -38,6 +38,19 @@ public class UnitTests
         //Assert
         Assert.Equal(1, result);
     }
+
+    [Fact]
+    public void ValidPageNumberReturnsSamePage() 
+    {
+        //Arrange 
+        int page = 3;
+
+        //Act
+        int result = ObservationService.ValidPageNumber(page);
+
+        //Assert
+        Assert.Equal(3, result);
+    }
     
     /*
     [Fact]
