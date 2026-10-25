@@ -64,6 +64,21 @@ public class UnitTests
         //Assert
         Assert.Equal(1, result);
     }
+
+    [Fact]
+    public async Task EmptyObservationsReturnsEmptyList()
+    {
+        //Arrange 
+        EmptyPostRepository repository = new EmptyPostRepository();
+        ObservationService service = new ObservationService(repository);
+
+        //Act
+        var result = await service.GetObservations(1);
+
+
+        //Assert
+        Assert.Empty(result);
+    }
     
     /*
     [Fact]
@@ -123,6 +138,33 @@ public class UnitTests
 
     }
 }
+
+public class EmptyPostRepository : IPostRepository
+{
+    public Task<List<ObservationDTO>> ReadPosts(int page) {
+        return Task.FromResult(new List<ObservationDTO>());
+    }
+
+    //Metoderne kan ikke stå tomme fordi det giver fejl CS0161: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/jump-statement-errors
+    //Her kan man i stedet bruge: https://learn.microsoft.com/en-us/dotnet/api/system.notimplementedexception?view=net-10.0
+    public Task<List<CommentDTO>> ReadCommentsWithID(int ID)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<List<ObservationDTO>> ReadPostsByAuthor(string author, int page)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<List<ObservationDTO>> ReadPostWithID(int ID)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<List<ProposalDTO>> ReadProposalsWithID(int ID)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 
 // https://moleseyhill.com/2009-07-06-unit-testing-with-repository-pattern.html
 public class FakePostRepository : IPostRepository
