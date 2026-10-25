@@ -96,7 +96,7 @@ public class ObservationService : IObservationService
     }
 
     public static int ValidPageNumber(int page) {
-        if (page == 0)
+        if (page <= 0)
         {
             page = 1;
         }

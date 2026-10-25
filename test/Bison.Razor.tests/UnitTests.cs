@@ -51,6 +51,19 @@ public class UnitTests
         //Assert
         Assert.Equal(3, result);
     }
+
+    [Fact]
+    public void NegativePageNumberReturnsPageOne() 
+    {
+        //Arrange 
+        int page = -1;
+
+        //Act
+        int result = ObservationService.ValidPageNumber(page);
+
+        //Assert
+        Assert.Equal(1, result);
+    }
     
     /*
     [Fact]
