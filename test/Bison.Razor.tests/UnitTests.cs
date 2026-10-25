@@ -95,6 +95,26 @@ public class UnitTests
         //Assert
         Assert.Empty(result);
     }
+
+    [Fact]
+    public async Task GetObservationReturnsCorrectData()
+    {
+        //Arrange 
+        SinglePostRepository repository = new SinglePostRepository();
+        ObservationService service = new ObservationService(repository);
+    
+
+        //Act
+        var result = await service.GetObservations(1);
+        var observation = result[0];
+
+
+        //Assert
+        Assert.Equal(1, result.Count);
+        Assert.Equal("Raamin", observation.Author);
+        Assert.Equal("I saw a penguin", observation.Message);
+        Assert.Equal("10/25/26 12:00:00", observation.Timestamp);
+    }
     
     /*
     [Fact]
@@ -157,7 +177,8 @@ public class UnitTests
 
 public class EmptyPostRepository : IPostRepository
 {
-    public Task<List<ObservationDTO>> ReadPosts(int page) {
+    public Task<List<ObservationDTO>> ReadPosts(int page) 
+    {
         //https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.fromresult?view=net-10.0
         //This line returns an already completed task containing an empty list 
         return Task.FromResult(new List<ObservationDTO>());
@@ -172,6 +193,39 @@ public class EmptyPostRepository : IPostRepository
     public Task<List<ObservationDTO>> ReadPostsByAuthor(string author, int page)
     {
         return Task.FromResult(new List<ObservationDTO>());
+    }
+    public Task<List<ObservationDTO>> ReadPostWithID(int ID)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<List<ProposalDTO>> ReadProposalsWithID(int ID)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class SinglePostRepository : IPostRepository
+{
+    public Task<List<ObservationDTO>> ReadPosts(int page) 
+    {
+        ObservationDTO observation = new ObservationDTO 
+        {
+            AuthorName = "Raamin",
+            Text = "I saw a penguin",
+            TimeStamp = "10/25/26 12:00:00",
+        };
+        return Task.FromResult(new List<ObservationDTO>{observation});
+    }
+
+    //The methods cannot be left empty becuase error CS0161: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/jump-statement-errors
+    //Instead use this exception: https://learn.microsoft.com/en-us/dotnet/api/system.notimplementedexception?view=net-10.0
+    public Task<List<CommentDTO>> ReadCommentsWithID(int ID)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<List<ObservationDTO>> ReadPostsByAuthor(string author, int page)
+    {
+        throw new NotImplementedException();
     }
     public Task<List<ObservationDTO>> ReadPostWithID(int ID)
     {
