@@ -25,6 +25,19 @@ public class UnitTests
         //Assert
         Assert.True(am == dateTime || dk == dateTime || uk == dateTime);
     }
+
+    [Fact]
+    public void PageZeroReturnsPageOne() 
+    {
+        //Arrange 
+        int page = 0;
+
+        //Act
+        int result = ObservationService.ValidPageNumber(page);
+
+        //Assert
+        Assert.Equal(1, result);
+    }
     
     /*
     [Fact]
