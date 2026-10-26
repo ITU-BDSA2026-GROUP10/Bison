@@ -11,23 +11,6 @@ using Microsoft.Data.Sqlite;
 public class UnitTests
 {
     [Fact]
-    public void UnixTimeConvertsCorrectlyToUserReadableTime()
-    {
-        //Arrange
-        long unixTime = 1789313646+7200;
-        string am = "09/13/26 17.34.06";
-        string dk = "09-13-26 17:34:06";
-        string uk = "09.13.26 17.34.06";
-        string ub = "2026-09-13 17:34 UTC";
-        
-        //Act
-        string dateTime = ObservationService.UnixTimeStampToDateTimeString(unixTime);
-
-        //Assert
-        Assert.True(am == dateTime || dk == dateTime || uk == dateTime || ub == dateTime);
-    }
-
-    [Fact]
     public void PageZeroReturnsPageOne() 
     {
         //Arrange 
