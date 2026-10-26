@@ -7,11 +7,10 @@ on:
   push:
     branches:
       - main
-      - w3workflows
   pull_request:
     branches: [ "main" ]
-    paths-ignore:
-      - "Bison/test/Bison.Razor.tests/UnixTimeUnitTest.cs"
+    paths:
+      - "!../../Bison/test/Bison.Razor.tests/UnixTimeUnitTest.cs"
 
 jobs:
   build_and_test:
