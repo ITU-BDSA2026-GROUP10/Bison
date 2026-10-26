@@ -8,6 +8,9 @@ in the terminal
 
 after opening the localhost address write in your http address:
 >/obs
+
 >/ob?id=3
+
 >/obs?page=1
+
 >/obs/<firstname%20lastname>?page=2
