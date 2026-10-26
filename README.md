@@ -2,7 +2,7 @@
 
 # This project is an app for Ornithology posts
 
-##How to run
+## How to run
 in the terminal
 > dotnet run
 
