@@ -1,7 +1,7 @@
 namespace Bison.Razor.tests;
 using System;
 using System.Reflection;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
 using Bison.Razor;
 using Microsoft.EntityFrameworkCore;
 using DataModel;
