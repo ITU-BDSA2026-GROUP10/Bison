@@ -25,10 +25,7 @@ public class ObservationService : IObservationService
     {
         int numberOfObs = 32;
 
-        if (page == 0) 
-        {
-            page = 1;
-        }
+        page = ValidPageNumber(page);
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
         var observationDTOs = await postRepository.ReadPosts(page);
@@ -44,10 +41,7 @@ public class ObservationService : IObservationService
     public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page) {
         // filter by the provided author name
 
-       if (page == 0)
-        {
-            page = 1;
-        }
+       page = ValidPageNumber(page);
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
         var observationDTOs = await postRepository.ReadPostsByAuthor(author, page);
@@ -99,6 +93,15 @@ public class ObservationService : IObservationService
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(unixTimeStamp);
         return dateTime.ToString("MM/dd/yy H:mm:ss");
+    }
+
+    public static int ValidPageNumber(int page) {
+        if (page <= 0)
+        {
+            page = 1;
+        }
+
+        return page;
     }
 
 }
