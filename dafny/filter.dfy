@@ -1,11 +1,15 @@
-class {:extern} Taxon {
-    var {:extern ""} issubTaxon: bool
+class {:extern "Taxon"} Taxon {
+    constructor() {}
     function {:extern} isSubTaxon(ancestor: Taxon): bool
-    ensure issubTaxon == bool
 }
 
-class {:extern} Observation {
-    function {:extern} getTaxon(): Taxon
+class {:extern "Observation"} Observation {
+    var {:extern "Taxon"} taxon: Taxon 
+    constructor() {taxon := new Taxon();}
+    function {:extern "getTaxon"} getTaxon(): Taxon 
+        reads this
+        ensures taxon is Taxon
+        
 }
 
 function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
