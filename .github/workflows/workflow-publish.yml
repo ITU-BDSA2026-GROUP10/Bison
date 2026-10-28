@@ -33,7 +33,7 @@ jobs:
       - run : dotnet publish --runtime linux-x64 --self-contained false
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r windows.zip src/Bison.CLI/bin/Release/net8.0/win-x64
+          args: zip -qq -r windows.zip src/Bison.Razor/bin/Release/net8.0/win-x64
       - name: Publish GitHub Release Windows
         uses: softprops/action-gh-release@v2
         with:

@@ -7,22 +7,7 @@ public static class DbInitializer
 {
     public static void SeedDatabase(BisonDBContext bisonContext)
     {
-        /*Console.WriteLine("!!!!!!!!!");
-        if (bisonContext.Authors.Any())
-        {
-            Console.WriteLine("there are authors");
-            Console.WriteLine(bisonContext.Authors.Count());
-        }
-        
-        if (bisonContext.Posts.Any())
-        {
-            Console.WriteLine("there are posts");
-            Console.WriteLine("so many posts: " + bisonContext.Posts.Count());
-            Console.WriteLine("so many observations: " + bisonContext.Observations.Count());
-            Console.WriteLine("so many comments: " + bisonContext.Comments.Count());
-            Console.WriteLine("so many proposals: " + bisonContext.Proposals.Count());
-        } */
-        
+                
         if (!(bisonContext.Authors.Any() && bisonContext.Posts.Any()))
         {
             Console.WriteLine("inside the if");
