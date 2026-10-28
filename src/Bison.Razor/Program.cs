@@ -1,5 +1,5 @@
 using Bison.Razor;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
