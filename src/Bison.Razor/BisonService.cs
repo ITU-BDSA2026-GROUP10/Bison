@@ -74,7 +74,7 @@ public class ObservationService : IObservationService
             observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
         }
         var commentDTOs = await postRepository.ReadCommentsWithID(id);
-        Console.WriteLine("OBSERVATIONS!!!!");
+        
         foreach (var DTO in commentDTOs)
         {
             observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
