@@ -1,9 +1,12 @@
+namespace Bison.Razor.tests;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+//using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
+using Bison.Razor;
+using Bison.Razor.ObservationService;
+using System.Net;
 
-namespace Bison.Razor.tests;
 
 /*test idea: 
     assert wether giving argument page nr 0 and 1 returns the same task list 
@@ -44,3 +47,52 @@ public class IntegrationTestsBasic  : IClassFixture<WebApplicationFactory<Progra
     }
 }
 
+public class ObservationServiceIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
+{
+    private readonly WebApplicationFactory<Program> _factory;
+    
+    public ObservationServiceIntegrationTest (
+        WebApplicationFactory<Program> factory)
+    {
+        _factory = factory;
+    }
+    
+    //The SUT is ObservationService 
+    //These integration tests are meant to take fake repos, databases and such but work on the real observationservice class
+    [Fact]
+    public async Task GetObservationsReturnsSameTaskWithPageNrOneAndZero()
+    {
+        //Arrange
+        int one = 1;
+        int zero = 0;
+        IPostRepository repository = new SinglePostRepository();
+        ObservationService service = new ObservationService(repository);
+        
+        //Act
+        var result_One = await service.GetObservations(1);
+        var result_Zero = await service.GetObservations(0);
+        
+        //Assert
+        Assert.Equal(result_One, result_Zero);
+    }
+}
+
+public class RazorPageIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
+{
+    private readonly HttpClient _client;
+    private readonly CustomWebApplicationFactory<Program>
+        _factory;
+
+    public RazorPageIntegrationTests(
+        CustomWebApplicationFactory<Program> factory)
+    {
+        _factory = factory;
+        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
+    }
+    
+    //See: https://github.com/dotnet/AspNetCore.Docs.Samples/blob/main/test/integration-tests/10.x/IntegrationTestsSample/tests/RazorPagesProject.Tests/IntegrationTests/IndexPageTests.cs
+    
+}
