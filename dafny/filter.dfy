@@ -12,7 +12,7 @@ function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation> {
     var result := [];
     while i < |obs|{
         if obs[i].getTaxon() == root then result + [root]
-        else if 
+        else if  
 
         i := i + 1;
     }
