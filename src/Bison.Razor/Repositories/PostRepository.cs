@@ -13,7 +13,7 @@ public interface IPostRepository
     //public Task<List<ObservationDTO>> ReadPost(int PostID);
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
-    
+    //public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -141,4 +141,17 @@ public class PostRepositoryClass : IPostRepository
 
         return proposals;
     }
+
+    /*public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, List<Observation> observations) 
+    {
+        var observations = new List <ObservationDTO>();
+        
+        var observationQuery = _context.Observation
+        .Include(observation => observation.author)
+        .Where(observation => observation.taxon.TaxonID == id);
+        var result = await proposalQuery.ToListAsync();
+
+        return GetProposalDTOs(result);
+    }*/
+    
 }

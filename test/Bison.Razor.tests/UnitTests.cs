@@ -1,7 +1,7 @@
 namespace Bison.Razor.tests;
 using System;
 using System.Reflection;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
 using Bison.Razor;
 using Microsoft.EntityFrameworkCore;
 using DataModel;
@@ -10,11 +10,11 @@ using Microsoft.Data.Sqlite;
 
 public class UnitTests
 {
-    [Fact]
-    public void PageZeroReturnsPageOne() 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void ReturnsPageOne(int page)
     {
-        //Arrange 
-        int page = 0;
 
         //Act
         int result = ObservationService.ValidPageNumber(page);
@@ -23,6 +23,7 @@ public class UnitTests
         Assert.Equal(1, result);
     }
 
+    
     [Fact]
     public void ValidPageNumberReturnsSamePage() 
     {
@@ -34,19 +35,6 @@ public class UnitTests
 
         //Assert
         Assert.Equal(3, result);
-    }
-
-    [Fact]
-    public void NegativePageNumberReturnsPageOne() 
-    {
-        //Arrange 
-        int page = -1;
-
-        //Act
-        int result = ObservationService.ValidPageNumber(page);
-
-        //Assert
-        Assert.Equal(1, result);
     }
 
     [Fact]
@@ -99,21 +87,6 @@ public class UnitTests
         Assert.Equal("I saw a penguin", observation.Message);
         Assert.Equal("10/25/26 12:00:00", observation.Timestamp);
     }
-    
-    /*
-    [Fact]
-    public void CorrectPageIsReturned()
-    {
-        //Arrange
-        int page = 1;
-        
-        //Act
-        var taskList = PostRepositoryClass.ReadPosts(page);
-
-        //Assert
-        Assert.NotNull(taskList);
-    }
-    */
 
     [Fact]
     public void PaginationPublicOnGetReturnsValidPageNumber()
