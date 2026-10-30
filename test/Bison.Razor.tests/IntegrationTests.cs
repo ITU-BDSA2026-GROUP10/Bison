@@ -43,3 +43,4 @@ public class IntegrationTestsBasic  : IClassFixture<WebApplicationFactory<Progra
             response.Content.Headers.ContentType.ToString());
     }
 }
+
