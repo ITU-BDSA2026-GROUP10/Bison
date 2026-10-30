@@ -43,3 +43,9 @@ app.UseRouting();
 app.MapRazorPages();
 
 app.Run();
+
+// Source - https://stackoverflow.com/a/70026704
+// Posted by PmanAce
+// Retrieved 2026-10-30, License - CC BY-SA 4.0
+public partial class Program { }
+
