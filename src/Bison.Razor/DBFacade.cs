@@ -1,7 +1,8 @@
 using System.Data;
 using System;
 using Microsoft.Data.Sqlite;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
+using Bison.Razor.TaxonService;
 namespace Bison.Razor;
 public class DBFacade
 {
@@ -73,7 +74,7 @@ public class DBFacade
                     }
                 }
 
-                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
+                list.Add(new ObservationViewModel(user_name, message, /*ObservationService.*/UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
             }
             return list;
         }
@@ -120,7 +121,7 @@ public class DBFacade
                     }
                 }
 
-                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
+                list.Add(new ObservationViewModel(user_name, message, /*ObservationService.*/UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
             }
             var command2 = connection.CreateCommand();
             
@@ -154,7 +155,7 @@ public class DBFacade
                     }
                 }
 
-                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
+                list.Add(new ObservationViewModel(user_name, message, /*ObservationService.*/UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
             }
             var command3 = connection.CreateCommand();
             
@@ -188,9 +189,17 @@ public class DBFacade
                     }
                 }
 
-                list.Add(new ObservationViewModel(user_name, message, ObservationService.UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
+                list.Add(new ObservationViewModel(user_name, message, /*ObservationService.*/UnixTimeStampToDateTimeString(Double.Parse(timestamp))));
             }
             return list;
         }
+    }
+
+    public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 }

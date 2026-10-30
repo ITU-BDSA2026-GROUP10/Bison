@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
+using Bison.Razor.TaxonService;
 using System.Threading.Tasks;
 
 namespace Bison.Razor.Pages;

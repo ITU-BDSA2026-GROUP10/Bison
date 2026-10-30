@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using RazorPagesProject.Data;
+using Bison.Razor;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RazorPagesProject.Tests;
 
@@ -18,7 +20,7 @@ public class CustomWebApplicationFactory<TProgram>
         {
             var dbContextDescriptor = services.SingleOrDefault(
                 d => d.ServiceType == 
-                    typeof(IDbContextOptionsConfiguration<ApplicationDbContext>));
+                    typeof(IDbContextOptionsConfiguration<BisonDBContext>));
 
             services.Remove(dbContextDescriptor);
             //Perhaps checkout asp net book page 903?
@@ -38,7 +40,7 @@ public class CustomWebApplicationFactory<TProgram>
                 return connection;
             });
 
-            services.AddDbContext<ApplicationDbContext>((container, options) =>
+            services.AddDbContext<BisonDBContext>((container, options) =>
             {
                 var connection = container.GetRequiredService<DbConnection>();
                 options.UseSqlite(connection);
