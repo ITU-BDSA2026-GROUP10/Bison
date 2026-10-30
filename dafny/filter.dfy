@@ -32,7 +32,7 @@ module Filter {
         
         ensures |FilterBy(root, obs)| <= |obs|
         {
-            // this is the actual like function:
+            // this is the actual like function (code is made by chat):
             if |obs| == 0 then
                 []
             else
