@@ -31,4 +31,21 @@ public class TaxonService : ITaxonService
         }
         return filteredObservations;
     }
+
+    /*public List<Observation> GetObservationsFromTaxonIdRECURSION(Taxon taxon, List<Observation> observations)
+    {
+        if(observations.Count() == 0)
+        {
+            return new List<Observation>();
+        } else
+        {
+            GetObservationsFromTaxonIdRECURSION1(taxon, )
+            return null;
+        }
+    }
+
+    public Observation GetObservationsFromTaxonIdRECURSION1(Taxon taxon, List<Observation> observations)
+    {
+        return null;
+    }*/
 }
