@@ -21,6 +21,7 @@ public class CustomWebApplicationFactory<TProgram>
                     typeof(IDbContextOptionsConfiguration<ApplicationDbContext>));
 
             services.Remove(dbContextDescriptor);
+            //Perhaps checkout asp net book page 903?
 
             var dbConnectionDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
