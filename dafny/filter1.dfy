@@ -12,7 +12,7 @@ module {:extern "src.DataModel"} Classes{
 
 module Filter{
     import opened Classes
-    
+    //See explaination on non-ghost and ghost methods and functions: https://github.com/hath995/dafny-lang/blob/master/docs/HowToFAQ/Errors-Resolution.md
     function method FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
     
     //now every thing we that gets returned comes from the input and matches
