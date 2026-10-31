@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using DataModel
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>@ViewData["Title"]</title>
@@ -22,7 +23,7 @@
             <div>
                 <a href="/">Public Observations</a> |
                 <a href="/" >Register</a> | <!--THIS NEEDS TO BE CHANGED-->
-                <a href="/" >Login</a> <!--THIS NEEDS TO BE CHANGED-->
+                <a href="/partial name=_LoginPartial">Login</a> <!--THIS NEEDS TO BE CHANGED-->
             </div>
         }
     </div>
