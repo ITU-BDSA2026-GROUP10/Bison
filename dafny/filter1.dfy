@@ -1,11 +1,11 @@
 //this snippet is unchanged* from slides
 module {:extern "src.DataModel"} Classes{
     class {:extern} Taxon {
-        function {:extern} isSubTaxon(ancestor: Taxon): bool
+        function method {:extern} isSubTaxon(ancestor: Taxon): bool
     }
 
     class {:extern} Observation {
-        function {:extern} getTaxon(): Taxon 
+        function method {:extern} getTaxon(): Taxon 
     }
 }
 //end snippet
@@ -13,7 +13,7 @@ module {:extern "src.DataModel"} Classes{
 module Filter{
     import opened Classes
     
-    function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
+    function method FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
     
     //now every thing we that gets returned comes from the input and matches
     //==> means "implies"
@@ -25,7 +25,7 @@ module Filter{
     ob in FilterBy(root, obs)
     
     //now cardinality check
-    ensures |Filterby(root, obs)| <= |obs|
+    ensures |FilterBy(root, obs)| <= |obs|
     
     decreases |obs| //'decreases' is neccesary in dafny because of the need for a program to terminate and this works with both loops and recursion
     //Therefore you can insert 'decreases' and this makes sure the obs sequence strictly decreases and that it can't decrease forever
@@ -34,12 +34,11 @@ module Filter{
         if |obs| == 0 then 
             [] //this is the step the function will hopefully result in
         else 
-            assert obs == obs[0] + obs[1..]; //in dafny 1.. is the rest of the sequence
+            assert obs == [obs[0]] + obs[1..]; //in dafny 1.. is the rest of the sequence
             //the assert is for dafny to know which stm to prove each time is always true
             
             if obs[0].getTaxon().isSubTaxon(root)
-                then obs[0].getTaxon().isSubTaxon(root)
-                then obs[0] + FilterBy(root, obs[1..]) //the recursion
+                then [obs[0]] + FilterBy(root, obs[1..]) //the recursion
             else 
                 FilterBy(root, obs[1..])
     }
@@ -68,7 +67,8 @@ module FilterWrapped {
     
     { //the method body
         var filtered := FilterBy(root, obs[..]);
-        result := new Observation[|filtered|](i requires 0 <= i < |filtered| => filtered[i]); //this is another way to write seq(size, i => P) which is a sequence display expression
+        var size := |filtered|;
+        result := new Observation[size](i requires 0 <= i < size => filtered[i]); //this is another way to write seq(size, i => P) which is a sequence display expression
         //this allows us to define the sequence to be constructed as length |filtered| and each value is evaluated based on the condition i == P see https://dafny.org/dafny/DafnyRef/DafnyRef#sec-seq-comprehension
         
         assert result[..] == filtered;
