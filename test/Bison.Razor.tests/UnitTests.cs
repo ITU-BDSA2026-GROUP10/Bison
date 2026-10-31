@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using DataModel;
 using DTO;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 
 public class UnitTests
 {
@@ -69,6 +70,26 @@ public class UnitTests
     }
 
     [Fact]
+    public async Task AuthorObservationsReturnsCorrectData()
+    {
+        //Arrange 
+        SinglePostRepository repository = new SinglePostRepository();
+        ObservationService service = new ObservationService(repository);
+        String author = "Raamin";
+
+        //Act
+        var result = await service.GetObservationsFromAuthor(author, 1);
+        var observation = result[0];
+
+        //Assert
+        Assert.NotEmpty(result);
+        Assert.Equal("Raamin", observation.Author);
+        Assert.Equal("I saw a penguin", observation.Message);
+        Assert.Equal("10/25/26 12:00:00", observation.Timestamp);
+    }
+
+
+    [Fact]
     public async Task GetObservationReturnsCorrectData()
     {
         //Arrange 
@@ -88,22 +109,6 @@ public class UnitTests
         Assert.Equal("10/25/26 12:00:00", observation.Timestamp);
     }
 
-    [Fact]
-    public void PaginationPublicOnGetReturnsValidPageNumber()
-    {
-        //Arrange
-        int nr = 4;
-        /*
-        ObservationService observationsservice = new ObservationService(new FakePostRepository(new BisonDBContext()));
-
-        //Act
-        var task = observationsservice.GetObservations(nr);
-
-        MethodInfo? method = typeof(IObservationService).GetMethod("GetObservation");
-        //Assert
-        */
-
-    }
 
 
     [Fact]
@@ -182,7 +187,13 @@ public class SinglePostRepository : IPostRepository
     }
     public Task<List<ObservationDTO>> ReadPostsByAuthor(string author, int page)
     {
-        throw new NotImplementedException();
+         ObservationDTO observation = new ObservationDTO 
+        {
+            AuthorName = author,
+            Text = "I saw a penguin",
+            TimeStamp = "10/25/26 12:00:00",
+        }; 
+        return Task.FromResult(new List<ObservationDTO>{observation});
     }
     public Task<List<ObservationDTO>> ReadPostWithID(int ID)
     {
@@ -199,11 +210,10 @@ public class SinglePostRepository : IPostRepository
 public class FakePostRepository : IPostRepository
 {
     private readonly BisonDBContext _context;
+    // new BisonDBContext(Configuration.ConnectionStrings["FakeRepoTest"].ConnectionString);
 
-    public FakePostRepository(BisonDBContext context)
-    {
-        _context = context;
-    }
+    public FakePostRepository()
+    { }
 
     public async Task<List<ObservationDTO>> ReadPosts(int page)
     {
