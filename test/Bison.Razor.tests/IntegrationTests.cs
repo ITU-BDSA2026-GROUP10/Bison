@@ -1,7 +1,7 @@
 namespace Bison.Razor.tests;
 using Microsoft.AspNetCore.Mvc.Testing;
 //using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Microsoft.AspNetCore.Mvc.Testing;
+//using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Bison.Razor;
 using Bison.Razor.ObservationService;
@@ -94,5 +94,11 @@ public class RazorPageIntegrationTests : IClassFixture<CustomWebApplicationFacto
     }
     
     //See: https://github.com/dotnet/AspNetCore.Docs.Samples/blob/main/test/integration-tests/10.x/IntegrationTestsSample/tests/RazorPagesProject.Tests/IntegrationTests/IndexPageTests.cs
+    
+}
+
+public class PostRepositoryIntegrationTests
+{
+    //fake context
     
 }
