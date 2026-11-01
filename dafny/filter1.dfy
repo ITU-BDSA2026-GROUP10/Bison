@@ -1,11 +1,11 @@
 //this snippet is unchanged* from slides
 module {:extern "src.DataModel"} Classes{
     class {:extern} Taxon {
-        function method {:extern} isSubTaxon(ancestor: Taxon): bool
+        function {:extern} isSubTaxon(ancestor: Taxon): bool
     }
 
     class {:extern} Observation {
-        function method {:extern} getTaxon(): Taxon 
+        function {:extern} getTaxon(): Taxon 
     }
 }
 //end snippet
@@ -13,7 +13,7 @@ module {:extern "src.DataModel"} Classes{
 module Filter{
     import opened Classes
     //See explaination on non-ghost and ghost methods and functions: https://github.com/hath995/dafny-lang/blob/master/docs/HowToFAQ/Errors-Resolution.md
-    function method FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
+    function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
     
     //now every thing we that gets returned comes from the input and matches
     //==> means "implies"
