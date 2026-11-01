@@ -5,7 +5,7 @@ module {:extern "src.DataModel"} Classes{
     }
 
     class {:extern} Observation {
-        function {:extern} getTaxon(): Taxon 
+        function {:extern} {:axiom} getTaxon() : Taxon 
     }
 }
 //end snippet
