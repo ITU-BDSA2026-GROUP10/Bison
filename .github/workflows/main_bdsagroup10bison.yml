@@ -64,4 +64,5 @@ jobs:
           app-name: 'bdsagroup10bison'
           slot-name: 'Production'
           package: .
+          publish-profle: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           
