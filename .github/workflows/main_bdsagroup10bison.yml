@@ -26,7 +26,8 @@ jobs:
       - run: pwd
         
       - name: Build with dotnet 
-        run: dotnet build src/Bison.Razor/ –configuration Release
+        working-directory: src/Bison.Razor/
+        run: dotnet build –configuration Release
       - name: dotnet publish
         run: dotnet publish src/Bison.Razor/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
