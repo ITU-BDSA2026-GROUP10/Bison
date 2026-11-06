@@ -3,7 +3,7 @@ namespace Bison.Razor.TaxonService;
 using System.ComponentModel.DataAnnotations;
 using Bison.Razor.ObservationService; 
 using DataModel;
-using Filter;
+//using Filter;
 
 public interface ITaxonService
 {
@@ -38,7 +38,7 @@ public class TaxonService : ITaxonService
 
     public void filteredObservations(List<Observation> observations)
     {
-        Filter.__default.FilterWrapped(observations);
+        //Filter.__default.FilterWrapped(observations);
 
     }
 
