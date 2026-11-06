@@ -2,6 +2,8 @@ using Bison.Razor;
 using Bison.Razor.ObservationService;
 using Bison.Razor.TaxonService;
 using Microsoft.EntityFrameworkCore;
+using DataModel;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,21 @@ builder.Services.AddScoped<DBFacade>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Lockout.AllowedForNewUsers = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+
+.AddEntityFrameworkStores<BisonDBContext>() ;
+    
 builder.Services.AddScoped<IPostRepository, PostRepositoryClass>();
 
 var app = builder.Build();
@@ -41,6 +58,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 

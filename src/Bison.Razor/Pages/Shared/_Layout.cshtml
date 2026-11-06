@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using DataModel
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>@ViewData["Title"]</title>
@@ -14,15 +15,20 @@
             <div>
                 <a href="/@(User.Identity.Name)">My Observations</a> |
                 <a href="/">Public Observations</a> |
-                <a href="/" >Logout [@(User.Identity.Name)]</a> <!--THIS NEEDS TO BE CHANGED-->
+                <form class="form-inline" asp-page="/Account/Logout"
+                    asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                    asp-area="Identity" method="post" >
+                    <button class="nav-link btn btn-link text-dark"
+                    type="submit">Logout [@(User.Identity.Name)]</button>
+                </form>
             </div>
         }
         else
         {
             <div>
                 <a href="/">Public Observations</a> |
-                <a href="/" >Register</a> | <!--THIS NEEDS TO BE CHANGED-->
-                <a href="/" >Login</a> <!--THIS NEEDS TO BE CHANGED-->
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a> |
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </div>
         }
     </div>
