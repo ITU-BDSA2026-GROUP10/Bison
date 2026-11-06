@@ -3,11 +3,12 @@ namespace Bison.Razor.TaxonService;
 using System.ComponentModel.DataAnnotations;
 using Bison.Razor.ObservationService; 
 using DataModel;
+using DTO;
 //using Filter;
 
 public interface ITaxonService
 {
-    public List<Observation> GetObservationsFromTaxonId (string id, List<Observation> observations);
+    public Task<List<ObservationViewModel>> GetObservationsFromTaxonID (string id, int page);
     public void filteredObservations(List<Observation> observations);
 }
 
@@ -20,22 +21,57 @@ public class TaxonService : ITaxonService
         this.postRepository = postRepository;
     }
 
-    public List<Observation> GetObservationsFromTaxonId(string id, List<Observation> observations){
-        List <Observation> filteredObservations = new List<Observation>();
+    public List<ObservationDTO> Filter(string id, List<ObservationDTO> observations){
+        List <ObservationDTO> filteredObservations = new List<ObservationDTO>();
         foreach(var ob in observations){
-            if(ob.Taxon.dwc_TaxonID.Equals(id)) {
-                filteredObservations.Add(ob);
-            } else {
-                foreach (var child in ob.Taxon.Children){
-                    if(child.dwc_TaxonID.Equals(id)){
-                        filteredObservations.Add(ob);
+            if(ob.Taxon != null)
+            {
+                if(ob.Taxon.dwc_TaxonID.Equals(id)) {
+                    filteredObservations.Add(ob);
+                } else {
+                    if(ob.Taxon.Children != null)
+                    {
+                        foreach (var child in ob.Taxon.Children){
+                            if(child.dwc_TaxonID.Equals(id)){
+                                filteredObservations.Add(ob);
+                            }
+                        }
                     }
+                    
                 }
             }
+            
         }
         return filteredObservations;
     }
 
+
+    public async Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page)
+    {
+
+        page = ValidPageNumber(page);
+
+        var observationDTOs = await postRepository.ReadPosts();
+
+        List<ObservationDTO> filteredObservations = Filter(id, observationDTOs);
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+        //var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
+        foreach (var DTO in filteredObservations)
+        {
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
+        }
+        
+        return observations; 
+    }
+
+    public static int ValidPageNumber(int page) {
+        if (page <= 0)
+        {
+            page = 1;
+        }
+
+        return page;
+    }
     public void filteredObservations(List<Observation> observations)
     {
         //Filter.__default.FilterWrapped(observations);

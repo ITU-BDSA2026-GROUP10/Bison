@@ -7,16 +7,18 @@ namespace Bison.Razor.Pages;
 
 public class FilterModel : PageModel
 {
-    private readonly IObservationService _service;
+    private readonly ITaxonService _service;
     public List<ObservationViewModel> Observations { get; set; }
 
-    public FilterModel(IObservationService service)
+    public FilterModel(ITaxonService service)
     {
         _service = service;
     }
 
     public async Task<ActionResult> OnGet([FromQuery] string id, [FromQuery] int page)
     {
+        //Observations = await _service.GetObservationsDTO(page);
+
         Observations = await _service.GetObservationsFromTaxonID(id, page);
         /*Observations = await _service.GetObservationsFromTaxonId();
         Observations = await _service.GetObservationFromID(id, page);*/
