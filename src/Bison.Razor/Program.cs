@@ -1,5 +1,6 @@
 using Bison.Razor;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
+using Bison.Razor.TaxonService;
 using Microsoft.EntityFrameworkCore;
 using DataModel;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IObservationService, ObservationService>();
+builder.Services.AddScoped<ITaxonService, TaxonService>();
 builder.Services.AddScoped<DBFacade>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -53,3 +55,9 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+// Source - https://stackoverflow.com/a/70026704
+// Posted by PmanAce
+// Retrieved 2026-10-30, License - CC BY-SA 4.0
+public partial class Program { }
+

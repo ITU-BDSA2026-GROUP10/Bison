@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - dafnyWorkflow
   pull_request:
     branches: [ "main" ]
 
@@ -21,9 +22,21 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        
+    - name: Setup Dafny
+      uses: dafny-lang/setup-dafny-action@v1
+      with:
+        dafny-version: "4.11.0"
+
+    - name: Compile dafny to c#
+      run: dafny translate cs --include-runtime filter1.dfy
+      working-directory: dafny/
+      
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore
+      
     - name: Test
       run: dotnet test --no-build --verbosity normal
