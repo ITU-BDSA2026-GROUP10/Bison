@@ -5,20 +5,33 @@ using Bison.Razor.ObservationService;
 
 public class UnixTimeTest
 {
-    [Fact]
+     
+     [Fact]
     public void UnixTimeConvertsCorrectlyToUserReadableTime()
     {
         //Arrange
         long unixTime = 1789313646+7200;
-        string am = "09/13/26 17.34.06";
-        string dk = "09-13-26 17:34:06";
-        string uk = "09.13.26 17.34.06";
+        string am = "09/13/2026 17:34:06";
+
+        //Act
+        string dateTime = ObservationService.UnixTimeStampToDateTimeString(unixTime);
+        
+        //Assert
+        Assert.Equal(am, dateTime);
+    }
+    
+    [Fact]
+    public void UnixTimeCorrectCharacterAmount()
+    {
+        //Arrange
+        long unixTime = 1789313646+7200;
+        string am = "09/13/2026 17:34:06";
         
         //Act
         string dateTime = ObservationService.UnixTimeStampToDateTimeString(unixTime);
 
         //Assert
-        Assert.True(am == dateTime || dk == dateTime || uk == dateTime);
+        Assert.Equal(am.Length, dateTime.Length);
     }
     
 }

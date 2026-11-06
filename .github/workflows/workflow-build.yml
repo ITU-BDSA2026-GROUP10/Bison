@@ -9,8 +9,6 @@ on:
       - main
   pull_request:
     branches: [ "main" ]
-    paths:
-      - "!../../Bison/test/Bison.Razor.tests/UnixTimeUnitTest.cs"
 
 jobs:
   build_and_test:
