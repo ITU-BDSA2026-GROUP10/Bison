@@ -21,8 +21,6 @@ public class ObservationService : IObservationService
 
     public async Task<List<ObservationViewModel>> GetObservations(int page)
     {
-        int numberOfObs = 32;
-
         page = ValidPageNumber(page);
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
@@ -54,8 +52,6 @@ public class ObservationService : IObservationService
 
     public async Task<List<ObservationViewModel>> GetObservationFromID(int id, int page)
     {
-
-        int numberOfObs = 32;
 
         if (id == 0) 
         {

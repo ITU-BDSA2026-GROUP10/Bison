@@ -1,11 +1,14 @@
+namespace Bison.Razor.tests;
+
 using System.Data.Common;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Bison.Razor.data;
+using Bison.Razor;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace RazorPagesProject.Tests;
 
 //See: https://github.com/dotnet/AspNetCore.Docs.Samples/blob/main/test/integration-tests/10.x/IntegrationTestsSample/tests/RazorPagesProject.Tests/CustomWebApplicationFactory.cs
 //From: https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-10.0&pivots=xunit
@@ -18,7 +21,7 @@ public class CustomWebApplicationFactory<TProgram>
         {
             var dbContextDescriptor = services.SingleOrDefault(
                 d => d.ServiceType == 
-                    typeof(IDbContextOptionsConfiguration<ApplicationDbContext>));
+                    typeof(IDbContextOptionsConfiguration<BisonDBContext>));
 
             services.Remove(dbContextDescriptor);
             //Perhaps checkout asp net book page 903?
@@ -38,7 +41,7 @@ public class CustomWebApplicationFactory<TProgram>
                 return connection;
             });
 
-            services.AddDbContext<ApplicationDbContext>((container, options) =>
+            services.AddDbContext<BisonDBContext>((container, options) =>
             {
                 var connection = container.GetRequiredService<DbConnection>();
                 options.UseSqlite(connection);
