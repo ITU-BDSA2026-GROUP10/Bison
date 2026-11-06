@@ -8,6 +8,6 @@ assignees: ''
 ---
 
 Acceptance criteria:
-* 
+- [ ]
 
 ( , )
