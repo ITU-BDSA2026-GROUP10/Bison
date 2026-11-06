@@ -2,6 +2,7 @@ using Bison.Razor;
 using Bison.Razor.BisonService;
 using Microsoft.EntityFrameworkCore;
 using DataModel;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
