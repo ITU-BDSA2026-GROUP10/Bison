@@ -1,0 +1,33 @@
+@page "/filter"
+@model Bison.Razor.Pages.FilterModel
+@{
+    ViewData["Title"] = "Bison";
+    Layout = "Shared/_Layout";
+    //var routeName = HttpContext.GetRouteValue("page");
+}
+
+<div>
+    <h2> Public Timeline </h2>
+
+    @if (Model.Observations.Any())
+    {
+        <ul id="messagelist" class="observations">
+            @foreach (var ob in Model.Observations)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/obs/@ob.Author">@ob.Author</a>
+                        </strong>
+                        @ob.Message
+                        <small>&mdash; @ob.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no observations with that taxon id so far.</em>
+    }
+</div>

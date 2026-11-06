@@ -164,6 +164,14 @@ public class EmptyPostRepository : IPostRepository
     {
         throw new NotImplementedException();
     }
+    public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/) 
+    {
+         throw new NotImplementedException();
+    }
+     public async Task<List<ObservationDTO>> ReadPosts()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class SinglePostRepository : IPostRepository
@@ -202,6 +210,14 @@ public class SinglePostRepository : IPostRepository
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID)
     {
         throw new NotImplementedException();
+    }
+    public async Task<List<ObservationDTO>> ReadPosts()
+    {
+        throw new NotImplementedException();
+    }
+    public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/) 
+    {
+         throw new NotImplementedException();
     }
 }
 
@@ -246,7 +262,14 @@ public class FakePostRepository : IPostRepository
         }
         return posts;
     }
-    
+    public async Task<List<ObservationDTO>> ReadPosts()
+    {
+        throw new NotImplementedException();
+    }
+    public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/) 
+    {
+         throw new NotImplementedException();
+    }
     //The following are simply not written yet:
     public async Task<List<ProposalDTO>> ReadProposalsWithID(int p){ return null;}
     
