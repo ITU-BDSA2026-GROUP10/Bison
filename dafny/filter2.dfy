@@ -21,4 +21,21 @@ function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation> {
         i := i + 1;
 }
 
+//second try
+function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation> {
+    //if |obs| == 0 then [] else [];
+    var result := [];
+    forall ob: Observation | obs {
+        ob.isSubTaxon(root);
+    }
+        
+        //obs isSubTaxon() .... FilterBy(getTaxon())
+        
+      
+    //if obs[i].getTaxon() == root then result + [root]
+    //else if 
+    
+    //assert obs == [obs[0] .. obs[1..]];
+}
+
 //http://dafny.org/latest/Dafny-cheat-sheet.pdf

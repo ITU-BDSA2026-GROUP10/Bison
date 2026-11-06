@@ -1,5 +1,6 @@
 using Bison.Razor;
 using Bison.Razor.ObservationService;
+using Bison.Razor.TaxonService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IObservationService, ObservationService>();
+builder.Services.AddScoped<ITaxonService, TaxonService>();
 builder.Services.AddScoped<DBFacade>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

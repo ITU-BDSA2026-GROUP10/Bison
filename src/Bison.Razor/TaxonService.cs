@@ -1,10 +1,14 @@
 namespace Bison.Razor.TaxonService;
+
+using System.ComponentModel.DataAnnotations;
 using Bison.Razor.ObservationService; 
 using DataModel;
+//using Filter;
 
 public interface ITaxonService
 {
     public List<Observation> GetObservationsFromTaxonId (string id, List<Observation> observations);
+    public void filteredObservations(List<Observation> observations);
 }
 
 public class TaxonService : ITaxonService
@@ -30,6 +34,12 @@ public class TaxonService : ITaxonService
             }
         }
         return filteredObservations;
+    }
+
+    public void filteredObservations(List<Observation> observations)
+    {
+        //Filter.__default.FilterWrapped(observations);
+
     }
 
     /*public List<Observation> GetObservationsFromTaxonIdRECURSION(Taxon taxon, List<Observation> observations)
