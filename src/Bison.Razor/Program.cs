@@ -18,8 +18,18 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
-    options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<BisonDBContext>() ;
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Lockout.AllowedForNewUsers = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+
+.AddEntityFrameworkStores<BisonDBContext>() ;
     
 builder.Services.AddScoped<IPostRepository, PostRepositoryClass>();
 
