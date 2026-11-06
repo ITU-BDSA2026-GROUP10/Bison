@@ -12,7 +12,7 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPosts(int page);
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
-    //public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id);
+    public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -141,16 +141,16 @@ public class PostRepositoryClass : IPostRepository
         return proposals;
     }
 
-    /*public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, List<Observation> observations) 
+    public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/) 
     {
-        var observations = new List <ObservationDTO>();
+        //var observationsList = new List <ObservationDTO>();
         
-        var observationQuery = _context.Observation
-        .Include(observation => observation.author)
-        .Where(observation => observation.taxon.TaxonID == id);
-        var result = await proposalQuery.ToListAsync();
+        var observationQuery = _context.Observations
+        .Include(observation => observation.Author)
+        .Where(observation => observation.Taxon.dwc_TaxonID == id);
+        var result = await observationQuery.ToListAsync();
 
-        return GetProposalDTOs(result);
-    }*/
+        return GetObservationDTO(result);
+    }
     
 }
