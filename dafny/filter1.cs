@@ -25,16 +25,16 @@ module {:extern ""src.DataModel""} Classes {
 }
 
 module Filter {
-  function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
-    ensures forall ob: Observation {:trigger ob.getTaxon()} {:trigger ob in obs} {:trigger ob in FilterBy(root, obs)} :: (ob in FilterBy(root, obs) ==> ob in obs) && (ob in FilterBy(root, obs) ==> ob.getTaxon().isSubTaxon(root))
-    ensures forall ob: Observation {:trigger ob in FilterBy(root, obs)} {:trigger ob.getTaxon()} {:trigger ob in obs} :: ob in obs && ob.getTaxon().isSubTaxon(root) ==> ob in FilterBy(root, obs)
-    ensures |FilterBy(root, obs)| <= |obs|
+  function GetObservationsFromTaxonId(root: Taxon, obs: seq<Observation>): seq<Observation>
+    ensures forall ob: Observation {:trigger ob.getTaxon()} {:trigger ob in obs} {:trigger ob in GetObservationsFromTaxonId(root, obs)} :: (ob in GetObservationsFromTaxonId(root, obs) ==> ob in obs) && (ob in GetObservationsFromTaxonId(root, obs) ==> ob.getTaxon().isSubTaxon(root))
+    ensures forall ob: Observation {:trigger ob in GetObservationsFromTaxonId(root, obs)} {:trigger ob.getTaxon()} {:trigger ob in obs} :: ob in obs && ob.getTaxon().isSubTaxon(root) ==> ob in GetObservationsFromTaxonId(root, obs)
+    ensures |GetObservationsFromTaxonId(root, obs)| <= |obs|
     decreases |obs|
   {
     if |obs| == 0 then
       []
     else
-      assert obs == [obs[0]] + obs[1..]; if obs[0].getTaxon().isSubTaxon(root) then [obs[0]] + FilterBy(root, obs[1..]) else FilterBy(root, obs[1..])
+      assert obs == [obs[0]] + obs[1..]; if obs[0].getTaxon().isSubTaxon(root) then [obs[0]] + GetObservationsFromTaxonId(root, obs[1..]) else GetObservationsFromTaxonId(root, obs[1..])
   }
 
   import opened Classes
@@ -47,7 +47,7 @@ module FilterWrapped {
     ensures forall ob: Observation {:trigger ob in result[..]} {:trigger ob.getTaxon()} {:trigger ob in obs[..]} :: ob in obs[..] && ob.getTaxon().isSubTaxon(root) ==> ob in result[..]
     decreases root, obs
   {
-    var filtered := FilterBy(root, obs[..]);
+    var filtered := GetObservationsFromTaxonId(root, obs[..]);
     var size := |filtered|;
     result := new Observation[size] ((i: int) requires 0 <= i < size => filtered[i]);
     assert result[..] == filtered;
@@ -5740,7 +5740,7 @@ namespace src.DataModel {
 namespace Filter {
 
   public partial class __default {
-    public static Dafny.ISequence<src.DataModel.Observation> FilterBy(src.DataModel.Taxon root, Dafny.ISequence<src.DataModel.Observation> obs)
+    public static Dafny.ISequence<src.DataModel.Observation> GetObservationsFromTaxonId(src.DataModel.Taxon root, Dafny.ISequence<src.DataModel.Observation> obs)
     {
       Dafny.ISequence<src.DataModel.Observation> _0___accumulator = Dafny.Sequence<src.DataModel.Observation>.FromElements();
     TAIL_CALL_START: ;
@@ -5772,7 +5772,7 @@ namespace FilterWrapped {
     {
       src.DataModel.Observation[] result = new src.DataModel.Observation[0];
       Dafny.ISequence<src.DataModel.Observation> _0_filtered;
-      _0_filtered = Filter.__default.FilterBy(root, Dafny.Helpers.SeqFromArray(obs));
+      _0_filtered = Filter.__default.GetObservationsFromTaxonId(root, Dafny.Helpers.SeqFromArray(obs));
       BigInteger _1_size;
       _1_size = new BigInteger((_0_filtered).Count);
       Func<BigInteger, src.DataModel.Observation> _init0 = Dafny.Helpers.Id<Func<Dafny.ISequence<src.DataModel.Observation>, BigInteger, Func<BigInteger, src.DataModel.Observation>>>((_2_filtered, _3_size) => ((System.Func<BigInteger, src.DataModel.Observation>)((_4_i) => {

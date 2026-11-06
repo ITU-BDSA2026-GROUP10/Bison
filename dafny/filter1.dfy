@@ -13,19 +13,19 @@ module {:extern "src.DataModel"} Classes{
 module Filter{
     import opened Classes
     //See explaination on non-ghost and ghost methods and functions: https://github.com/hath995/dafny-lang/blob/master/docs/HowToFAQ/Errors-Resolution.md
-    function FilterBy(root: Taxon, obs: seq<Observation>): seq<Observation>
+    function GetObservationsFromTaxonId(root: Taxon, obs: seq<Observation>): seq<Observation>
     
     //now every thing we that gets returned comes from the input and matches
     //==> means "implies"
-    ensures forall ob: Observation :: ob in FilterBy(root, obs) ==>
+    ensures forall ob: Observation :: ob in GetObservationsFromTaxonId(root, obs) ==>
     ob in obs && ob.getTaxon().isSubTaxon(root)
     
     //and the inputs that match are returned
     ensures forall ob: Observation :: ob in obs && ob.getTaxon().isSubTaxon(root) ==>
-    ob in FilterBy(root, obs)
+    ob in GetObservationsFromTaxonId(root, obs)
     
     //now cardinality check
-    ensures |FilterBy(root, obs)| <= |obs|
+    ensures |GetObservationsFromTaxonId(root, obs)| <= |obs|
     
     decreases |obs| //'decreases' is neccesary in dafny because of the need for a program to terminate and this works with both loops and recursion
     //Therefore you can insert 'decreases' and this makes sure the obs sequence strictly decreases and that it can't decrease forever
@@ -38,9 +38,9 @@ module Filter{
             //the assert is for dafny to know which stm to prove each time is always true
             
             if obs[0].getTaxon().isSubTaxon(root)
-                then [obs[0]] + FilterBy(root, obs[1..]) //the recursion
+                then [obs[0]] + GetObservationsFromTaxonId(root, obs[1..]) //the recursion
             else 
-                FilterBy(root, obs[1..])
+                GetObservationsFromTaxonId(root, obs[1..])
     }
 }
 
@@ -66,7 +66,7 @@ module FilterWrapped {
     ob in result[..]
     
     { //the method body
-        var filtered := FilterBy(root, obs[..]);
+        var filtered := GetObservationsFromTaxonId(root, obs[..]);
         var size := |filtered|;
         result := new Observation[size](i requires 0 <= i < size => filtered[i]); //this is another way to write seq(size, i => P) which is a sequence display expression
         //this allows us to define the sequence to be constructed as length |filtered| and each value is evaluated based on the condition i == P see https://dafny.org/dafny/DafnyRef/DafnyRef#sec-seq-comprehension
