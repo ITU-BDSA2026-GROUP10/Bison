@@ -13,6 +13,7 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
     public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
+    public Task<List<ObservationDTO>> ReadPosts();
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -30,6 +31,7 @@ public class PostRepositoryClass : IPostRepository
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Observations
             .Include(obs => obs.Author)
+            .Include(obs => obs.Taxon)
             .OrderByDescending(observation => observation.TimeStamp)
             .Skip((page-1) * numberOfObs).Take(numberOfObs);
         
@@ -99,7 +101,8 @@ public class PostRepositoryClass : IPostRepository
                 AuthorName = obs.Author.Name,
                 Text = obs.Text,
                 //make timestamp an int!
-                TimeStamp = obs.TimeStamp.ToString()
+                TimeStamp = obs.TimeStamp.ToString(),
+                Taxon = obs.Taxon
             });
         }
         return posts;
@@ -153,4 +156,16 @@ public class PostRepositoryClass : IPostRepository
         return GetObservationDTO(result);
     }
     
+    public async Task<List<ObservationDTO>> ReadPosts()
+    {
+        var query = _context.Observations
+            .Include(obs => obs.Author)
+            .Include(obs => obs.Taxon)
+            .OrderByDescending(observation => observation.TimeStamp);
+        
+        // Execute the query and store the results
+        var result = await query.ToListAsync();
+       
+        return GetObservationDTO(result);
+    }
 }
