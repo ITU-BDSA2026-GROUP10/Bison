@@ -1,0 +1,7 @@
+@model int 
+
+@if (Model > 1)
+{
+    <a href="?page=@(Model - 1)">Previous page</a>
+} 
+<a href="?page=@(Model+1)">Next page</a>
