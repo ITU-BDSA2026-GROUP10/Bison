@@ -4,4 +4,7 @@
 {
     <a href="?page=@(Model - 1)">Previous page</a>
 } 
-<a href="?page=@(Model+1)">Next page</a>
+@if ((int)ViewData["ObservationCount"] == 32)
+{
+    <a href="?page=@(Model + 1)">Next page</a>
+}
