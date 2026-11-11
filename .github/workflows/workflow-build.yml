@@ -40,6 +40,6 @@ jobs:
       
     - name: Test
       run: |
-          export authentication:github:clientId="${{ secrets.GITHUBCLIENTID }}"
-          export authentication:github:clientSecret="${{ secrets.GITHUBCLIENTSECRET }}"
+          export ClientId="${{ secrets.GITHUBCLIENTID }}"
+          export ClientSecret="${{ secrets.GITHUBCLIENTSECRET }}"
           dotnet test --no-build --verbosity normal
