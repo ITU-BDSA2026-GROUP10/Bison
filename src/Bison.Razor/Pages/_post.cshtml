@@ -1,0 +1,22 @@
+@page "/{obs?}"
+@model Bison.Razor.Pages.PublicModel
+@{
+    ViewData["Title"] = "Bison";
+    Layout = "Shared/_Layout";
+    //var routeName = HttpContext.GetRouteValue("page");
+}
+
+<div>
+    <h2> Make a post </h2>
+
+    @if (User.Identity.IsAuthenticated)
+    {           
+        <p>
+            
+        </p>
+    }
+    else
+    {
+        <em>You need to log in to create a post</em>
+    }
+</div>
