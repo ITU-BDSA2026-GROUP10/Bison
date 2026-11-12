@@ -11,9 +11,21 @@ public class UserTimelineModel : PageModel
     private readonly IObservationService _service;
     public List<ObservationViewModel> Observations { get; set; }
 
+    public string Text {get; set;}
+
+    public string Author {get; set;}
+
     public UserTimelineModel(IObservationService service)
     {
         _service = service;
+    }
+    
+    public void OnSet([FromQuery] string text, [FromRoute] string author)
+    {
+        //save to database
+        //start by making a observation and then call repos method addPost()
+        
+        //evt send back which page to redirect to
     }
 
     public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)

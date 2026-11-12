@@ -1,3 +1,6 @@
+using DataModel;
+using NuGet.Protocol.Core.Types;
+
 namespace Bison.Razor.ObservationService;
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
@@ -7,6 +10,8 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
+
+    public void AddObservationPost(Author author, string text);
 }
 
 public class ObservationService : IObservationService
@@ -95,6 +100,14 @@ public class ObservationService : IObservationService
         }
         
         return observations; 
+    }
+    
+    public void AddObservationPost(Author author, string text)
+    {
+        int postid = postRepository.GetMaxPostId() + 1;
+        
+        Post obs = new Post(author, text, postid);
+        postRepository.AddPost(obs);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)

@@ -14,6 +14,10 @@ public interface IPostRepository
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
     public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
     public Task<List<ObservationDTO>> ReadPosts();
+
+    public int GetMaxPostId();
+
+    public void AddPost (Post post);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -167,5 +171,18 @@ public class PostRepositoryClass : IPostRepository
         var result = await query.ToListAsync();
        
         return GetObservationDTO(result);
+    }
+
+     public void AddPost (Post post)
+    {
+        var observationQuery = _context.Posts.Add(post);
+    
+    }
+    
+    public int GetMaxPostId()
+    {
+        int max = _context.Observations.Max(row => row.PostId);
+        
+        return max;
     }
 }
