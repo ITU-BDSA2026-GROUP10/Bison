@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup10bison
 on:
   push:
     branches:
-      - 'main'
+      - 'ui'
   workflow_dispatch:
 
 jobs:
