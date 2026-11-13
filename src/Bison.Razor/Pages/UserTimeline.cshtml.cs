@@ -9,11 +9,26 @@ namespace Bison.Razor.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly IObservationService _service;
+    // This is a comment
     public List<ObservationViewModel> Observations { get; set; }
+
+    public string Text {get; set;}
+
+    public string Author {get; set;}
 
     public UserTimelineModel(IObservationService service)
     {
         _service = service;
+    }
+    
+    public void OnSet([FromQuery] string text, [FromRoute] string author, [FromRoute] string email)
+    {
+        //save to database
+        //start by making a observation and then call repos method addPost()
+       var auth = _service.SetAuthor(author, email);
+       _service.AddObservationPost(auth, text);
+        
+        //evt send back which page to redirect to
     }
 
     public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
