@@ -1,6 +1,9 @@
 using Bison.Razor;
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
+using Bison.Razor.TaxonService;
 using Microsoft.EntityFrameworkCore;
+using DataModel;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,21 @@ builder.Services.AddScoped<IObservationService, ObservationService>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Lockout.AllowedForNewUsers = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+
+.AddEntityFrameworkStores<BisonDBContext>() ;
+    
 builder.Services.AddScoped<IPostRepository, PostRepositoryClass>();
 
 var app = builder.Build();
@@ -39,6 +57,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapRazorPages();
 
 app.Run();
+
+// Source - https://stackoverflow.com/a/70026704
+// Posted by PmanAce
+// Retrieved 2026-10-30, License - CC BY-SA 4.0
+public partial class Program { }
+

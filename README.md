@@ -2,6 +2,12 @@
 
 # This project is an app for Ornithology posts
 
+For dafny:
+
+'dotnet new tool-manifest'
+
+'dotnet tool install dafny'
+
 ## How to run
 in the terminal
 > dotnet run
@@ -9,8 +15,8 @@ in the terminal
 after opening the localhost address write in your http address:
 >/obs
 
->/ob?id=3
+>/ob?id=<no.>
 
->/obs?page=1
+>/obs?page=<no.>
 
->/obs/<firstname%20lastname>?page=2
+>/obs/<firstname%20lastname>?page=<no.>

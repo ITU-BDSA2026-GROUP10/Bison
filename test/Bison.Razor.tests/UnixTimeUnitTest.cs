@@ -1,6 +1,6 @@
 namespace Bison.Razor.tests;
 
-using Bison.Razor.BisonService;
+using Bison.Razor.ObservationService;
 
 
 public class UnixTimeTest

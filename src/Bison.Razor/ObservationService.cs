@@ -1,12 +1,12 @@
-namespace Bison.Razor.BisonService;
+namespace Bison.Razor.ObservationService;
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 public interface IObservationService
 {
     public Task<List<ObservationViewModel>> GetObservations(int page);
     public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
-    
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
+    public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
 }
 
 public class ObservationService : IObservationService
@@ -20,11 +20,8 @@ public class ObservationService : IObservationService
         this.postRepository = postRepository;
     }
 
-
     public async Task<List<ObservationViewModel>> GetObservations(int page)
     {
-        int numberOfObs = 32;
-
         page = ValidPageNumber(page);
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
@@ -57,8 +54,6 @@ public class ObservationService : IObservationService
     public async Task<List<ObservationViewModel>> GetObservationFromID(int id, int page)
     {
 
-        int numberOfObs = 32;
-
         if (id == 0) 
         {
             return await GetObservations(1); //has to include await since we're returning a task
@@ -84,6 +79,21 @@ public class ObservationService : IObservationService
         {
             observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
         }
+        return observations; 
+    }
+
+    public async Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page)
+    {
+
+        page = ValidPageNumber(page);
+
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+        var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
+        foreach (var DTO in observationDTOs)
+        {
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString()));
+        }
+        
         return observations; 
     }
 

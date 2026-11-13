@@ -8,4 +8,9 @@ public class Observation : Post
     public List<Comment>? Comments {get; set;}
 
     public List<Proposal>? Proposals {get; set;}
+
+    public Taxon getTaxon()
+    {
+        return Taxon;
+    }
 }
