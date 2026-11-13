@@ -9,6 +9,7 @@ namespace Bison.Razor.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly IObservationService _service;
+    // This is a comment
     public List<ObservationViewModel> Observations { get; set; }
 
     public string Text {get; set;}
