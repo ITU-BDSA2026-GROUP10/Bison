@@ -99,13 +99,19 @@ sealed public class CSVDatabase<T> : IDatabaseRepository<T>
     }
  
     public void Store(T record, string path, string location) {
-        using (StreamWriter writer = File.AppendText(path))
+        try
         {
-            if(record is Observations ob && record != null)
+            using (StreamWriter writer = File.AppendText(path))
             {
-                writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
+                if(record is Observations ob && record != null)
+                {
+                    writer.WriteLine(ob.Author + ",\"" + ob.Observation + "\"," + ob.Timestamp + "," + ob.ID + "," + ob.Location);
+                }
+                writer.Close();
             }
-            writer.Close();
+        } catch (IOException ex)
+        {
+             Console.WriteLine(ex.Message);
         }
     }
 
