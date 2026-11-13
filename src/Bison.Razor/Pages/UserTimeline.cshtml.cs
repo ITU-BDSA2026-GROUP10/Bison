@@ -20,10 +20,12 @@ public class UserTimelineModel : PageModel
         _service = service;
     }
     
-    public void OnSet([FromQuery] string text, [FromRoute] string author)
+    public void OnSet([FromQuery] string text, [FromRoute] string author, [FromRoute] string email)
     {
         //save to database
         //start by making a observation and then call repos method addPost()
+       var auth = _service.SetAuthor(author, email);
+       _service.AddObservationPost(auth, text);
         
         //evt send back which page to redirect to
     }

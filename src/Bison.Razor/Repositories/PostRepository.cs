@@ -1,5 +1,6 @@
 namespace Bison.Razor;
 
+using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata;
 using DataModel;
 using DTO;
@@ -14,10 +15,11 @@ public interface IPostRepository
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
     public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
     public Task<List<ObservationDTO>> ReadPosts();
-
     public int GetMaxPostId();
-
     public void AddPost (Post post);
+    public Task<Boolean> DoesThisAuthorExist (Author author);
+    public Task<int> GetAuthorIdFromAuthor (Author author); 
+    public int GetMaxAuthorId();
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -173,9 +175,10 @@ public class PostRepositoryClass : IPostRepository
         return GetObservationDTO(result);
     }
 
-     public void AddPost (Post post)
+    public void AddPost (Post post)
     {
         var observationQuery = _context.Posts.Add(post);
+        _context.SaveChanges();
     
     }
     
@@ -185,4 +188,42 @@ public class PostRepositoryClass : IPostRepository
         
         return max;
     }
+
+    public async Task<Boolean> DoesThisAuthorExist (Author author)
+    {
+        var query = _context.Observations.Where(observation => observation.Author.Name == author.Name);
+
+        var result = await query.ToListAsync();
+        
+        if (result.Count == 0)
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public async Task<int> GetAuthorIdFromAuthor(Author author)
+    {
+        var authorExists = await DoesThisAuthorExist(author);
+        if (authorExists)
+        {
+            var query = _context.Observations
+            .Where(observation => observation.Author.AuthorId == author.AuthorId);
+            
+            var result = await query.ToListAsync();
+            var id = Convert.ToInt32(result.FirstOrDefault());
+            return id;
+        } else
+        {
+            return GetMaxAuthorId() + 1;
+        }
+    }
+
+    public int GetMaxAuthorId()
+    {
+        int max = _context.Observations.Max(row => row.AuthorId);
+        
+        return max;
+    }
+    
 }

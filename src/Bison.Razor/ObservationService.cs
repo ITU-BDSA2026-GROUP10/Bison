@@ -10,8 +10,8 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
-
     public void AddObservationPost(Author author, string text);
+    public Author SetAuthor(string name, string email);
 }
 
 public class ObservationService : IObservationService
@@ -108,6 +108,14 @@ public class ObservationService : IObservationService
         
         Post obs = new Post(author, text, postid);
         postRepository.AddPost(obs);
+    }
+    
+    public Author SetAuthor(string name, string email)
+    {
+        Author author = new Author(name, email);
+        int result = Convert.ToInt32(postRepository.GetAuthorIdFromAuthor(author));
+        author.AuthorId = result;
+        return author;
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
