@@ -6,7 +6,7 @@ name: build and test with dotnet
 on:
   push:
     branches:
-      - Bison.CLI
+      - bison_cli
       - main
   pull_request:
     branches: [ "main" ]
