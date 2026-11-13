@@ -47,12 +47,12 @@ public class IntegrationTestsBasic  : IClassFixture<WebApplicationFactory<Progra
     }
 }
 
-public class ObservationServiceIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
+public class ObservationServiceIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly CustomWebApplicationFactory<Program> _factory;
     
     public ObservationServiceIntegrationTest (
-        WebApplicationFactory<Program> factory)
+        CustomWebApplicationFactory<Program> factory)
     {
         _factory = factory;
     }
@@ -74,6 +74,24 @@ public class ObservationServiceIntegrationTest : IClassFixture<WebApplicationFac
         
         //Assert
         Assert.Equal(result_One, result_Zero);
+    }
+
+    [Fact]
+    public async Task GetObservationsDoesNotReturnsSameTaskWithPageNrOneAndTwo()
+    {
+        //Arrange
+        int one = 1;
+        int two = 2;
+        
+        IPostRepository repository = _factory.fakePostRepository;
+        ObservationService service = new ObservationService(repository);
+        
+        //Act
+        var result_One = await service.GetObservations(one);
+        var result_Two = await service.GetObservations(two);
+        
+        //Assert
+        Assert.NotEqual(result_One, result_Two);
     }
 }
 

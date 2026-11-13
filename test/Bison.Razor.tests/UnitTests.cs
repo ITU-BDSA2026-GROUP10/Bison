@@ -8,6 +8,7 @@ using DataModel;
 using DTO;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 public class UnitTests
 {
@@ -225,15 +226,34 @@ public class SinglePostRepository : IPostRepository
 // https://moleseyhill.com/2009-07-06-unit-testing-with-repository-pattern.html
 public class FakePostRepository : IPostRepository
 {
-    private readonly BisonDBContext _context;
-    // new BisonDBContext(Configuration.ConnectionStrings["FakeRepoTest"].ConnectionString);
-
+    private BisonDBContext _context;
+   
     public FakePostRepository()
-    { }
+    {
+        var options = new DbContextOptions<BisonDBContext>();
+        //_context = new BisonDBContext(options);
+        //InitializeDbForTests(_context);
+        
+       
+        /*Author author1 = new Author(){AuthorId = 1, Name = "First Name", Email = "thisIsAMail@Mail.com", Posts = new List<Post>()};
+        Author author2 = new Author(){AuthorId = 1, Name = "Second Name", Email = "thisMailIsSoReal@RealMail.com", Posts = new List<Post>()};
+
+        Observation observation1 = new Observation(){PostId = 1, Author = author1, Text = "I saw a bird, crazy times", TimeStamp = DateTime.Parse("2025-12-12 07:12:00")};
+        Observation observation2 = new Observation(){PostId = 2, Author = author2, Text = "I call this bird Bison", TimeStamp = DateTime.Parse("2001-01-01 07:12:00")};
+        _context.Authors.Add(author1);
+        _context.Authors.Add(author2);
+        _context.Observations.Add(observation1);
+        _context.Observations.Add(observation2);*/
+    }
+
+    public void SetContext(BisonDBContext context)
+    {
+        _context = context;
+    }
 
     public async Task<List<ObservationDTO>> ReadPosts(int page)
     {
-        int numberOfObs = 32;
+        int numberOfObs = 1;
         
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Observations
@@ -262,6 +282,28 @@ public class FakePostRepository : IPostRepository
         }
         return posts;
     }
+
+    public static void InitializeDbForTests(BisonDBContext db)
+{
+    db.Observations.AddRange(GetSeedingMessages());
+    db.SaveChanges();
+}
+
+public static void ReinitializeDbForTests(BisonDBContext db)
+{
+    db.Observations.RemoveRange(db.Observations);
+    InitializeDbForTests(db);
+}
+
+public static List<Observation> GetSeedingMessages()
+{
+
+    return new List<Observation>()
+    {
+        new Observation(){PostId = 1, Author = new Author(), Text = "I saw a bird, crazy times", TimeStamp = DateTime.Parse("2025-12-12 07:12:00")},
+        new Observation(){PostId = 2, Author = new Author(), Text = "I call this bird Bison", TimeStamp = DateTime.Parse("2001-01-01 07:12:00")}
+    };
+}
     public async Task<List<ObservationDTO>> ReadPosts()
     {
         throw new NotImplementedException();
