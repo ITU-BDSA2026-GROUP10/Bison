@@ -8,8 +8,8 @@ on:
   pull_request:
     branches: [ "main" ]
     paths-ignore:
-      - 'Bison/test/Bison.CLI.tests/*EndTo*nd*.cs'
-      - 'Bison/test/Bison.CLI.tests/GlobalUsings.cs'
+      - '../test/Bison.CLI.tests/*EndTo*nd*.cs'
+      - '../test/Bison.CLI.tests/GlobalUsings.cs'
 
 jobs:
   build_and_test:
@@ -26,5 +26,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Test Unit and Fuzz
+    - name: Test
       run: dotnet test --no-build --verbosity normal
