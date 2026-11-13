@@ -27,4 +27,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test Unit and Fuzz
-      run: dotnet test ../test/Bison.CLI.tests/Bison.CLI.tests.csproj  --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
