@@ -12,8 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IObservationService, ObservationService>();
-builder.Services.AddScoped<ITaxonService, TaxonService>();
-builder.Services.AddScoped<DBFacade>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
