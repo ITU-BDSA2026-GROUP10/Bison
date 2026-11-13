@@ -12,6 +12,7 @@ public class UserTimelineModel : PageModel
     // This is a comment
     public List<ObservationViewModel> Observations { get; set; }
 
+    public int CurrentPage { get; set; }
     public string Text {get; set;}
 
     public string Author {get; set;}
@@ -33,6 +34,7 @@ public class UserTimelineModel : PageModel
 
     public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
     {
+        CurrentPage = ObservationService.ObservationService.ValidPageNumber(page);
         Task <List<ObservationViewModel>> obsTask = _service.GetObservationsFromAuthor(author,page);
         Observations = await obsTask;
         return Page();
