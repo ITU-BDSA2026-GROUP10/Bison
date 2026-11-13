@@ -42,8 +42,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = "GitHub";
     })
     .AddCookie()
@@ -52,6 +52,7 @@ builder.Services.AddAuthentication(options =>
         o.ClientId = builder.Configuration["authentication:github:clientId"];
         o.ClientSecret = builder.Configuration["authentication:github:clientSecret"];
         o.CallbackPath = "/signin-github";
+        o.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
 });
 
 var app = builder.Build();

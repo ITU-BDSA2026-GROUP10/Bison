@@ -10,7 +10,7 @@
 <div class=page>
     <h1><img src="/images/icon1.png" alt="Icon1"/>Bison</h1>
     <div class=navigation>
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity?.IsAuthenticated == true)
         {
             <div>
                 <a href="/obs/@(User.Identity.Name)">My Observations</a> |
@@ -35,8 +35,7 @@
     <div class=body>
             @RenderBody()
             @*
-            <a href="/">Next page</a>     
-            <a href="/">Previous page</a>
+
             *@
     </div>
     <div class=footer>
