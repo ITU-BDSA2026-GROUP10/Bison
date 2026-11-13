@@ -8,7 +8,9 @@
 
 <div>
     <h2> @routeName's Observations </h2>
-
+    <partial name = "_form.cshtml" ></partial>
+</div>
+<div>
     @if (Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">

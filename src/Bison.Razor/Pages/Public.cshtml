@@ -1,5 +1,6 @@
 ﻿@page "/{obs?}"
 @model Bison.Razor.Pages.PublicModel
+@using DataModel
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
@@ -8,7 +9,6 @@
 
 <div>
     <h2> Public Timeline </h2>
-
     @if (Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
