@@ -23,6 +23,8 @@ public interface IPostRepository
     public int GetMaxAuthorId();
     public Task<int> AddComments(Comment comment);
     public Task<int> AddProposals(Proposal proposal);
+    
+    public Task<int> AddAuthor(Author author, int authorId);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -248,6 +250,14 @@ public class PostRepositoryClass : IPostRepository
         int max = _context.Observations.Max(row => row.AuthorId);
         
         return max;
+    }
+    
+    public async Task<int> AddAuthor(Author author, int authorId)
+    {
+        if (author.AuthorId == null && authorId != null){author.AuthorId = authorId;}
+        _context.Authors.Add(author);
+        await _context.SaveChangesAsync();
+        return author.AuthorId;
     }
     
     //--- comments and proposals -----

@@ -183,6 +183,8 @@ public class EmptyPostRepository : IPostRepository
     public Task <Author> GetAuthorFromDatabase(string name, string email) {return null;}
     public int GetMaxAuthorId() { return 0;}
     
+    public Task<int> AddAuthor(Author author, int authorId) {return null;}
+    
     public Task<int> AddComments(Comment comment) { return null;}
     public Task<int> AddProposals(Proposal proposal) { return null;}
 }
@@ -242,6 +244,8 @@ public class SinglePostRepository : IPostRepository
     public Task<int> GetAuthorIdFromAuthor (Author author) { return null;}
     public Task <Author> GetAuthorFromDatabase(string name, string email) {return null;}
     public int GetMaxAuthorId() { return 0;}
+    
+    public Task<int> AddAuthor(Author author, int authorId){return null;}
      public Task<int> AddComments(Comment comment) { return null;}
     public Task<int> AddProposals(Proposal proposal) { return null;}
 }
@@ -316,6 +320,8 @@ public class FakePostRepository : IPostRepository
 
     public int GetMaxAuthorId() { return 0;}
     
+    
+    public Task<int> AddAuthor(Author author, int authorId){return null;}
      public Task<int> AddComments(Comment comment) { return null;}
     public Task<int> AddProposals(Proposal proposal) { return null;}
 }

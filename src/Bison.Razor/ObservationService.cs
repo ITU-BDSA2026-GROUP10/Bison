@@ -134,6 +134,7 @@ public class ObservationService : IObservationService
         Author author = new Author(name, email);
         var result = await postRepository.GetAuthorIdFromAuthor(author);
         author.AuthorId = result;
+        await postRepository.AddAuthor(author, result);
         return author;
     }
 
