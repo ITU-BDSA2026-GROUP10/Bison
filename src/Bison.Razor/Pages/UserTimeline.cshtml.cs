@@ -25,11 +25,11 @@ public class UserTimelineModel : PageModel
     {
         //save to database
         //start by making a observation and then call repos method addPost()
-       var auth = await _service.SetAuthor(author, email);
-       Console.WriteLine("Dette er min observation: " + observation);
-       _service.AddObservationPost(auth, observation);
+        var auth = await _service.SetAuthor(author, email);
+        Console.WriteLine("Dette er min observation: " + observation);
+        _service.AddObservationPost(auth, observation);
         Console.WriteLine(author + " har lavet denne observation " + observation);
-        return Page();
+        return RedirectToPage(new { author = author });
         //evt send back which page to redirect to
     }
 

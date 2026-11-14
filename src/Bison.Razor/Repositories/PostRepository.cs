@@ -17,6 +17,7 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPosts();
     public int GetMaxPostId();
     public void AddPost (Post post);
+    public Task <Author> GetAuthorFromDatabase(string name, string email);
     public Task<Boolean> DoesThisAuthorExist (Author author);
     public Task<int> GetAuthorIdFromAuthor (Author author); 
     public int GetMaxAuthorId();
@@ -180,7 +181,25 @@ public class PostRepositoryClass : IPostRepository
        var observationQuery = _context.Posts.Add(post);
         _context.SaveChanges();
     
+    } 
+
+    public async Task<Author> GetAuthorFromDatabase(string name, string email)
+{
+    var author = await _context.Authors
+        .FirstOrDefaultAsync(a => a.Name == name && a.Email == email);
+
+    if (author != null)
+    {
+        return author;
     }
+
+    author = new Author(name, email);
+
+    _context.Authors.Add(author);
+    await _context.SaveChangesAsync();
+
+    return author;
+}
     
     public int GetMaxPostId()
     {
