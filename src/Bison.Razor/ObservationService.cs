@@ -113,6 +113,22 @@ public class ObservationService : IObservationService
         postRepository.AddPost(obs);
     }
     
+    public void AddCommentPost (Author author, string text, Observation observation)
+    {
+        int postid = postRepository.GetMaxPostId() + 1;
+        
+        Comment com = new Comment(author, text, postid, observation);
+        postRepository.AddComments(com);
+    }
+    
+    public void AddProposalPost (Author author, string text, Observation observation, Taxon tax)
+    {
+        int postid = postRepository.GetMaxPostId() + 1;
+        
+        Proposal pro = new Proposal(author, text, postid, observation, tax);
+        postRepository.AddProposals(pro);
+    }
+    
     public async Task<Author> SetAuthor(string name, string email)
     {
         Author author = new Author(name, email);

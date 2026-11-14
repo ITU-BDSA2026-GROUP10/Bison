@@ -21,6 +21,8 @@ public interface IPostRepository
     public Task<Boolean> DoesThisAuthorExist (Author author);
     public Task<int> GetAuthorIdFromAuthor (Author author); 
     public int GetMaxAuthorId();
+    public Task<int> AddComments(Comment comment);
+    public Task<int> AddProposals(Proposal proposal);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -204,7 +206,7 @@ public class PostRepositoryClass : IPostRepository
     
     public int GetMaxPostId()
     {
-        int max = _context.Observations.Max(row => row.PostId);
+        int max = _context.Posts.Max(row => row.PostId);
         
         return max;
     }
@@ -251,7 +253,6 @@ public class PostRepositoryClass : IPostRepository
     //--- comments and proposals -----
      public async Task<int> AddComments(Comment comment)
     {
-        
         comment.Author.Posts.Add(comment);
         comment.Observation.Comments.Add(comment);
        _context.Posts.Add(comment);

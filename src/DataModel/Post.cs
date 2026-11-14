@@ -11,6 +11,7 @@ public class Post
     public Post (Author author, string text, int postid){
         PostId = postid;
         Author = author;
+        AuthorId = author.AuthorId;
         Text = text;
         TimeStamp = DateTime.Now;
     }
