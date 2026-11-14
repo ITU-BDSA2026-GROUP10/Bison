@@ -174,9 +174,13 @@ public class EmptyPostRepository : IPostRepository
     }
 
     public int GetMaxPostId() { return 0;}
-    public void AddPost (Post post) {}
+    public Task<int> AddPost (Post post)
+    {
+        throw new NotImplementedException();
+    }
     public Task<Boolean> DoesThisAuthorExist (Author author) { return null;}
     public Task<int> GetAuthorIdFromAuthor (Author author) { return null;}
+    public Task <Author> GetAuthorFromDatabase(string name, string email) {return null;}
     public int GetMaxAuthorId() { return 0;}
 }
 
@@ -227,9 +231,13 @@ public class SinglePostRepository : IPostRepository
     }
 
     public int GetMaxPostId() { return 0;}
-    public void AddPost (Post post) {}
+    public Task<int> AddPost (Post post)
+    {
+        throw new NotImplementedException();
+    }
     public Task<Boolean> DoesThisAuthorExist (Author author) { return null;}
     public Task<int> GetAuthorIdFromAuthor (Author author) { return null;}
+    public Task <Author> GetAuthorFromDatabase(string name, string email) {return null;}
     public int GetMaxAuthorId() { return 0;}
 }
 
@@ -292,8 +300,14 @@ public class FakePostRepository : IPostRepository
     public async Task<List<CommentDTO>> ReadCommentsWithID(int p){return null;}
 
     public int GetMaxPostId() { return 0;}
-    public void AddPost (Post post) {}
+    public Task<int> AddPost (Post post)
+    {
+        throw new NotImplementedException();
+    }
     public Task<Boolean> DoesThisAuthorExist (Author author) { return null;}
     public Task<int> GetAuthorIdFromAuthor (Author author) { return null;}
+    
+    public Task <Author> GetAuthorFromDatabase(string name, string email) {return null;}
+
     public int GetMaxAuthorId() { return 0;}
 }

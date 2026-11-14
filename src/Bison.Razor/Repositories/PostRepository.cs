@@ -16,7 +16,7 @@ public interface IPostRepository
     public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
     public Task<List<ObservationDTO>> ReadPosts();
     public int GetMaxPostId();
-    public void AddPost (Post post);
+    public Task<int> AddPost (Post post);
     public Task <Author> GetAuthorFromDatabase(string name, string email);
     public Task<Boolean> DoesThisAuthorExist (Author author);
     public Task<int> GetAuthorIdFromAuthor (Author author); 
@@ -176,11 +176,12 @@ public class PostRepositoryClass : IPostRepository
         return GetObservationDTO(result);
     }
 
-    public void AddPost (Post post)
+    public async Task<int> AddPost (Post post)
     {
-       var observationQuery = _context.Posts.Add(post);
-        _context.SaveChanges();
-    
+       _context.Posts.Add(post);
+       _context.Add(post);
+        await _context.SaveChangesAsync();
+        return post.PostId;
     } 
 
     public async Task<Author> GetAuthorFromDatabase(string name, string email)
