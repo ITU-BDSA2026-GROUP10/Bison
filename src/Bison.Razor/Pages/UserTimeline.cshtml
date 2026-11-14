@@ -11,7 +11,7 @@
     <partial name = "_form.cshtml" ></partial>
 </div>
 <div>
-    @if (Model.Observations.Any())
+    @if (Model.Observations.Any() && Model.Observations != null)
     {
         <ul id="messagelist" class="observations">
             @foreach (var ob in Model.Observations)
