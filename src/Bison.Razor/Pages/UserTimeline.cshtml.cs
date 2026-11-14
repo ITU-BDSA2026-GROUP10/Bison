@@ -21,13 +21,15 @@ public class UserTimelineModel : PageModel
         _service = service;
     }
     
-    public void OnSet([FromQuery] string text, [FromRoute] string author, [FromRoute] string email)
+    public async Task<IActionResult> OnPost([FromForm] string observation, [FromRoute] string author, [FromForm] string email)
     {
         //save to database
         //start by making a observation and then call repos method addPost()
-       var auth = _service.SetAuthor(author, email);
-       _service.AddObservationPost(auth, text);
-        
+       var auth = await _service.SetAuthor(author, email);
+       Console.WriteLine("Dette er min observation: " + observation);
+       _service.AddObservationPost(auth, observation);
+        Console.WriteLine(author + " har lavet denne observation " + observation);
+        return Page();
         //evt send back which page to redirect to
     }
 

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DataModel;
 using NuGet.Protocol.Core.Types;
 
@@ -11,7 +12,7 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
     public void AddObservationPost(Author author, string text);
-    public Author SetAuthor(string name, string email);
+    public Task<Author> SetAuthor(string name, string email);
 }
 
 public class ObservationService : IObservationService
@@ -107,13 +108,15 @@ public class ObservationService : IObservationService
         int postid = postRepository.GetMaxPostId() + 1;
         
         Post obs = new Post(author, text, postid);
+        Console.WriteLine(obs.Author.Email);
+        Console.WriteLine(text);
         postRepository.AddPost(obs);
     }
     
-    public Author SetAuthor(string name, string email)
+    public async Task<Author> SetAuthor(string name, string email)
     {
         Author author = new Author(name, email);
-        int result = Convert.ToInt32(postRepository.GetAuthorIdFromAuthor(author));
+        var result = await postRepository.GetAuthorIdFromAuthor(author);
         author.AuthorId = result;
         return author;
     }

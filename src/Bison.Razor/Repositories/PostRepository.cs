@@ -177,7 +177,7 @@ public class PostRepositoryClass : IPostRepository
 
     public void AddPost (Post post)
     {
-        var observationQuery = _context.Posts.Add(post);
+       var observationQuery = _context.Posts.Add(post);
         _context.SaveChanges();
     
     }
@@ -207,14 +207,16 @@ public class PostRepositoryClass : IPostRepository
         var authorExists = await DoesThisAuthorExist(author);
         if (authorExists)
         {
-            var query = _context.Observations
-            .Where(observation => observation.Author.AuthorId == author.AuthorId);
+            var query = _context.Authors
+            .Where(auth => auth.AuthorId == author.AuthorId);
             
             var result = await query.ToListAsync();
-            var id = Convert.ToInt32(result.FirstOrDefault());
-            return id;
+            var id = result.FirstOrDefault();
+            Console.WriteLine("Author exists");
+            return id.AuthorId;
         } else
         {
+            Console.WriteLine("Author doesn't exist");
             return GetMaxAuthorId() + 1;
         }
     }

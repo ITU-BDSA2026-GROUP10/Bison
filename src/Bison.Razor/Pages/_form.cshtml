@@ -7,8 +7,17 @@
     <body>
         <h3>What did you spot today?</h3>
         <form method="post">
-            <input required type="text" name="Description" value="">
+            <fieldset>
+          <legend>Add observation</legend>
+          <div>
+            <label for="Obs">Write your observation here: </label>
+            <input type="text" name="observation" value="" />
+            @Html.ValidationMessage("observation")
+          </div>
+          <div>
             <input type="submit" value="Post">
+          </div>
+            </fieldset>
         </form>
     </body>
 </html>
