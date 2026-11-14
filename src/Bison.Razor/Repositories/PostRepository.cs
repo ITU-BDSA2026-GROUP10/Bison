@@ -179,7 +179,7 @@ public class PostRepositoryClass : IPostRepository
     public async Task<int> AddPost (Post post)
     {
        _context.Posts.Add(post);
-       _context.Add(post);
+       //_context.Add(post);
         await _context.SaveChangesAsync();
         return post.PostId;
     } 
@@ -246,6 +246,30 @@ public class PostRepositoryClass : IPostRepository
         int max = _context.Observations.Max(row => row.AuthorId);
         
         return max;
+    }
+    
+    //--- comments and proposals -----
+     public async Task<int> AddComments(Comment comment)
+    {
+        
+        comment.Author.Posts.Add(comment);
+        comment.Observation.Comments.Add(comment);
+       _context.Posts.Add(comment);
+       _context.Comments.Add(comment);
+        // _context.Add(comment);
+        await _context.SaveChangesAsync();
+        return comment.PostId;
+    } 
+    
+     public async Task<int> AddProposals(Proposal proposal)
+    {
+        proposal.Author.Posts.Add(proposal);
+        proposal.Observation.Proposals.Add(proposal);
+       _context.Posts.Add(proposal);
+       _context.Proposals.Add(proposal);
+        // _context.Add(comment);
+        await _context.SaveChangesAsync();
+        return proposal.PostId;
     }
     
 }
