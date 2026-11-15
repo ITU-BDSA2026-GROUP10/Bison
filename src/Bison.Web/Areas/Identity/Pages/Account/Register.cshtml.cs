@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
-namespace Bison.Razor.Areas.Identity.Pages.Account
+namespace Bison.Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {

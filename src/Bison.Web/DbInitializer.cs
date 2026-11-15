@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Bison.Razor;
+using Bison.Web;
 using Bison.Core.Models;
 using Bison.Infrastructure.Context;
 

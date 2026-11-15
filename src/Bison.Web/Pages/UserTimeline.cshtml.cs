@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 using System.Threading.Tasks;
 
-namespace Bison.Razor.Pages;
+namespace Bison.Web.Pages;
 
 public class UserTimelineModel : PageModel
 {

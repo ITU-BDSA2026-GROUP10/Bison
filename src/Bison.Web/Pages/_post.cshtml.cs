@@ -2,22 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 
-namespace Bison.Razor.Pages;
+namespace Bison.Web.Pages;
 
-public class FormModel : PageModel
+public class PostModel : PageModel
 {
     private readonly IObservationService _service;
     public List<ObservationViewModel> Observations { get; set; }
 
-    public FormModel(IObservationService service)
+    public PostModel(IObservationService service)
     {
         _service = service;
     }
-/*
-    public async Task<ActionResult> OnPost(string description)
+    /*
+
+    public async Task<ActionResult> OnSet([FromQuery] string text)
     {
-        //do something with text
-        return await RedirectToPage("/{obs?}"); //after a post
+        
        
     }*/
 }

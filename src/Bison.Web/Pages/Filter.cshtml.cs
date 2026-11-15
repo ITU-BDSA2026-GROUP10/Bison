@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 
-namespace Bison.Razor.Pages;
+namespace Bison.Web.Pages;
 
 public class FilterModel : PageModel
 {

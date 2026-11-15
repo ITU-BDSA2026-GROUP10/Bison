@@ -4,7 +4,7 @@ using Bison.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Bison.Core.Models;
 
-namespace Bison.Razor.Pages;
+namespace Bison.Web.Pages;
 
 public class PublicModel : PageModel
 {
