@@ -174,7 +174,7 @@ public class EmptyPostRepository : IPostRepository
     }
 
     public int GetMaxPostId() { return 0;}
-    public Task<int> AddPost (Post post)
+    public Task<int> AddPost (Observation observation)
     {
         throw new NotImplementedException();
     }
@@ -236,7 +236,7 @@ public class SinglePostRepository : IPostRepository
     }
 
     public int GetMaxPostId() { return 0;}
-    public Task<int> AddPost (Post post)
+    public Task<int> AddPost (Observation observation)
     {
         throw new NotImplementedException();
     }
@@ -309,7 +309,7 @@ public class FakePostRepository : IPostRepository
     public async Task<List<CommentDTO>> ReadCommentsWithID(int p){return null;}
 
     public int GetMaxPostId() { return 0;}
-    public Task<int> AddPost (Post post)
+    public Task<int> AddPost (Observation obs)
     {
         throw new NotImplementedException();
     }
