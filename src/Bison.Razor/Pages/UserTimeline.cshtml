@@ -32,4 +32,8 @@
     {
         <em>There are no observations so far.</em>
     }
+    @{
+        ViewData["ObservationCount"] = Model.Observations.Count;
+    }
+    <partial name="_PaginationPartial" model="Model.CurrentPage" />
 </div>

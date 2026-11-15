@@ -1,0 +1,15 @@
+@model int 
+
+@if (Model > 1)
+{
+    <a href="?page=@(Model - 1)">Previous page</a>
+    <span> | </span>
+} 
+
+<span>Page @Model</span>
+
+@if ((int)ViewData["ObservationCount"] == 32)
+{
+    <span> | </span>
+    <a href="?page=@(Model + 1)">Next page</a>
+}
