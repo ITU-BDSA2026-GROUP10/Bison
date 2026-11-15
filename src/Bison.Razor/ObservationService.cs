@@ -107,7 +107,7 @@ public class ObservationService : IObservationService
     {
         int postid = postRepository.GetMaxPostId() + 1;
         
-        Post obs = new Post(author, text, postid);
+        Observation obs = new Observation(author, text, postid);
         Console.WriteLine(obs.Author.Email);
         Console.WriteLine(text);
         postRepository.AddPost(obs);

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
 
 namespace DataModel;
 public class Observation : Post
@@ -12,5 +13,10 @@ public class Observation : Post
     public Taxon getTaxon()
     {
         return Taxon;
+    }
+    public Observation (Author author, string text, int PostId) {
+        Author = author;
+        text = text;
+        PostId = PostId;
     }
 }

@@ -29,7 +29,7 @@ public class UserTimelineModel : PageModel
         Console.WriteLine("Dette er min observation: " + observation);
         _service.AddObservationPost(auth, observation);
         Console.WriteLine(author + " har lavet denne observation " + observation);
-        return RedirectToPage(new { author = author });
+        return RedirectToPage("/UserTimeline", new { authorId = auth.AuthorId});
         //evt send back which page to redirect to
     }
 
