@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
-using DataModel;
-using NuGet.Protocol.Core.Types;
+using Bison.Core.Models;
+using Bison.Infrastructure.Repositories;
+//using NuGet.Protocol.Core.Types;
 
-namespace Bison.Razor.ObservationService;
+namespace Bison.Infrastructure.Services;
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 public interface IObservationService

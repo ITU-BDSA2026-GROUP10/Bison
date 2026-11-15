@@ -1,4 +1,4 @@
-namespace DataModel;
+namespace Bison.Core.Models;
 public class Taxon
 {
     public int TaxonId {get; set;}

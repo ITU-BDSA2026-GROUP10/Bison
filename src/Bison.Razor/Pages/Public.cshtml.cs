@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Bison.Razor.ObservationService;
-using Bison.Razor.TaxonService;
+using Bison.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
-using DataModel;
+using Bison.Core.Models;
 
 namespace Bison.Razor.Pages;
 
@@ -24,7 +23,7 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {
-        CurrentPage = ObservationService.ObservationService.ValidPageNumber(page);
+        CurrentPage = ObservationService.ValidPageNumber(page);
         Observations = await _service.GetObservations(page);
         return Page();
     }

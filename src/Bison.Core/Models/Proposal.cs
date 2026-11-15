@@ -1,4 +1,5 @@
-namespace DataModel;
+namespace Bison.Core.Models;
+
 public class Proposal : Post
 {
     public Observation Observation {get; set;}

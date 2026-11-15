@@ -1,8 +1,9 @@
-namespace DataModel;
 using Microsoft.AspNetCore.Identity;
+
+namespace Bison.Core.Models;
 public class ApplicationUser : IdentityUser
 {
-    
+
 }
 
 /* From p. 581 (chapter 23.4.2)

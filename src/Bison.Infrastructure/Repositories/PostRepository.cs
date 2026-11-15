@@ -1,10 +1,11 @@
-namespace Bison.Razor;
-
 using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata;
-using DataModel;
-using DTO;
+using Bison.Core.Models;
+using Bison.Core.DTOs;
+using Bison.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+
+namespace Bison.Infrastructure.Repositories;
 
 public interface IPostRepository
 {
@@ -13,17 +14,17 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPosts(int page);
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
-    public Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
+    public Task<List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
     public Task<List<ObservationDTO>> ReadPosts();
     public int GetMaxPostId();
-    public Task<int> AddPost (Observation observation);
-    public Task <Author> GetAuthorFromDatabase(string name, string email);
-    public Task<Boolean> DoesThisAuthorExist (Author author);
-    public Task<int> GetAuthorIdFromAuthor (Author author); 
+    public Task<int> AddPost(Observation observation);
+    public Task<Author> GetAuthorFromDatabase(string name, string email);
+    public Task<Boolean> DoesThisAuthorExist(Author author);
+    public Task<int> GetAuthorIdFromAuthor(Author author);
     public int GetMaxAuthorId();
     public Task<int> AddComments(Comment comment);
     // public Task<int> AddProposals(Proposal proposal);
-    
+
     public Task<int> AddAuthor(Author author, int authorId);
 }
 public class PostRepositoryClass : IPostRepository

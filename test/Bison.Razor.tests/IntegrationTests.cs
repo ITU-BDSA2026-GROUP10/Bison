@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 //using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Bison.Razor;
-using Bison.Razor.ObservationService;
+using Bison.Infrastructure.Services;
+using Bison.Infrastructure.Repositories;
 using System.Net;
 
 

@@ -1,10 +1,13 @@
 using Bison.Razor;
-using Bison.Razor.ObservationService;
-using Bison.Razor.TaxonService;
+using Bison.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using DataModel;
+using Bison.Core.Models;
+using Bison.Infrastructure.Context;
+using Bison.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies; //please work
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 

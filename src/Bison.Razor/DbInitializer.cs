@@ -1,7 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Bison.Razor;
-using DataModel;
+using Bison.Core.Models;
+using Bison.Infrastructure.Context;
 
 public static class DbInitializer
 {

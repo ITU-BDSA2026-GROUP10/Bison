@@ -1,4 +1,4 @@
-namespace DTO;
+namespace Bison.Core.DTOs;
 public class AuthorDTO
 {
     public int AuthorID {get; set;}

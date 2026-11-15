@@ -1,7 +1,8 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Authentication;
+//using Microsoft.AspNetCore.Authentication;
 
-namespace DataModel;
+namespace Bison.Core.Models;
+
 public class Observation : Post
 {
     public Taxon? Taxon {get; set;}

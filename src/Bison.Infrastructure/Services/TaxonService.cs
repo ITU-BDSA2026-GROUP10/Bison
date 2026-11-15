@@ -1,14 +1,17 @@
-namespace Bison.Razor.TaxonService;
+
 
 using System.ComponentModel.DataAnnotations;
-using Bison.Razor.ObservationService; 
-using DataModel;
-using DTO;
+using Bison.Infrastructure.Repositories; 
+using Bison.Core.Models;
+using Bison.Core.DTOs;
+
 //using Filter;
+
+namespace Bison.Infrastructure.Services;
 
 public interface ITaxonService
 {
-    public Task<List<ObservationViewModel>> GetObservationsFromTaxonID (string id, int page);
+    public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
     public void filteredObservations(List<Observation> observations);
 }
 

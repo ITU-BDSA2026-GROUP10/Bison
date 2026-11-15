@@ -1,11 +1,12 @@
 namespace Bison.Razor.tests;
 using System;
 using System.Reflection;
-using Bison.Razor.ObservationService;
-using Bison.Razor;
+using Bison.Infrastructure.Services;
+using Bison.Infrastructure.Repositories;
+using Bison.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using DataModel;
-using DTO;
+using Bison.Core.Models;
+using Bison.Core.DTOs;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 
