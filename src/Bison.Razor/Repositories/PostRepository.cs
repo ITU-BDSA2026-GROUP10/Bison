@@ -22,7 +22,7 @@ public interface IPostRepository
     public Task<int> GetAuthorIdFromAuthor (Author author); 
     public int GetMaxAuthorId();
     public Task<int> AddComments(Comment comment);
-    public Task<int> AddProposals(Proposal proposal);
+    // public Task<int> AddProposals(Proposal proposal);
     
     public Task<int> AddAuthor(Author author, int authorId);
 }
@@ -208,7 +208,7 @@ public class PostRepositoryClass : IPostRepository
     
     public int GetMaxPostId()
     {
-        int max = _context.Posts.Max(row => row.PostId);
+        int max = _context.Observations.Max(row => row.PostId);
         
         return max;
     }
@@ -263,16 +263,16 @@ public class PostRepositoryClass : IPostRepository
     //--- comments and proposals -----
      public async Task<int> AddComments(Comment comment)
     {
-        comment.Author.Posts.Add(comment);
+        //comment.Author.Posts.Add(comment);
         comment.Observation.Comments.Add(comment);
-       _context.Posts.Add(comment);
+       //_context.Posts.Add(comment);
        _context.Comments.Add(comment);
         // _context.Add(comment);
         await _context.SaveChangesAsync();
         return comment.PostId;
     } 
     
-     public async Task<int> AddProposals(Proposal proposal)
+     /*public async Task<int> AddProposals(Proposal proposal)
     {
         proposal.Author.Posts.Add(proposal);
         proposal.Observation.Proposals.Add(proposal);
@@ -281,6 +281,6 @@ public class PostRepositoryClass : IPostRepository
         // _context.Add(comment);
         await _context.SaveChangesAsync();
         return proposal.PostId;
-    }
+    } */
     
 }

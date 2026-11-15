@@ -126,7 +126,7 @@ public class ObservationService : IObservationService
         int postid = postRepository.GetMaxPostId() + 1;
         
         Proposal pro = new Proposal(author, text, postid, observation, tax);
-        postRepository.AddProposals(pro);
+        // postRepository.AddProposals(pro);
     }
     
     public async Task<Author> SetAuthor(string name, string email)

@@ -15,7 +15,7 @@ namespace Bison.Razor.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
             modelBuilder.Entity("DataModel.ApplicationUser", b =>
                 {
@@ -127,7 +127,7 @@ namespace Bison.Razor.Migrations
 
                     b.ToTable("Posts");
 
-                    b.HasDiscriminator().HasValue("Post");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Post");
 
                     b.UseTphMappingStrategy();
                 });
@@ -303,7 +303,7 @@ namespace Bison.Razor.Migrations
                 {
                     b.HasBaseType("DataModel.Post");
 
-                    b.Property<int>("TaxonId")
+                    b.Property<int?>("TaxonId")
                         .HasColumnType("INTEGER");
 
                     b.HasIndex("TaxonId");
@@ -423,9 +423,7 @@ namespace Bison.Razor.Migrations
                 {
                     b.HasOne("DataModel.Taxon", "Taxon")
                         .WithMany()
-                        .HasForeignKey("TaxonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TaxonId");
 
                     b.Navigation("Taxon");
                 });
