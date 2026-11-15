@@ -182,7 +182,12 @@ public class PostRepositoryClass : IPostRepository
 
     public async Task<int> AddPost (Observation obs)
     {
-       _context.Observations.AddAsync(obs);
+        var auth = obs.Author;
+        if (await DoesThisAuthorExist(auth))
+        {
+            auth = await GetAuthorFromDatabase(auth.Name, auth.Email);
+        }
+        await _context.Observations.AddAsync(obs);
        //_context.Add(post);
         await _context.SaveChangesAsync();
         return obs.PostId;
@@ -235,9 +240,9 @@ public class PostRepositoryClass : IPostRepository
             .Where(auth => auth.AuthorId == author.AuthorId);
             
             var result = await query.ToListAsync();
-            var id = result.FirstOrDefault();
+            var auth = result.FirstOrDefault();
             Console.WriteLine("Author exists");
-            return id.AuthorId;
+            return author.AuthorId;
         } else
         {
             Console.WriteLine("Author doesn't exist");

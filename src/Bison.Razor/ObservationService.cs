@@ -107,7 +107,7 @@ public class ObservationService : IObservationService
     {
         int postid = postRepository.GetMaxPostId() + 1;
         
-        Observation obs = new Observation{Author = author, Text = text, PostId = postid};
+        Observation obs = new Observation{Author = author, Text = text, PostId = postid, TimeStamp = DateTime.Now};
         Console.WriteLine(obs.Author.Email);
         Console.WriteLine(text);
         postRepository.AddPost(obs);
@@ -132,9 +132,16 @@ public class ObservationService : IObservationService
     public async Task<Author> SetAuthor(string name, string email)
     {
         Author author = new Author(name, email);
-        var result = await postRepository.GetAuthorIdFromAuthor(author);
+        var result = 0;
+        if (await postRepository.DoesThisAuthorExist(author))
+        {
+            result = await postRepository.GetAuthorIdFromAuthor(author);
+        } else
+        {
+            result = postRepository.GetMaxAuthorId()+1;
+            await postRepository.AddAuthor(author, result);
+        }
         author.AuthorId = result;
-        await postRepository.AddAuthor(author, result);
         return author;
     }
 
