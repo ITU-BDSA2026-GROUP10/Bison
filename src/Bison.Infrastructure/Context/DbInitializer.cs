@@ -1,14 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Bison.Web;
 using Bison.Core.Models;
-using Bison.Infrastructure.Context;
+
+
+namespace Bison.Infrastructure.Context;
 
 public static class DbInitializer
 {
     public static void SeedDatabase(BisonDBContext bisonContext)
     {
-                
+
         if (!(bisonContext.Authors.Any() && bisonContext.Posts.Any()))
         {
             Console.WriteLine("inside the if");
