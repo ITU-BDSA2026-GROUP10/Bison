@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{706FCDE5-B041-4A6A-BF11-0A3327DFAB4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bison.Razor.tests", "test\Bison.Razor.tests\Bison.Razor.tests.csproj", "{15B60013-6C1A-4881-A8EF-8D4F1B309D14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bison.Tests", "test\Bison.Tests\Bison.Tests.csproj", "{15B60013-6C1A-4881-A8EF-8D4F1B309D14}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A83DEE36-9B03-4D19-9212-095FC33DBC26}"
 EndProject

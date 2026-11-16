@@ -1,4 +1,3 @@
-namespace Bison.Razor.tests;
 using System;
 using System.Reflection;
 using Bison.Infrastructure.Services;
@@ -9,6 +8,8 @@ using Bison.Core.Models;
 using Bison.Core.DTOs;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+
+namespace Bison.Tests;
 
 public class UnitTests
 {
@@ -25,9 +26,9 @@ public class UnitTests
         Assert.Equal(1, result);
     }
 
-    
+
     [Fact]
-    public void ValidPageNumberReturnsSamePage() 
+    public void ValidPageNumberReturnsSamePage()
     {
         //Arrange 
         int page = 3;
@@ -96,7 +97,7 @@ public class UnitTests
         //Arrange 
         SinglePostRepository repository = new SinglePostRepository();
         ObservationService service = new ObservationService(repository);
-    
+
 
         //Act
         var result = await service.GetObservations(1);
@@ -125,15 +126,15 @@ public class UnitTests
         IPostRepository repository = new FakePostRepository(context);
         IObservationService service = new ObservationService(repository);
         int nr = 4;*/
-        
-        
+
+
         // Act
         //var result = repository.ReadPosts(nr);
         //var task = service.GetObservations(nr);
 
         //Assert
         //Assert.NotNull(result);
-        
+
 
     }
 }
