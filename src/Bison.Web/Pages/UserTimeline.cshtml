@@ -14,7 +14,7 @@
     <h2> @routeName's Observations </h2>
     @if (SignInManager.IsSignedIn(User) && routeName.ToString() == User.Identity.Name)
     {
-        <partial name="_form.cshtml"></partial>
+      <partial name="_form.cshtml"></partial>
     }
 
 </div>
