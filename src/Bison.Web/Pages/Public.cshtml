@@ -1,10 +1,12 @@
 ﻿@page "/{obs?}"
 @model Bison.Web.Pages.PublicModel
 @using Bison.Core.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
-    //var routeName = HttpContext.GetRouteValue("page");
+    var routeName = HttpContext.GetRouteValue("page");
 }
 
 <div>
@@ -22,6 +24,25 @@
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>
                     </p>
+                    @if(SignInManager.IsSignedIn(User) && routeName.ToString() != User.Identity.Name)
+                    {
+                        <form asp-page="Public">
+                        <fieldset>
+                        <legend>Add Commment</legend>
+                        <div>
+                            <label for="Com">Write your comment here: </label>
+                            <input type="text" name="comment" value="" />
+                            @Html.ValidationMessage("comment")
+                        </div>
+                        <div>
+                            <input type="submit" value="Comment">
+                        </div>
+                            </fieldset>
+                        </form>
+                    }
+                    <P> 
+                        @*@obs.Comments*@
+                    </P>
                 </li>
             }
         </ul>

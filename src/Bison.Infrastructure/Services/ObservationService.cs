@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Transactions;
 using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
 //using NuGet.Protocol.Core.Types;
@@ -6,9 +7,12 @@ using Bison.Infrastructure.Repositories;
 namespace Bison.Infrastructure.Services;
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
+
 public interface IObservationService
 {
     public Task<List<ObservationViewModel>> GetObservations(int page);
+
+    public Task<List<ObservationViewModel>> ReadCommentsWithID(int obID, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
@@ -18,7 +22,7 @@ public interface IObservationService
 
 public class ObservationService : IObservationService
 {
-    //DBFacade dbf = new DBFacade();
+    
     private IPostRepository postRepository;
     private /*readonly*/List<ObservationViewModel> _obs;
 
@@ -41,6 +45,21 @@ public class ObservationService : IObservationService
 
         return observations;
     } 
+
+    public async Task<List<ObservationViewModel>> ReadCommentsWithID(int obID, int page)
+    {
+        page = ValidPageNumber(page);
+        
+        List<ObservationViewModel> comments = new List<ObservationViewModel>();
+        var commentDTOs = await postRepository.ReadCommentsWithID(obID);
+        
+       foreach (var DTO in commentDTOs)
+        {
+            comments.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp));
+        }
+        
+        return comments;
+    }
 
     public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page) {
         // filter by the provided author name
