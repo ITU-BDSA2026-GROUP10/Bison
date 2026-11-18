@@ -24,7 +24,7 @@
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>
                     </p>
-                    @if(SignInManager.IsSignedIn(User) && routeName.ToString() != User.Identity.Name)
+                    @if(SignInManager.IsSignedIn(User) && obs.Author != User.Identity.Name)
                     {
                         <form asp-page="Public">
                         <fieldset>
