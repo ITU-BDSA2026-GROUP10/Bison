@@ -1,0 +1,74 @@
+ <!-- https://codepen.io/beescuit9510/pen/QWMepLp -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Like Page</title>
+        <style>
+        $icon-fill: "U+2661" !default;
+        $icon-empty:"\f08a" !default; // heart empty
+        $icon-fill-color:#ff0008 !default;
+
+        $icon-size:30pt;
+
+        .toggle-icon{
+                width:$icon-size;
+                height:$icon-size;
+                font-size: $icon-size;
+                position: relative;//need for icons stack
+                color:gray;//default color
+                cursor:pointer;
+                border:none;//clear border
+                background-color:transparent;//clear background
+                &:before,&:after{    
+                    position:absolute;
+                    top:0;left:0;//stack icons
+                    transition:all .3s ease-out;
+                    content:$icon-empty;//default icon
+                    font-family:fontawesome;
+                }
+                &:hover:before{
+                    transform:scale(1.2);//increase size on hover
+                }
+                &:active:before{
+                    transition:none;//clear all transitions
+                    transform:scale(1);//restore original size
+                }
+                
+                &:after{//need only for animation
+                    opacity:0;//hide
+                }
+                
+                // jQuery toggle class added =>
+                &.-checked{
+                    color:$icon-fill-color;
+                    &:before{
+                    content:$icon-fill;
+                    }
+                    &:after{
+                    content:$icon-fill;
+                    animation:likeFly .6s ease-in;
+                    }  
+                }
+            }
+        </style>
+        <script>/*(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+            }
+            (document, 'script', 'facebook-jssdk')); */
+            $('.toggle-icon').click(function(){
+                $(this).toggleClass('-checked');
+            });
+        </script>
+        </head>
+    <body>
+        <!--<div class="fb-like" data-href="https://www.c-sharpcorner.com" data-width="500" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div> -->
+        <div class="wrapper-demo">
+            <button class="toggle-icon" title="❤ Toggle Like!">Like</button>
+        </div>
+    </body>
+</html>
