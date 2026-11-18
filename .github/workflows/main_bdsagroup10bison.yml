@@ -25,9 +25,9 @@ jobs:
         
       - name: Build with dotnet 
         #working-directory: src/Bison.Razor/
-        run: dotnet build src/Bison.Razor/ --configuration Release
+        run: dotnet build src/Bison.Web/ --configuration Release
       - name: dotnet publish
-        run: dotnet publish src/Bison.Razor/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish src/Bison.Web/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
