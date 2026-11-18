@@ -5,13 +5,11 @@ name: build and test with dotnet
 
 on:
   push:
-    branches:
-      - main
-      - w3workflows
   pull_request:
     branches: [ "main" ]
     paths-ignore:
-      - 'Bison/test/Bison.CLI.tests/*EndTo*nd*'
+      - '../test/Bison.CLI.tests/*EndTo*nd*.cs'
+      - '../test/Bison.CLI.tests/GlobalUsings.cs'
 
 jobs:
   build_and_test:
