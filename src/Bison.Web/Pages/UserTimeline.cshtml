@@ -1,5 +1,9 @@
 ﻿@page "/obs/{author}"
 @model Bison.Web.Pages.UserTimelineModel
+@using Microsoft.AspNetCore.Identity
+@using Bison.Core.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
@@ -8,7 +12,11 @@
 
 <div>
     <h2> @routeName's Observations </h2>
-    <partial name = "_form.cshtml" ></partial>
+    @if (SignInManager.IsSignedIn(User) && routeName.ToString() == User.Identity.Name)
+    {
+      <partial name="_form.cshtml"></partial>
+    }
+
 </div>
 <div>
     @if (Model.Observations != null && Model.Observations.Any())

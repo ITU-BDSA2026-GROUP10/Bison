@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Bison.Core.Models;
 
 namespace Bison.Web.Pages;
 
@@ -25,12 +27,20 @@ public class UserTimelineModel : PageModel
     {
         //save to database
         //start by making a observation and then call repos method addPost()
-        var auth = await _service.SetAuthor(author, author);
-        Console.WriteLine("Dette er min observation: " + observation);
-        _service.AddObservationPost(auth, observation);
-        Console.WriteLine(author + " har lavet denne observation " + observation);
-        return RedirectToPage("/UserTimeline", new { authorId = auth.AuthorId});
-        //evt send back which page to redirect to
+        if (User.Identity.IsAuthenticated && User.Identity.Name == author)
+        {
+            var auth = await _service.SetAuthor(author, author);
+            Console.WriteLine("Dette er min observation: " + observation);
+            _service.AddObservationPost(auth, observation);
+            Console.WriteLine(author + " har lavet denne observation " + observation);
+            return RedirectToPage("/UserTimeline", new { authorId = auth.AuthorId });
+            //evt send back which page to redirect to
+        } else
+        {
+            return Forbid();
+        }
+
+
     }
 
     public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
