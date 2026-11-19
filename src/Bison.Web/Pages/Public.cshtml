@@ -25,23 +25,6 @@
                         <small>&mdash; @obs.Timestamp</small>
                         <a href="/ob?id=@obs.PostId">See comments and proposals</a>
                     </p>
-                    
-                    @if(SignInManager.IsSignedIn(User) && obs.Author != User.Identity.Name)
-                    {   
-                        <form asp-page="Public">
-                        <fieldset name="writeComment">
-                        <legend>Add Commment</legend>
-                        <div>
-                            <label for="Com">Write your comment here: </label>
-                            <input type="text" name="comment" value="" />
-                            @Html.ValidationMessage("comment")
-                        </div>
-                        <div>
-                            <input type="submit" value="Share Comment">
-                        </div>
-                            </fieldset>
-                        </form>
-                    }
                 </li>
             }
         </ul>
