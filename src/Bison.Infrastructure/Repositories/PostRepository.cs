@@ -204,7 +204,7 @@ public class PostRepositoryClass : IPostRepository
         return author;
     }
 
-    author = new Author(name, email);
+    author = new Author{Name = name, Email = email};
 
     _context.Authors.Add(author);
     await _context.SaveChangesAsync();
@@ -269,10 +269,10 @@ public class PostRepositoryClass : IPostRepository
     //--- comments and proposals -----
      public async Task<int> AddComments(Comment comment)
     {
-        //comment.Author.Posts.Add(comment);
-        comment.Observation.Comments.Add(comment);
-       //_context.Posts.Add(comment);
-       _context.Comments.Add(comment);
+        comment.Author.Posts?.Add(comment);
+        comment.Observation.Comments?.Add(comment);
+        await _context.Posts.AddAsync(comment);
+        await _context.Comments.AddAsync(comment);
         // _context.Add(comment);
         await _context.SaveChangesAsync();
         return comment.PostId;
