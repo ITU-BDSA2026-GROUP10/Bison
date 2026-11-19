@@ -7,7 +7,7 @@ namespace Bison.Web.Pages;
 public class CommentModel : PageModel
 {
     private readonly IObservationService _service;
-    public List<ObservationViewModel> Observations { get; set; }
+    public Observation observation { get; set; }
     //public List<CommentViewModel> Comments { get; set; }
 
     public CommentModel(IObservationService service)
@@ -15,8 +15,9 @@ public class CommentModel : PageModel
         _service = service;
     }
     
-    public async Task<ActionResult> OnGet([FromQuery] int i)
+    public async Task<ActionResult> OnGet([FromQuery] int id, Observation ob)
     {
+        
         return Pages();
     }
 }*/

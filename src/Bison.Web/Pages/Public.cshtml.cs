@@ -15,7 +15,6 @@ public class PublicModel : PageModel
     //public List<CommentViewModel> Comments { get; set; }
 
     public int CurrentPage { get; set; }
-
     public string Text {get; set;}
 
     public string Author {get; set;}
@@ -24,6 +23,13 @@ public class PublicModel : PageModel
     {
         _service = service;
     }
+
+    /*public async Task<ActionResult> OnGet([FromQuery] int page, [FromQuery] Observation obs)
+    {
+        CurrentPage = ObservationService.ValidPageNumber(page);
+        Observations = await _service.GetObservationFromID(page, obs.PostId);
+        return Page();
+    }*/
 
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {

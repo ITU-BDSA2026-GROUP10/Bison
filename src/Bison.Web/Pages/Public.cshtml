@@ -11,7 +11,7 @@
 
 <div>
     <h2> Public Timeline </h2>
-    @if (Model.Observations.Any())
+    @if (Model.Observations != null && Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
             @foreach (var obs in Model.Observations)
@@ -23,6 +23,12 @@
                         </strong>
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>
+                        <a href="/ob?id=@obs.PostId">See comments and proposals</a>
+
+                        @*<strong>
+                            <a href="/ob?id=@obs.PostId">See details</a>
+                            <a href="/ob?id=@obs.ObservationID">See comments and proposals</a>
+                        </strong>*@
                     </p>
                     
                     @if(SignInManager.IsSignedIn(User) && obs.Author != User.Identity.Name)
@@ -41,9 +47,6 @@
                             </fieldset>
                         </form>
                     }
-                    <P> 
-                        @*@obs.Comments*@
-                    </P>
                 </li>
             }
         </ul>
