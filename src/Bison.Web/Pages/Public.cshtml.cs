@@ -21,12 +21,12 @@ public class PublicModel : PageModel
         _service = service;
     }
 
-    public async Task<ActionResult> OnGet([FromQuery] int page)
+    public async Task<ActionResult> OnGet([FromQuery] int page, [FromForm] int id)
     {
         CurrentPage = ObservationService.ValidPageNumber(page);
         Observations = await _service.GetObservations(page);
         return Page();
     }
-
+    
 }
 

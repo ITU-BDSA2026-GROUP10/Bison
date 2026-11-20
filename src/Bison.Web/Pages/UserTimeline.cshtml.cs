@@ -39,8 +39,6 @@ public class UserTimelineModel : PageModel
         {
             return Forbid();
         }
-
-
     }
 
     public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
