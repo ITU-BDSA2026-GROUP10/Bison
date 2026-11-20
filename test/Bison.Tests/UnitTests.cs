@@ -181,10 +181,16 @@ public class EmptyPostRepository : IPostRepository
     }
 
     public int GetMaxPostId() { return 0;}
-    public Task<int> AddPost (Observation observation)
+    public Task<int> AddPost(Observation observation)
     {
         throw new NotImplementedException();
     }
+
+    public Taxon ReadTaxonWithID(int id)
+    {
+        throw new NotImplementedException();
+    }
+    
     public Task<Boolean> DoesThisAuthorExist (Author author) { return null;}
     public Task<int> GetAuthorIdFromAuthor (Author author) { return null;}
     public Task <Author> GetAuthorFromDatabase(string name, string email) {return null;}
@@ -248,7 +254,11 @@ public class SinglePostRepository : IPostRepository
     }
 
     public int GetMaxPostId() { return 0;}
-    public Task<int> AddPost (Observation observation)
+    public Task<int> AddPost(Observation observation)
+    {
+        throw new NotImplementedException();
+    }
+    public Taxon ReadTaxonWithID(int id)
     {
         throw new NotImplementedException();
     }
@@ -259,7 +269,9 @@ public class SinglePostRepository : IPostRepository
     
     public Task<int> AddAuthor(Author author, int authorId){return null;}
      public Task<int> AddComments(Comment comment) { return null;}
-    public Task<int> AddProposals(Proposal proposal) { return null;}
+    public Task<int> AddProposals(Proposal proposal) { return null; }
+    
+
 }
 
 
@@ -311,9 +323,13 @@ public class FakePostRepository : IPostRepository
     {
         return null;
     }
-    public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/) 
+    public async Task<List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/)
     {
-         throw new NotImplementedException();
+        throw new NotImplementedException();
+    }
+    public Taxon ReadTaxonWithID(int id)
+    {
+        throw new NotImplementedException();
     }
     //The following are simply not written yet:
     public async Task<List<ProposalDTO>> ReadProposalsWithID(int p){ return null;}
