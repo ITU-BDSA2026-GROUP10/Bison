@@ -3,7 +3,6 @@ using System.Threading.Tasks.Dataflow;
 using System.Transactions;
 using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
-//using NuGet.Protocol.Core.Types;
 
 namespace Bison.Infrastructure.Services;
 public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type);
@@ -66,7 +65,8 @@ public class ObservationService : IObservationService
         return comments;
     }
 
-    public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page) {
+    public async Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page) 
+    {
         // filter by the provided author name
 
        page = ValidPageNumber(page);
@@ -131,18 +131,32 @@ public class ObservationService : IObservationService
     public void AddObservationPost(Author author, string text)
     {
         int postid = postRepository.GetMaxPostId() + 1;
+
+        Observation obs = new Observation
+        {
+            Author = author,
+            Text = text,
+            PostId = postid,
+            TimeStamp = DateTime.Now
+        };
         
-        Observation obs = new Observation{Author = author, Text = text, PostId = postid, TimeStamp = DateTime.Now};
         Console.WriteLine(obs.Author.Email);
         Console.WriteLine(text);
         postRepository.AddPost(obs);
     }
     
-    public async Task AddCommentPost (Author author, string text, int obId)
+    public async Task AddCommentPost(Author author, string text, int obId)
     {
         int postid = postRepository.GetMaxPostId() + 1;
         Observation observation = postRepository.ReadObservationWithID(obId);
-        Comment c = new Comment{Author = author, Text = text, PostId = postid, Observation = observation, TimeStamp = DateTime.Now};
+        Comment c = new Comment
+        {
+            Author = author,
+            Text = text,
+            PostId = postid,
+            Observation = observation,
+            TimeStamp = DateTime.Now
+        };
         
         await postRepository.AddComments(c);
     }
@@ -153,7 +167,15 @@ public class ObservationService : IObservationService
         Observation observation = postRepository.ReadObservationWithID(obId);
         Taxon tax = postRepository.ReadTaxonWithID(taxonId);
         
-        Proposal p = new Proposal { Author = author, Observation = observation, Text = text, Taxon = tax, PostId = postid, TimeStamp = DateTime.Now };
+        Proposal p = new Proposal
+        {
+            Author = author,
+            Observation = observation,
+            Text = text,
+            Taxon = tax,
+            PostId = postid,
+            TimeStamp = DateTime.Now
+        };
         
         await postRepository.AddProposals(p);
     }
@@ -182,7 +204,8 @@ public class ObservationService : IObservationService
         return dateTime.ToString("G", System.Globalization.DateTimeFormatInfo.InvariantInfo);
     }
 
-    public static int ValidPageNumber(int page) {
+    public static int ValidPageNumber(int page) 
+    {
         if (page <= 0)
         {
             page = 1;
