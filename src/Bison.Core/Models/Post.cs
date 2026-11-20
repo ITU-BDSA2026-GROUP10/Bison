@@ -20,4 +20,11 @@ public class Post
     }
 
     public Post() { }
+
+    public Post (Author author, string text, DateTime timestamp)
+    {
+        Author = author;
+        Text = text;
+        timestamp = timestamp;
+    }
 }

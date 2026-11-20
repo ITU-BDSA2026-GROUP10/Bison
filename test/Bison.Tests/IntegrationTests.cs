@@ -5,6 +5,9 @@ using Xunit;
 using Bison.Infrastructure.Services;
 using Bison.Infrastructure.Repositories;
 using System.Net;
+using Bison.Core.Models;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bison.Tests;
 
@@ -95,6 +98,68 @@ public class RazorPageIntegrationTests : IClassFixture<CustomWebApplicationFacto
     
     //See: https://github.com/dotnet/AspNetCore.Docs.Samples/blob/main/test/integration-tests/10.x/IntegrationTestsSample/tests/RazorPagesProject.Tests/IntegrationTests/IndexPageTests.cs
     
+}
+
+public class UserTests : IClassFixture<WebApplicationFactory<Program>>
+{
+    private readonly HttpClient _client;
+
+    public UserTests (WebApplicationFactory<Program> factory)
+    {
+        _client = factory.CreateClient();
+    }
+
+    [Fact]
+    public async Task UsersNotLoggedInCanAccessPublicTimeLine ()
+    {
+        // arrange
+        // act
+        var response = await _client.GetAsync("/obs");
+
+        // assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+    }
+
+    [Fact]
+    public async Task UsersNotLoggedInCannotPostObservations ()
+    {
+        // arrange
+        Author author = new Author {Name = "Sofie", Email = "verysecret@mail.com"};
+        var observation = new Post {Author = author, Text = "I saw a heron eating icecream", TimeStamp = DateTime.Now};
+
+        // act
+        var response = await _client.PostAsJsonAsync("/obs",observation);
+
+
+        // assert
+        Assert.NotEqual(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task UsersNotLoggedInHaveLogInButton ()
+    {
+        // act
+        var response = await _client.GetAsync("/");
+
+        // assert
+        response.EnsureSuccessStatusCode();
+        var element = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Register",element);
+        Assert.Contains("Login",element);
+    }
+
+    [Fact]
+    public async Task UsersNotLoggedInCannotLogOut ()
+    {
+        // act
+        var response = await _client.GetAsync("/");
+
+        // assert
+        response.EnsureSuccessStatusCode();
+        var element = await response.Content.ReadAsStringAsync();
+        Assert.DoesNotContain("Logout",element);
+    }
 }
 
 public class PostRepositoryIntegrationTests
