@@ -23,7 +23,7 @@
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
                     </p>
-                     @if(SignInManager.IsSignedIn(User) && ob.Author != User.Identity.Name)
+                     @if(SignInManager.IsSignedIn(User))
                     {   
                         <form asp-page="Public">
                         <fieldset name="writeComment">
@@ -35,6 +35,20 @@
                         </div>
                         <div>
                             <input type="submit" value="Share Comment">
+                        </div>
+                            </fieldset>
+                        </form>
+                        
+                        <form asp-page="Public">
+                        <fieldset name="writeProposal">
+                        <legend>Add Proposal</legend>
+                        <div>
+                            <label for="Pro">Write your proposal here: </label>
+                            <input type="text" name="proposal" value="" />
+                            @Html.ValidationMessage("proposal")
+                        </div>
+                        <div>
+                            <input type="submit" value="Share Proposal">
                         </div>
                             </fieldset>
                         </form>
