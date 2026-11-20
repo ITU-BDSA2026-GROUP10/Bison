@@ -34,13 +34,13 @@
                     </p>
                      @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
                     {   
-                        <form asp-page="Public">
+                        <form asp-page="ObId" method="post" asp-page-handler="Comment" asp-route-id="@ob.PostId">
                         <fieldset name="writeComment">
-                        <legend>Add Commment</legend>
+                        <legend>Add Comment</legend>
                         <div>
                             <label for="Com">Write your comment here: </label>
                             <input type="text" name="comment" value="" />
-                            @Html.ValidationMessage("comment")
+                            @Html.ValidationMessage("Comment")
                         </div>
                         <div>
                             <input type="submit" value="Share Comment">

@@ -144,7 +144,7 @@ public class ObservationService : IObservationService
         Observation observation = postRepository.ReadObservationWithID(obId);
         Comment c = new Comment{Author = author, Text = text, PostId = postid, Observation = observation, TimeStamp = DateTime.Now};
         
-        postRepository.AddComments(c);
+        await postRepository.AddComments(c);
     }
     
     public void AddProposalPost (Author author, string text, Observation observation, Taxon tax)

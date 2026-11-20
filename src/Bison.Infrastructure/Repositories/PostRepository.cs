@@ -121,7 +121,7 @@ public class PostRepositoryClass : IPostRepository
         return posts;
     }
 
-    private Observation GetObservationsFromId(Observation obs)
+    /*private Observation GetObservationsFromId(Observation obs)
     {
         var posts = new Observation
             {
@@ -134,7 +134,7 @@ public class PostRepositoryClass : IPostRepository
             };
         
         return posts;
-    }
+    }*/
     
     public Observation ReadObservationWithID(int ID)
     {
@@ -146,7 +146,7 @@ public class PostRepositoryClass : IPostRepository
         var obs = result.FirstOrDefault();
         Console.WriteLine(" !!!! this is the obs we think we found ------------- "+ obs);
         
-        return GetObservationsFromId(obs);
+        return obs;
     }
     
     private List<CommentDTO> GetCommentDTOs(List<Comment> queryResult)
