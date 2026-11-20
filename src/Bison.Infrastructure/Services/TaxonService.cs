@@ -61,7 +61,7 @@ public class TaxonService : ITaxonService
         //var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in filteredObservations)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
         }
         
         return observations; 

@@ -1,6 +1,7 @@
 @page "/ob"
 @model Bison.Web.Pages.ObIdModel
 @using Bison.Core.Models
+@using Microsoft.CodeAnalysis.CSharp.Syntax
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Bison";
@@ -22,8 +23,16 @@
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
+                        @if (ob.type == typeof(Comment))
+                        {
+                            <small>&mdash; Comment</small>
+                        } else if (ob.type == typeof(Proposal))
+                        {
+                             <small>&mdash; Proposal</small>
+                        }
+                    
                     </p>
-                     @if(SignInManager.IsSignedIn(User))
+                     @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
                     {   
                         <form asp-page="Public">
                         <fieldset name="writeComment">

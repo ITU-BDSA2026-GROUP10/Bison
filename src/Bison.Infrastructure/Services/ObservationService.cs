@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Transactions;
 using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
 //using NuGet.Protocol.Core.Types;
 
 namespace Bison.Infrastructure.Services;
-public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId);
+public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type);
 
 
 public interface IObservationService
@@ -40,7 +41,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
         }
 
         return observations;
@@ -71,7 +72,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
         }
 
         return observations;
@@ -92,18 +93,18 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadPostWithID(id);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
         }
         var commentDTOs = await postRepository.ReadCommentsWithID(id);
         
         foreach (var DTO in commentDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)));
         }
         var proposalDTOs = await postRepository.ReadProposalsWithID(id);
         foreach (var DTO in proposalDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)));
         }
         return observations; 
     }
@@ -117,7 +118,7 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
         }
         
         return observations; 
