@@ -13,6 +13,7 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPostsByAuthor(string author, int page);
     public Task<List<ObservationDTO>> ReadPosts(int page);
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
+    public Observation ReadObservationWithID(int ID);
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
     public Task<List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
     public Task<List<ObservationDTO>> ReadPosts();
@@ -118,6 +119,34 @@ public class PostRepositoryClass : IPostRepository
             });
         }
         return posts;
+    }
+
+    private Observation GetObservationsFromId(Observation obs)
+    {
+        var posts = new Observation
+            {
+                PostId = obs.PostId,
+                AuthorId = obs.Author.AuthorId,
+                Author = obs.Author,
+                Text = obs.Text,
+                TimeStamp = obs.TimeStamp,
+                Taxon = obs.Taxon
+            };
+        
+        return posts;
+    }
+    
+    public Observation ReadObservationWithID(int ID)
+    {
+        var observationQuery = _context.Observations
+            .Include(observation => observation.Author)
+            .Where(observation => observation.PostId == ID);
+
+        var result = observationQuery.ToList();
+        var obs = result.FirstOrDefault();
+        Console.WriteLine(" !!!! this is the obs we think we found ------------- "+ obs);
+        
+        return GetObservationsFromId(obs);
     }
     
     private List<CommentDTO> GetCommentDTOs(List<Comment> queryResult)

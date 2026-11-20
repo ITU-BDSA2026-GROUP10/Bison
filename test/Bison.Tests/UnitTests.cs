@@ -162,6 +162,11 @@ public class EmptyPostRepository : IPostRepository
     {
         throw new NotImplementedException();
     }
+    
+    public Observation ReadObservationWithID(int id)
+    {
+        return null;
+    }
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID)
     {
         throw new NotImplementedException();
@@ -227,6 +232,11 @@ public class SinglePostRepository : IPostRepository
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID)
     {
         throw new NotImplementedException();
+    }
+    
+    public Observation ReadObservationWithID(int id)
+    {
+        return null;
     }
     public async Task<List<ObservationDTO>> ReadPosts()
     {
@@ -296,6 +306,10 @@ public class FakePostRepository : IPostRepository
     public async Task<List<ObservationDTO>> ReadPosts()
     {
         throw new NotImplementedException();
+    }
+    public Observation ReadObservationWithID(int id)
+    {
+        return null;
     }
     public async Task <List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page/*, List<Observation> observations*/) 
     {

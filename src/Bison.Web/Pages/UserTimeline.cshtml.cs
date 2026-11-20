@@ -29,7 +29,7 @@ public class UserTimelineModel : PageModel
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
         {
-            var auth = await _service.SetAuthor(author, author);
+            var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
             Console.WriteLine("Dette er min observation: " + observation);
             _service.AddObservationPost(auth, observation);
             Console.WriteLine(author + " har lavet denne observation " + observation);

@@ -18,6 +18,10 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
     public void AddObservationPost(Author author, string text);
+
+    public Task AddCommentPost(Author author, string text, int obID);
+
+    public void AddProposalPost(Author author, string text, Observation observation, Taxon tax);
     public Task<Author> SetAuthor(string name, string email);
 }
 
@@ -134,9 +138,10 @@ public class ObservationService : IObservationService
         postRepository.AddPost(obs);
     }
     
-    public void AddCommentPost (Author author, string text, Observation observation)
+    public async Task AddCommentPost (Author author, string text, int obId)
     {
         int postid = postRepository.GetMaxPostId() + 1;
+        Observation observation = postRepository.ReadObservationWithID(obId);
         Comment c = new Comment{Author = author, Text = text, PostId = postid, Observation = observation, TimeStamp = DateTime.Now};
         
         postRepository.AddComments(c);
