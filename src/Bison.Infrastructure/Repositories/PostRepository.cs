@@ -243,7 +243,7 @@ public class PostRepositoryClass : IPostRepository
     
     public int GetMaxPostId()
     {
-        int max = _context.Observations.Max(row => row.PostId);
+        int max = _context.Posts.Max(row => row.PostId);
         
         return max;
     }
