@@ -27,7 +27,10 @@ public interface IPostRepository
     public Task<int> AddComments(Comment comment);
     public Task<int> AddProposals(Proposal proposal);
 
+    public Task <int> AddFavorites(Author author, int id);
+
     public Task<int> AddAuthor(Author author, int authorId);
+    //public Task<int> GetFavoritesFromAuthor(Author author);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -331,4 +334,16 @@ public class PostRepositoryClass : IPostRepository
         return proposal.PostId;
     } 
     
+    public async Task<int> AddFavorites(Author author, int id)
+    {
+        author.FavoritePosts.Add(id);
+        return id;
+    }
+
+    /*public async Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author)
+    {
+        List<ObservationDTO> observationDTOs = new List<ObservationDTO>();
+        var observationDTOs = await ReadPostWithID(id);
+        return author.FavoritePosts;
+    }*/
 }

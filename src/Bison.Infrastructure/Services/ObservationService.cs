@@ -16,12 +16,16 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
+    
+    public Task<List<ObservationViewModel>> GetFavoritesFromAuthor(Author author);
     public void AddObservationPost(Author author, string text);
 
     public Task AddCommentPost(Author author, string text, int obID);
 
     public Task AddProposalPost(Author author, string text, int obId, int taxonId);
     public Task<Author> SetAuthor(string name, string email);
+
+    public Task AddFavorites(Author author, int id);
 }
 
 public class ObservationService : IObservationService
@@ -127,6 +131,21 @@ public class ObservationService : IObservationService
         
         return observations; 
     }
+
+    public async Task<List<ObservationViewModel>> GetFavoritesFromAuthor(Author author)
+    {
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+
+        var observationDTOs = author.FavoritePosts;//await postRepository.GetFavoritesFromAuthor(author);
+
+        foreach(int i in observationDTOs)
+        {
+            var post = await postRepository.ReadPostWithID(i);
+            observations.Add(new ObservationViewModel(post[0].AuthorName, post[0].Text, post[0].TimeStamp.ToString(), post[0].PostID, typeof(Observation)));
+        }
+
+        return observations;
+    }
     
     public void AddObservationPost(Author author, string text)
     {
@@ -180,6 +199,10 @@ public class ObservationService : IObservationService
         await postRepository.AddProposals(p);
     }
     
+    public async Task AddFavorites(Author author, int id)
+    {
+        await postRepository.AddFavorites(author, id);
+    }
     public async Task<Author> SetAuthor(string name, string email)
     {
         Author author = new Author{Name = name, Email = email};
