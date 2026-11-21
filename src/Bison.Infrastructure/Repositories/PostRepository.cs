@@ -13,9 +13,11 @@ public interface IPostRepository
     public Task<List<ObservationDTO>> ReadPostsByAuthor(string author, int page);
     public Task<List<ObservationDTO>> ReadPosts(int page);
     public Task<List<ObservationDTO>> ReadPostWithID(int ID);
+    public Observation ReadObservationWithID(int ID);
     public Task<List<ProposalDTO>> ReadProposalsWithID(int ID);
     public Task<List<ObservationDTO>> ReadObservationsWithTaxonId(string id, int page);
     public Task<List<ObservationDTO>> ReadPosts();
+    public Taxon ReadTaxonWithID(int id);
     public int GetMaxPostId();
     public Task<int> AddPost(Observation observation);
     public Task<Author> GetAuthorFromDatabase(string name, string email);
@@ -23,7 +25,7 @@ public interface IPostRepository
     public Task<int> GetAuthorIdFromAuthor(Author author);
     public int GetMaxAuthorId();
     public Task<int> AddComments(Comment comment);
-    // public Task<int> AddProposals(Proposal proposal);
+    public Task<int> AddProposals(Proposal proposal);
 
     public Task<int> AddAuthor(Author author, int authorId);
 }
@@ -101,6 +103,18 @@ public class PostRepositoryClass : IPostRepository
         return GetProposalDTOs(result);
     }
 
+    public Taxon ReadTaxonWithID(int id)
+    {
+        var taxonQuery = _context.Taxons
+           .Where(taxon => taxon.TaxonId == id);
+
+        var result = taxonQuery.ToList();
+        var tax = result.FirstOrDefault();
+        Console.WriteLine(" !!!! this is the taxon we think we found ------------- " + tax);
+
+        return tax;
+    }
+
     private List<ObservationDTO> GetObservationDTO(List<Observation> queryResult)
     {
         var posts = new List<ObservationDTO>();
@@ -118,6 +132,34 @@ public class PostRepositoryClass : IPostRepository
             });
         }
         return posts;
+    }
+
+    /*private Observation GetObservationsFromId(Observation obs)
+    {
+        var posts = new Observation
+            {
+                PostId = obs.PostId,
+                AuthorId = obs.Author.AuthorId,
+                Author = obs.Author,
+                Text = obs.Text,
+                TimeStamp = obs.TimeStamp,
+                Taxon = obs.Taxon
+            };
+        
+        return posts;
+    }*/
+    
+    public Observation ReadObservationWithID(int ID)
+    {
+        var observationQuery = _context.Observations
+            .Include(observation => observation.Author)
+            .Where(observation => observation.PostId == ID);
+
+        var result = observationQuery.ToList();
+        var obs = result.FirstOrDefault();
+        Console.WriteLine(" !!!! this is the obs we think we found ------------- "+ obs);
+        
+        return obs;
     }
     
     private List<CommentDTO> GetCommentDTOs(List<Comment> queryResult)
@@ -204,7 +246,7 @@ public class PostRepositoryClass : IPostRepository
         return author;
     }
 
-    author = new Author(name, email);
+    author = new Author{Name = name, Email = email};
 
     _context.Authors.Add(author);
     await _context.SaveChangesAsync();
@@ -214,7 +256,7 @@ public class PostRepositoryClass : IPostRepository
     
     public int GetMaxPostId()
     {
-        int max = _context.Observations.Max(row => row.PostId);
+        int max = _context.Posts.Max(row => row.PostId);
         
         return max;
     }
@@ -269,16 +311,16 @@ public class PostRepositoryClass : IPostRepository
     //--- comments and proposals -----
      public async Task<int> AddComments(Comment comment)
     {
-        //comment.Author.Posts.Add(comment);
-        comment.Observation.Comments.Add(comment);
-       //_context.Posts.Add(comment);
-       _context.Comments.Add(comment);
+        comment.Author.Posts?.Add(comment);
+        comment.Observation.Comments?.Add(comment);
+        await _context.Posts.AddAsync(comment);
+        await _context.Comments.AddAsync(comment);
         // _context.Add(comment);
         await _context.SaveChangesAsync();
         return comment.PostId;
     } 
     
-     /*public async Task<int> AddProposals(Proposal proposal)
+     public async Task<int> AddProposals(Proposal proposal)
     {
         proposal.Author.Posts.Add(proposal);
         proposal.Observation.Proposals.Add(proposal);
@@ -287,6 +329,6 @@ public class PostRepositoryClass : IPostRepository
         // _context.Add(comment);
         await _context.SaveChangesAsync();
         return proposal.PostId;
-    } */
+    } 
     
 }

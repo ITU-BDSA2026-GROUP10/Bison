@@ -7,11 +7,4 @@ public class Author
     public ICollection<Post>? Posts {get; set;}
     //public ICollection<Post>? LikedPosts {get; set;}
 
-    public Author(string name, string email)
-    {
-        Name = name;
-        Email = email;
-    }
-    
-    public Author () {}
 }
