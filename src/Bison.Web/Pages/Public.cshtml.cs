@@ -19,15 +19,21 @@ public class PublicModel : PageModel
 
     public string Author {get; set;}
 
+    public int counter {get; set;}
+
     public PublicModel(IObservationService service)
     {
         _service = service;
     }
 
-    public async Task<ActionResult> OnPost()
+    public async Task<ActionResult> OnPostLike([FromForm] int id)
     {
-
-        return Page();
+        var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
+        counter++;
+        Console.WriteLine("Pressed like button this many times: " + counter);
+        //await _service.AddFavorites(auth, id);
+        return RedirectToPage("Public");
+        
     }
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {
