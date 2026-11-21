@@ -5,5 +5,5 @@ public class AuthorDTO
     public string Name {get; set;}
     public string Email {get; set;}
     public ICollection<PostDTO>? Posts {get; set;}
-    //public ICollection<int>? LikedPosts {get; set;}
+    public ICollection<int>? FavoritePosts {get; set;}
 }
