@@ -336,7 +336,13 @@ public class PostRepositoryClass : IPostRepository
     
     public async Task<int> AddFavorites(Author author, int id)
     {
+        if(author.FavoritePosts == null)
+        {
+            Console.WriteLine("Favorite Posts is null");
+            author.FavoritePosts = new List<int>();
+        }
         author.FavoritePosts.Add(id);
+        Console.WriteLine("Favorite posts size: " + author.FavoritePosts.Count());
         return id;
     }
 
