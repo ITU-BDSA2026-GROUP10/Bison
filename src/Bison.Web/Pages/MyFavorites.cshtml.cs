@@ -45,8 +45,11 @@ public class MyLikesModel : PageModel
     {
         var auth = await _service.SetAuthor(author, author); 
         CurrentPage = ObservationService.ValidPageNumber(page);
-        //Task <List<ObservationViewModel>> obsTask = _service.GetFavoritesFromAuthor(auth);
-        //Observations = await obsTask;
+        Observations = await _service.GetFavoritesFromAuthor(auth);
+
+        /*Task <List<ObservationViewModel>> obsTask = await _service.GetFavoritesFromAuthor(auth);
+        Observations =  obsTask;*/
+        
         return Page();
     }
 }

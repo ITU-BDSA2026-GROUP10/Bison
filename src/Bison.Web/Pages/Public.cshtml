@@ -34,11 +34,15 @@
                         <small>&mdash; @obs.Timestamp</small>
                         <!--<partial name="_likeButton.cshtml" />-->
                         <!--<button Onclick="LikeFunction()">Like</button>-->
-                        <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
-                            <button>Like</button>
-                            <!--<input type="button" value="obs.PostId"/>-->
-                            <!--<input class="submit" type="submit" value="like" onclick="LikeFunction()"/>-->
-                        </form>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
+                                <button>Like</button>
+                                <!--<input type="button" value="obs.PostId"/>-->
+                                <!--<input class="submit" type="submit" value="like" onclick="LikeFunction()"/>-->
+                            </form>
+                        }
+                       
                         <a href="/ob?id=@obs.PostId">See comments and proposals</a>
                     </p>
                 </li>

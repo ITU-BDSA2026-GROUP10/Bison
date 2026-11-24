@@ -31,7 +31,7 @@ public class PublicModel : PageModel
         var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
         counter++;
         Console.WriteLine("Pressed like button this many times: " + counter);
-        //await _service.AddFavorites(auth, id);
+        await _service.AddFavorites(auth, id);
         return RedirectToPage("Public");
         
     }
