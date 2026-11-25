@@ -7,5 +7,5 @@ public class ProposalDTO
     public string AuthorName {get; set;} = "";
     public string Text {get; set;} = "";
     public string Taxon {get; set;} = "";
-    public string TimeStamp {get; set;}
+    public string? TimeStamp {get; set;}
 }

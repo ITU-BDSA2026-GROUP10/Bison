@@ -28,6 +28,8 @@ public interface IPostRepository
     public Task<int> AddProposals(Proposal proposal);
 
     public Task<int> AddAuthor(Author author, int authorId);
+
+    public Task<List<TaxonDTO>> GetAllTaxons ();
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -330,5 +332,21 @@ public class PostRepositoryClass : IPostRepository
         await _context.SaveChangesAsync();
         return proposal.PostId;
     } 
-    
+
+    public async Task<List<TaxonDTO>> GetAllTaxons ()
+    {
+        var query = _context.Taxons;
+
+        var queryResult = await query.ToListAsync();
+        var taxons = new List<TaxonDTO>();
+        foreach (var taxon in queryResult)
+        {
+            taxons.Add(new TaxonDTO
+            {
+                VernacularName = taxon.VernacularName,
+                dwc_TaxonID = taxon.dwc_TaxonID
+            });
+        }
+        return taxons;
+    }   
 }

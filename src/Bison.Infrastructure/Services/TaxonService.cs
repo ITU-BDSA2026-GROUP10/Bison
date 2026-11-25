@@ -13,6 +13,7 @@ public interface ITaxonService
 {
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
     public void filteredObservations(List<Observation> observations);
+    public Task<List<TaxonDTO>> GetAllTaxons ();
 }
 
 public class TaxonService : ITaxonService
@@ -97,4 +98,11 @@ public class TaxonService : ITaxonService
     {
         return null;
     }*/
+
+    public async Task<List<TaxonDTO>> GetAllTaxons ()
+    {
+        List<TaxonDTO> taxonDTOs = await postRepository.GetAllTaxons();
+        
+        return taxonDTOs; 
+    }
 }

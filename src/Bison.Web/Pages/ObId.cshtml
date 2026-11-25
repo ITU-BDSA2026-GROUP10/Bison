@@ -52,8 +52,15 @@
                         <fieldset name="writeProposal">
                         <legend>Add Proposal</legend>
                         <div>
-                            <label for="Pro">Write your proposal here: </label>
-                            <input type="text" name="proposal" value="" />
+                            <label for="Pro">Select your proposal here: </label>
+                            <select>
+                                @foreach (Bison.Core.DTOs.TaxonDTO obs in Model.Observations)
+                                    {
+                                        <option>
+                                            @($"{j} -{j + 1000}" )
+                                        </option>
+                                     }
+                            </select>
                             @Html.ValidationMessage("proposal")
                         </div>
                         <div>

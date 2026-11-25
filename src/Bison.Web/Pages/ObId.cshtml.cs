@@ -2,19 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 using Bison.Core.Models;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Bison.Web.Pages;
 
 public class ObIdModel : PageModel
 {
     private readonly IObservationService _service;
+    private readonly ITaxonService _taxonService;
     public List<ObservationViewModel> Observations { get; set; }
 
     public int CurrentPage { get; set; }
 
-    public ObIdModel(IObservationService service)
+    public ObIdModel(IObservationService service, ITaxonService Taxonservice)
     {
         _service = service;
+        _taxonService = Taxonservice;
     }
 
     public async Task<IActionResult> OnPostComment([FromForm] string comment, [FromQuery] int id)
@@ -62,5 +65,10 @@ public class ObIdModel : PageModel
         return Page();
     }
 
+    public async Task<ActionResult> OnClick ([FromQuery] int id)
+    {
+        var taxons = await _taxonService.GetAllTaxons();
+        return RedirectToPage("/ObId", new { id = id });
+    }
 
 }
