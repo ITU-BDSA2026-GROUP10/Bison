@@ -88,12 +88,15 @@ public class PostRepositoryClass : IPostRepository
 
     public async Task<ObservationDTO> ReadOnePostWithID(int ID)
     {
+        Console.WriteLine("IIIIIIIIIIIIIID: " + ID);
         var observationQuery = _context.Observations
             .Include(observation => observation.Author)
             .Where(observation => observation.PostId == ID);
 
         var result = await observationQuery.ToListAsync();
-        return GetObservationsFromId(result[0]);
+        Console.WriteLine("================RESULT COUNT: " + result.Count());
+        
+        return GetObservationsFromId(result.FirstOrDefault());
     }
 
     public async Task<List<CommentDTO>> ReadCommentsWithID(int ID)
@@ -370,9 +373,16 @@ public class PostRepositoryClass : IPostRepository
         var ids = author.FavoritePosts;
         foreach (var id in ids)
         {
-            var post = await ReadPostWithID(id);
-            observationDTOs.AddRange(post);
+            Console.WriteLine(id);
         }
+        Console.WriteLine("///////////////// ID COUNT: " + ids.Count());
+        foreach (var id in ids)
+        {
+            var post = await ReadOnePostWithID(id);
+            
+            observationDTOs.Add(post);
+        }
+        Console.WriteLine("____________________ DTOS COUNT: " + observationDTOs.Count());
         return observationDTOs;
     }
 }

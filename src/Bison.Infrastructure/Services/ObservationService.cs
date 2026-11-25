@@ -145,7 +145,7 @@ public class ObservationService : IObservationService
             //var post = await postRepository.ReadPostWithID();
             observations.Add(new ObservationViewModel(post.AuthorName, post.Text, post.TimeStamp.ToString(), post.PostID, typeof(Observation)));
         }
-
+        Console.WriteLine("--------NUMBER OF OBSERVATIONS: " + observations.Count());
         return observations;
     }
     

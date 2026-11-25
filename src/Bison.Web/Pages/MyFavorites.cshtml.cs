@@ -23,7 +23,7 @@ public class MyLikesModel : PageModel
         _service = service;
     }
     
-    public async Task<ActionResult> OnGet([FromRoute] string author, [FromQuery] int page)
+    public async Task<ActionResult> OnGet([FromQuery] int page)
     {
         var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); 
         CurrentPage = ObservationService.ValidPageNumber(page);
