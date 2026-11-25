@@ -351,6 +351,7 @@ public class PostRepositoryClass : IPostRepository
         if(author.FavoritePosts == null)
         {
             Console.WriteLine("Favorite Posts is null");
+            Console.WriteLine(author.ToString());
             author.FavoritePosts = new List<int>();
         }
         author.FavoritePosts.Add(id);

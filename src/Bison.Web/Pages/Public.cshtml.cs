@@ -28,7 +28,7 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPostLike([FromForm] int id)
     {
-        var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
+        var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
         counter++;
         Console.WriteLine("Pressed like button this many times: " + counter);
         await _service.AddFavorites(auth, id);
