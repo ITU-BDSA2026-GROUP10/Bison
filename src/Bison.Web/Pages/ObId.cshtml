@@ -54,12 +54,12 @@
                         <div>
                             <label for="Pro">Select your proposal here: </label>
                             <select>
-                                @foreach (Bison.Core.DTOs.TaxonDTO obs in Model.Observations)
-                                    {
-                                        <option>
-                                            @($"{j} -{j + 1000}" )
-                                        </option>
-                                     }
+                                @for (int j = 1000; j < 11000; j += 1000)
+                                {
+                                    <option>
+                                    @($"{j} -{j + 1000}" )
+                                    </option>
+                                }
                             </select>
                             @Html.ValidationMessage("proposal")
                         </div>
