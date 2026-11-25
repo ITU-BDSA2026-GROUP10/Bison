@@ -12,6 +12,8 @@ For dafny:
 in the terminal
 > dotnet run
 
+> dotnet run --project src/Bison.Web 
+
 after opening the localhost address write in your http address:
 >/obs
 

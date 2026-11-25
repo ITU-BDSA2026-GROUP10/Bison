@@ -1,15 +1,17 @@
 ﻿@page "/{obs?}"
 @model Bison.Web.Pages.PublicModel
 @using Bison.Core.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
-    //var routeName = HttpContext.GetRouteValue("page");
+    var routeName = HttpContext.GetRouteValue("page");
 }
 
 <div>
     <h2> Public Timeline </h2>
-    @if (Model.Observations.Any())
+    @if (Model.Observations != null && Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
             @foreach (var obs in Model.Observations)
@@ -21,6 +23,7 @@
                         </strong>
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>
+                        <a href="/ob?id=@obs.PostId">See comments and proposals</a>
                     </p>
                 </li>
             }

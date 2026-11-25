@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Bison.Core.Models;
+using System.Transactions;
 
 namespace Bison.Web.Pages;
 
@@ -10,8 +11,10 @@ public class PublicModel : PageModel
 {
     private readonly IObservationService _service;
     public List<ObservationViewModel> Observations { get; set; }
-    public int CurrentPage { get; set; }
+    
+    //public List<CommentViewModel> Comments { get; set; }
 
+    public int CurrentPage { get; set; }
     public string Text {get; set;}
 
     public string Author {get; set;}
@@ -21,12 +24,25 @@ public class PublicModel : PageModel
         _service = service;
     }
 
+    /*public async Task<ActionResult> OnGet([FromQuery] int page, [FromQuery] Observation obs)
+    {
+        CurrentPage = ObservationService.ValidPageNumber(page);
+        Observations = await _service.GetObservationFromID(page, obs.PostId);
+        return Page();
+    }*/
+
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {
         CurrentPage = ObservationService.ValidPageNumber(page);
         Observations = await _service.GetObservations(page);
         return Page();
     }
+    
+    /*public void OnGetComment([FromFrom] int ID, int page)
+    {
+        Comment = await _service.GetComments(ID, page);
+        return Page();
+    }*/
 
 }
 
