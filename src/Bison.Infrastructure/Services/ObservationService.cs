@@ -26,6 +26,7 @@ public interface IObservationService
     public Task<Author> SetAuthor(string name, string email);
 
     public Task AddFavorites(Author author, int id);
+    public Task<Author> GetAuthor(string name, string email);
 }
 
 public class ObservationService : IObservationService
@@ -136,12 +137,13 @@ public class ObservationService : IObservationService
     {
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
 
-        var observationDTOs = author.FavoritePosts;//await postRepository.GetFavoritesFromAuthor(author);
+        //var observationDTOs = author.FavoritePosts;//await postRepository.GetFavoritesFromAuthor(author);
 
-        foreach(int i in observationDTOs)
+        var observationDTOs = await postRepository.GetFavoritesFromAuthor(author);
+        foreach(var post in observationDTOs)
         {
-            var post = await postRepository.ReadPostWithID(i);
-            observations.Add(new ObservationViewModel(post[0].AuthorName, post[0].Text, post[0].TimeStamp.ToString(), post[0].PostID, typeof(Observation)));
+            //var post = await postRepository.ReadPostWithID();
+            observations.Add(new ObservationViewModel(post.AuthorName, post.Text, post.TimeStamp.ToString(), post.PostID, typeof(Observation)));
         }
 
         return observations;
@@ -217,6 +219,11 @@ public class ObservationService : IObservationService
         }
         author.AuthorId = result;
         return author;
+    }
+
+    public async Task<Author> GetAuthor(string name, string email)
+    {
+        return await postRepository.GetAuthorFromDatabase(name, email);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)

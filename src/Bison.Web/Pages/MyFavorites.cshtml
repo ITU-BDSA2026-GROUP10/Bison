@@ -1,5 +1,5 @@
 @page "/favorites/{author}"
-@model Bison.Web.Pages.UserTimelineModel
+@model Bison.Web.Pages.MyLikesModel
 @using Microsoft.AspNetCore.Identity
 @using Bison.Core.Models
 @inject SignInManager<ApplicationUser> SignInManager
@@ -23,11 +23,11 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/obs/@ob.Author">@ob.Author</a>
+                            <a href="/favorites/@ob.Author">@ob.Author</a>
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
-                        <a href="/ob?id=@ob.PostId">See comments and proposals</a>
+                        @*<a href="/ob?id=@ob.PostId">See comments and proposals</a>*@
                     </p>
                 </li>
             }

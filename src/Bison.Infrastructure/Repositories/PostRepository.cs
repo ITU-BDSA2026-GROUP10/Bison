@@ -30,7 +30,9 @@ public interface IPostRepository
     public Task <int> AddFavorites(Author author, int id);
 
     public Task<int> AddAuthor(Author author, int authorId);
-    //public Task<int> GetFavoritesFromAuthor(Author author);
+    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author);
+
+    //public ObservationDTO GetObservationsFromId(Observation obs);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -82,6 +84,16 @@ public class PostRepositoryClass : IPostRepository
         var result = await observationQuery.ToListAsync();
         
         return GetObservationDTO(result);
+    }
+
+    public async Task<ObservationDTO> ReadOnePostWithID(int ID)
+    {
+        var observationQuery = _context.Observations
+            .Include(observation => observation.Author)
+            .Where(observation => observation.PostId == ID);
+
+        var result = await observationQuery.ToListAsync();
+        return GetObservationsFromId(result[0]);
     }
 
     public async Task<List<CommentDTO>> ReadCommentsWithID(int ID)
@@ -137,20 +149,20 @@ public class PostRepositoryClass : IPostRepository
         return posts;
     }
 
-    /*private Observation GetObservationsFromId(Observation obs)
+    private ObservationDTO GetObservationsFromId(Observation obs)
     {
-        var posts = new Observation
+        var posts = new ObservationDTO
             {
-                PostId = obs.PostId,
-                AuthorId = obs.Author.AuthorId,
-                Author = obs.Author,
+                PostID = obs.PostId,
+                AuthorID = obs.Author.AuthorId,
+                AuthorName = obs.Author.Name,
                 Text = obs.Text,
-                TimeStamp = obs.TimeStamp,
+                TimeStamp = obs.TimeStamp.ToString(),
                 Taxon = obs.Taxon
             };
         
         return posts;
-    }*/
+    }
     
     public Observation ReadObservationWithID(int ID)
     {
@@ -343,13 +355,23 @@ public class PostRepositoryClass : IPostRepository
         }
         author.FavoritePosts.Add(id);
         Console.WriteLine("Favorite posts size: " + author.FavoritePosts.Count());
+        await _context.SaveChangesAsync();
         return id;
     }
 
-    /*public async Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author)
+    public async Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author)
     {
         List<ObservationDTO> observationDTOs = new List<ObservationDTO>();
-        var observationDTOs = await ReadPostWithID(id);
-        return author.FavoritePosts;
-    }*/
+        if (author.FavoritePosts == null)
+        {
+            author.FavoritePosts = new List<int>();
+        }
+        var ids = author.FavoritePosts;
+        foreach (var id in ids)
+        {
+            var post = await ReadPostWithID(id);
+            observationDTOs.AddRange(post);
+        }
+        return observationDTOs;
+    }
 }
