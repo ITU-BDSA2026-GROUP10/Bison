@@ -356,11 +356,14 @@ public class PostRepositoryClass : IPostRepository
             Console.WriteLine("Favorite Posts is null");
             Console.WriteLine(author.ToString());
             author.FavoritePosts = new List<int>();
+        } else if (!author.FavoritePosts.Contains(id))
+        {
+            author.FavoritePosts.Add(id);
+            Console.WriteLine("Favorite posts size: " + author.FavoritePosts.Count());
+            await _context.SaveChangesAsync();
+            return id;
         }
-        author.FavoritePosts.Add(id);
-        Console.WriteLine("Favorite posts size: " + author.FavoritePosts.Count());
-        await _context.SaveChangesAsync();
-        return id;
+       return id;
     }
 
     public async Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author)
