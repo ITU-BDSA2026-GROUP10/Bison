@@ -4,6 +4,7 @@ using Bison.Infrastructure.Services;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Bison.Core.Models;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bison.Web.Pages;
 
@@ -17,18 +18,33 @@ public class UserTimelineModel : PageModel
     public string Text {get; set;}
 
     public string Author {get; set;}
+    public IFormFile? Photo {get; set;}
+    public class InputModel
+    {
+        [Display (Name = "Description")]
+        public string Text { get; set; } = "";
+        /*[Display (Name = "Taxon")]
+        public int TaxonId { get; set; }*/
+        public IFormFile? Photo { get; set; } // optional
+    }
 
     public UserTimelineModel(IObservationService service)
     {
         _service = service;
     }
     
-    public async Task<IActionResult> OnPost([FromForm] string observation, [FromRoute] string author)
+    public async Task<IActionResult> OnPost([FromRoute] string author)
     {
         //save to database
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
         {
+            if(Input.Photo is {Length: > 0})
+            {
+                var path = Path.Combine("wwwroot/uploads", Input.Photo.FileName);
+                await using var stream = new FileStream(path, FileMode.Create);
+                await photo.CopyToAsync(stream);
+            }
             var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
             Console.WriteLine("Dette er min observation: " + observation);
             _service.AddObservationPost(auth, observation);

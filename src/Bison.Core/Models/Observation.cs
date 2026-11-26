@@ -11,6 +11,8 @@ public class Observation : Post
 
     public List<Proposal>? Proposals {get; set;}
 
+    //public IFormFile? photo {get; set;}
+
     public Taxon getTaxon()
     {
         return Taxon;

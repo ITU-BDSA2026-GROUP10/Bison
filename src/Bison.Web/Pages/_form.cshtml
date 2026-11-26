@@ -6,13 +6,15 @@
     </head>
     <body>
         <h3>What did you spot today?</h3>
-        <form asp-page="UserTimeLine">
+        <form asp-page="UserTimeLine" enctype="multipart/form-data">
             <fieldset>
           <legend>Add observation</legend>
           <div>
             <label for="Obs">Write your observation here: </label>
             <input type="text" name="observation" value="" />
             @Html.ValidationMessage("observation")
+            <label for="Photo"></label>
+            <input type="file" />
           </div>
           <div>
             <input type="submit" value="Post">
