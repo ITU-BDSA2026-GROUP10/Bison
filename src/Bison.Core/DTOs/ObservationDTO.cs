@@ -11,4 +11,6 @@ public class ObservationDTO
     public string TimeStamp { get; set; }
 
     public Taxon? Taxon { get; set; }
+
+    public int Likes {get; set;} = 0;
 }

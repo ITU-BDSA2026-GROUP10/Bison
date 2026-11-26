@@ -4,6 +4,8 @@ using Bison.Core.Models;
 using Bison.Core.DTOs;
 using Bison.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Bison.Infrastructure.Repositories;
 
@@ -360,10 +362,30 @@ public class PostRepositoryClass : IPostRepository
         {
             author.FavoritePosts.Add(id);
             Console.WriteLine("Favorite posts size: " + author.FavoritePosts.Count());
+            //kald en metode der henter en observation og tilføjer en like
+            await saveLikesOnPost(id);
             await _context.SaveChangesAsync();
             return id;
         }
        return id;
+    }
+
+     public int GetLikesFromPost(ObservationDTO ob)
+    {
+       return ob.Likes;
+    }
+
+    public void setLikesOnPost(ObservationDTO ob, int likes)
+    {
+        ob.Likes = likes;
+    }
+
+    private async Task saveLikesOnPost(int id)
+    {
+        var ob = await ReadOnePostWithID(id);
+        var o = GetLikesFromPost(ob);
+        setLikesOnPost(ob, o + 1);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author)

@@ -11,6 +11,8 @@ public class Observation : Post
 
     public List<Proposal>? Proposals {get; set;}
 
+      public int Likes {get; set;} = 0;
+
     public Taxon getTaxon()
     {
         return Taxon;

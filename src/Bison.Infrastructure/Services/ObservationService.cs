@@ -5,7 +5,7 @@ using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
 
 namespace Bison.Infrastructure.Services;
-public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type);
+public record ObservationViewModel(string Author, string Message, string Timestamp, int Likes, int? PostId, Type? type);
 
 
 public interface IObservationService
@@ -49,7 +49,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.Likes, DTO.PostID, typeof(Observation)));
         }
 
         return observations;
@@ -81,7 +81,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.Likes, DTO.PostID, typeof(Observation)));
         }
 
         return observations;
@@ -102,18 +102,18 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadPostWithID(id);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.Likes, DTO.PostID, typeof(Observation)));
         }
         var commentDTOs = await postRepository.ReadCommentsWithID(id);
         
         foreach (var DTO in commentDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), 0, DTO.ObservationID, typeof(Comment)));
         }
         var proposalDTOs = await postRepository.ReadProposalsWithID(id);
         foreach (var DTO in proposalDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), 0, DTO.ObservationID, typeof(Proposal)));
         }
         return observations; 
     }
@@ -127,7 +127,7 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.Likes, DTO.PostID, typeof(Observation)));
         }
         
         return observations; 
@@ -143,7 +143,7 @@ public class ObservationService : IObservationService
         foreach(var post in observationDTOs)
         {
             //var post = await postRepository.ReadPostWithID();
-            observations.Add(new ObservationViewModel(post.AuthorName, post.Text, post.TimeStamp.ToString(), post.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(post.AuthorName, post.Text, post.TimeStamp.ToString(), post.Likes, post.PostID, typeof(Observation)));
         }
         Console.WriteLine("--------NUMBER OF OBSERVATIONS: " + observations.Count());
         return observations;
@@ -204,6 +204,7 @@ public class ObservationService : IObservationService
     public async Task AddFavorites(Author author, int id)
     {
         await postRepository.AddFavorites(author, id);
+
     }
     public async Task<Author> SetAuthor(string name, string email)
     {
