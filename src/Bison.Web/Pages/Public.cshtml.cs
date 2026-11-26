@@ -26,7 +26,7 @@ public class PublicModel : PageModel
         _service = service;
     }
 
-    public async Task<ActionResult> OnPostLike([FromHeader] int id)
+    public async Task<ActionResult> OnPostLike([FromQuery] int id)
     {
         Console.WriteLine("on post like id: " + id);
         var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
