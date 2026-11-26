@@ -31,7 +31,6 @@ public class UserTimelineModel : PageModel
     
     public async Task<IActionResult> OnPost([FromForm] string observation, [FromForm] IFormFile photo, [FromRoute] string author)
     {
-        //doesnt get the photo from the parameters
         Text = observation;
         Photo = photo;
         
