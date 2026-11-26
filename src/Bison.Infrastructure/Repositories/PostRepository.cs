@@ -238,6 +238,26 @@ public class PostRepositoryClass : IPostRepository
         return obs.PostId;
     } 
 
+    public async Task<int> AddProposals(Proposal proposal)
+    {
+        /*proposal.Author.Posts.Add(proposal);
+        proposal.Observation.Proposals.Add(proposal);
+       _context.Posts.Add(proposal);
+       _context.Proposals.Add(proposal);
+        // _context.Add(comment);
+        await _context.SaveChangesAsync();
+        return proposal.PostId; */
+        var auth = proposal.Author;
+        if (await DoesThisAuthorExist(auth))
+        {
+            auth = await GetAuthorFromDatabase(auth.Name, auth.Email);
+        
+        }
+        await _context.Proposals.AddAsync(proposal);
+        await _context.SaveChangesAsync();
+        return proposal.PostId;
+    } 
+
     public async Task<Author> GetAuthorFromDatabase(string name, string email)
 {
     var author = await _context.Authors
@@ -320,17 +340,6 @@ public class PostRepositoryClass : IPostRepository
         // _context.Add(comment);
         await _context.SaveChangesAsync();
         return comment.PostId;
-    } 
-    
-     public async Task<int> AddProposals(Proposal proposal)
-    {
-        proposal.Author.Posts.Add(proposal);
-        proposal.Observation.Proposals.Add(proposal);
-       _context.Posts.Add(proposal);
-       _context.Proposals.Add(proposal);
-        // _context.Add(comment);
-        await _context.SaveChangesAsync();
-        return proposal.PostId;
     } 
 
     public async Task<List<TaxonDTO>> GetAllTaxons ()

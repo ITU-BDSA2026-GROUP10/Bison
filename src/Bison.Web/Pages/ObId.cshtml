@@ -53,12 +53,20 @@
                         <legend>Add Proposal</legend>
                         <div>
                             <label for="Pro">Select your proposal here: </label>
-                            <select>
-                                @for (int j = 1000; j < 11000; j += 1000)
+                            <select name = "TaxonId">
+                                @foreach (var taxon in Model.Taxons)
                                 {
-                                    <option>
-                                    @($"{j} -{j + 1000}" )
-                                    </option>
+                                    @if (@taxon.VernacularName != null)
+                                    {
+                                        <option>
+                                            @taxon.VernacularName
+                                        </option>    
+                                    } else
+                                    {
+                                        <option>
+                                            @taxon.dwc_TaxonID
+                                        </option>        
+                                    }
                                 }
                             </select>
                             @Html.ValidationMessage("proposal")

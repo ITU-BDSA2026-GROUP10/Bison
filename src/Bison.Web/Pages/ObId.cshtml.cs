@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Bison.Infrastructure.Services;
 using Bison.Core.Models;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Bison.Core.DTOs;
 
 namespace Bison.Web.Pages;
 
@@ -11,6 +12,7 @@ public class ObIdModel : PageModel
     private readonly IObservationService _service;
     private readonly ITaxonService _taxonService;
     public List<ObservationViewModel> Observations { get; set; }
+    public List<TaxonDTO> Taxons {get; set;}
 
     public int CurrentPage { get; set; }
 
@@ -58,17 +60,19 @@ public class ObIdModel : PageModel
         }
     }
 
-    public async Task<ActionResult> OnGet([FromQuery] int id, [FromQuery] int page)
+    /*public async Task<ActionResult> OnGet([FromQuery] int id, [FromQuery] int page)
+    {
+        Observations = await _service.GetObservationFromID(id, page);
+        return Page();
+    } */
+
+    public async Task<ActionResult> OnGetAsync ([FromQuery] int id, [FromQuery] int page)
     {
         CurrentPage = ObservationService.ValidPageNumber(page);
         Observations = await _service.GetObservationFromID(id, page);
+        Taxons = await _taxonService.GetAllTaxons();
         return Page();
-    }
-
-    public async Task<ActionResult> OnClick ([FromQuery] int id)
-    {
-        var taxons = await _taxonService.GetAllTaxons();
-        return RedirectToPage("/ObId", new { id = id });
+        //return RedirectToPage("/ObId", new { id = id });
     }
 
 }

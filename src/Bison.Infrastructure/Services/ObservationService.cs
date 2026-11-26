@@ -144,6 +144,26 @@ public class ObservationService : IObservationService
         Console.WriteLine(text);
         postRepository.AddPost(obs);
     }
+
+    public async Task AddProposalPost (Author author, string text, int obId, int taxonId)
+    {
+        int postid = postRepository.GetMaxPostId() + 1;
+        // author = await postRepository.GetAuthorFromDatabase
+        Observation observation = postRepository.ReadObservationWithID(obId);
+        Taxon tax = postRepository.ReadTaxonWithID(taxonId);
+        
+        Proposal p = new Proposal
+        {
+            Author = author,
+            Observation = observation,
+            Text = text,
+            Taxon = tax,
+            PostId = postid,
+            TimeStamp = DateTime.Now
+        };
+        
+        await postRepository.AddProposals(p);
+    }
     
     public async Task AddCommentPost(Author author, string text, int obId)
     {
@@ -161,24 +181,7 @@ public class ObservationService : IObservationService
         await postRepository.AddComments(c);
     }
     
-    public async Task AddProposalPost (Author author, string text, int obId, int taxonId)
-    {
-        int postid = postRepository.GetMaxPostId() + 1;
-        Observation observation = postRepository.ReadObservationWithID(obId);
-        Taxon tax = postRepository.ReadTaxonWithID(taxonId);
-        
-        Proposal p = new Proposal
-        {
-            Author = author,
-            Observation = observation,
-            Text = text,
-            Taxon = tax,
-            PostId = postid,
-            TimeStamp = DateTime.Now
-        };
-        
-        await postRepository.AddProposals(p);
-    }
+    
     
     public async Task<Author> SetAuthor(string name, string email)
     {
