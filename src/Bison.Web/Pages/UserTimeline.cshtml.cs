@@ -39,17 +39,17 @@ public class UserTimelineModel : PageModel
         
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
         {   
+            var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
+            Console.WriteLine("Dette er min observation: " + Text);
+            var id = _service.AddObservationPost(auth, Text);
             if(Photo != null && Photo.Length > 0)
             {
                 Console.WriteLine("Photo length is greater than 0");
-                var path = Path.Combine("wwwroot/uploads", Photo.FileName);
+                var path = Path.Combine("wwwroot/uploads", id.ToString());
+                path = path + ".png";
                 await using var stream = new FileStream(path, FileMode.Create);
                 await Photo.CopyToAsync(stream);
             }
-           
-            var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
-            Console.WriteLine("Dette er min observation: " + Text);
-            _service.AddObservationPost(auth, Text);
             Console.WriteLine(author + " har lavet denne observation " + Text);
             return RedirectToPage("/UserTimeline", new { authorId = auth.AuthorId });
             //evt send back which page to redirect to
