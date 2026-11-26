@@ -93,6 +93,7 @@ public class PostRepositoryClass : IPostRepository
         Console.WriteLine("IIIIIIIIIIIIIID: " + ID);
         var observationQuery = _context.Observations
             .Include(observation => observation.Author)
+            .Include(observation => observation.Likes)
             .Where(observation => observation.PostId == ID);
 
         var result = await observationQuery.ToListAsync();
