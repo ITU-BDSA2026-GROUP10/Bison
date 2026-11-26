@@ -24,6 +24,7 @@
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>
                         <a href="/ob?id=@obs.PostId">See comments and proposals</a>
+                        <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" height="50"/>
                     </p>
                 </li>
             }
