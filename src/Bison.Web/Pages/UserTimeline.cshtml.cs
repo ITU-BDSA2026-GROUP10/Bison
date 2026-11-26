@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Bison.Core.Models;
 using Microsoft.AspNetCore.Components.Forms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bison.Web.Pages;
 
@@ -19,36 +20,38 @@ public class UserTimelineModel : PageModel
 
     public string Author {get; set;}
     public IFormFile? Photo {get; set;}
-    public class InputModel
-    {
-        [Display (Name = "Description")]
-        public string Text { get; set; } = "";
-        /*[Display (Name = "Taxon")]
-        public int TaxonId { get; set; }*/
-        public IFormFile? Photo { get; set; } // optional
-    }
+
+    //[BindProperty]
+    //public InputModel Input {get; set;}
 
     public UserTimelineModel(IObservationService service)
     {
         _service = service;
     }
     
-    public async Task<IActionResult> OnPost([FromRoute] string author)
+    public async Task<IActionResult> OnPost([FromForm] string observation, [FromForm] IFormFile photo, [FromRoute] string author)
     {
-        //save to database
-        //start by making a observation and then call repos method addPost()
+        //doesnt get the photo from the parameters
+        Text = observation;
+        Photo = photo;
+        
+        Console.WriteLine("Observation: " + Text);
+        Console.WriteLine("Photo: " + Photo);
+        
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
-        {
-            if(Input.Photo is {Length: > 0})
+        {   
+            if(Photo != null && Photo.Length > 0)
             {
-                var path = Path.Combine("wwwroot/uploads", Input.Photo.FileName);
+                Console.WriteLine("Photo length is greater than 0");
+                var path = Path.Combine("wwwroot/uploads", Photo.FileName);
                 await using var stream = new FileStream(path, FileMode.Create);
-                await photo.CopyToAsync(stream);
+                await Photo.CopyToAsync(stream);
             }
+           
             var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
-            Console.WriteLine("Dette er min observation: " + observation);
-            _service.AddObservationPost(auth, observation);
-            Console.WriteLine(author + " har lavet denne observation " + observation);
+            Console.WriteLine("Dette er min observation: " + Text);
+            _service.AddObservationPost(auth, Text);
+            Console.WriteLine(author + " har lavet denne observation " + Text);
             return RedirectToPage("/UserTimeline", new { authorId = auth.AuthorId });
             //evt send back which page to redirect to
         } else
@@ -67,3 +70,12 @@ public class UserTimelineModel : PageModel
         return Page();
     }
 }
+
+ /*public class InputModel
+    {
+        [Display (Name = "Description")]
+        public string Text { get; set; } = "";
+        /*[Display (Name = "Taxon")]
+        public int TaxonId { get; set; }*/
+        //public IFormFile? Photo { get; set; } // optional
+    //}
