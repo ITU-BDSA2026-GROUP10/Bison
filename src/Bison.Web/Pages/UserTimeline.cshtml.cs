@@ -30,9 +30,7 @@ public class UserTimelineModel : PageModel
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
         {
             var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
-            Console.WriteLine("Dette er min observation: " + observation);
             _service.AddObservationPost(auth, observation);
-            Console.WriteLine(author + " har lavet denne observation " + observation);
             return RedirectToPage("/UserTimeline", new { authorId = auth.AuthorId });
             //evt send back which page to redirect to
         } else

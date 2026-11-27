@@ -88,13 +88,11 @@ public class PostRepositoryClass : IPostRepository
 
     public async Task<ObservationDTO> ReadOnePostWithID(int ID)
     {
-        Console.WriteLine("IIIIIIIIIIIIIID: " + ID);
         var observationQuery = _context.Observations
             .Include(observation => observation.Author)
             .Where(observation => observation.PostId == ID);
 
         var result = await observationQuery.ToListAsync();
-        Console.WriteLine("================RESULT COUNT: " + result.Count());
         
         return GetObservationsFromId(result.FirstOrDefault());
     }
@@ -128,8 +126,7 @@ public class PostRepositoryClass : IPostRepository
 
         var result = taxonQuery.ToList();
         var tax = result.FirstOrDefault();
-        Console.WriteLine(" !!!! this is the taxon we think we found ------------- " + tax);
-
+        
         return tax;
     }
 
@@ -175,7 +172,6 @@ public class PostRepositoryClass : IPostRepository
 
         var result = observationQuery.ToList();
         var obs = result.FirstOrDefault();
-        Console.WriteLine(" !!!! this is the obs we think we found ------------- "+ obs);
         
         return obs;
     }
@@ -302,11 +298,9 @@ public class PostRepositoryClass : IPostRepository
             
             var result = await query.ToListAsync();
             var auth = result.FirstOrDefault();
-            Console.WriteLine("Author exists");
             return author.AuthorId;
         } else
         {
-            Console.WriteLine("Author doesn't exist");
             return GetMaxAuthorId() + 1;
         }
     }
@@ -353,14 +347,11 @@ public class PostRepositoryClass : IPostRepository
     {
         if(author.FavoritePosts == null)
         {
-            Console.WriteLine("Favorite Posts is null");
-            Console.WriteLine(author.ToString());
             author.FavoritePosts = new List<int>();
         } 
         if (!author.FavoritePosts.Contains(id))
         {
             author.FavoritePosts.Add(id);
-            Console.WriteLine("Favorite posts size: " + author.FavoritePosts.Count());
             await _context.SaveChangesAsync();
             return id;
         }
@@ -375,18 +366,12 @@ public class PostRepositoryClass : IPostRepository
             author.FavoritePosts = new List<int>();
         }
         var ids = author.FavoritePosts;
-        foreach (var id in ids)
-        {
-            Console.WriteLine(id);
-        }
-        Console.WriteLine("///////////////// ID COUNT: " + ids.Count());
-        foreach (var id in ids)
+         foreach (var id in ids)
         {
             var post = await ReadOnePostWithID(id);
             
             observationDTOs.Add(post);
         }
-        Console.WriteLine("____________________ DTOS COUNT: " + observationDTOs.Count());
         return observationDTOs;
     }
 }
