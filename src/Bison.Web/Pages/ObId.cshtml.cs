@@ -23,7 +23,7 @@ public class ObIdModel : PageModel
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated)
         {
-            var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
+            var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
             await _service.AddCommentPost(auth, comment, id);
             return RedirectToPage("/ObId", new { id = id });
             //evt send back which page to redirect to
