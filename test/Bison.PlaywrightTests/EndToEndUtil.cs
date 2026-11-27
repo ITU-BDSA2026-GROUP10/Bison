@@ -41,6 +41,5 @@ public class EndToEndUtil
             throw new InvalidOperationException("Failed to start Bison server");
         }
 
-
     }
 }
