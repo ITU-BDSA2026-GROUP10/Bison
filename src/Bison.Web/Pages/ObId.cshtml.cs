@@ -23,7 +23,7 @@ public class ObIdModel : PageModel
     }
 
     public async Task<IActionResult> OnPostComment([FromForm] string comment, [FromQuery] int id)
-    {
+    {  
         //save to database
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated)
@@ -39,11 +39,12 @@ public class ObIdModel : PageModel
         }
     }
 
-    public async Task<ActionResult> OnPostProposal([FromForm] string proposal, [FromQuery] int id, [FromForm] int taxonId)
+    public async Task<ActionResult> OnPostProposal([FromForm] string proposal, [FromQuery] int id, [FromForm] string taxonId)
     {
-        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my taxon id is: ", taxonId);
-        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my obid is: ", id);
-        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my proposal is: ", proposal);
+        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my taxon id is: " + taxonId);
+        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my obid is: " + id);
+        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my proposal is: " + proposal);
+        //proposal = "I suggest this bird is actually: "; //Just for now until you can post text with your proposal
         //save to database
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated)

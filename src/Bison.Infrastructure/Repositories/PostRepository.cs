@@ -33,7 +33,8 @@ public interface IPostRepository
 
     public Task<List<TaxonDTO>> GetAllTaxons ();
     public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author);
-
+    public Taxon ReadTaxFromVernacularName(string VernacularName);
+    public Taxon ReadTaxFromDWCName(string TaxonDWC);
     //public ObservationDTO GetObservationsFromId(Observation obs);
 }
 public class PostRepositoryClass : IPostRepository
@@ -115,6 +116,7 @@ public class PostRepositoryClass : IPostRepository
     {
         var proposalQuery = _context.Proposals
         .Include(proposal => proposal.Author)
+        .Include(proposal => proposal.Taxon)
         .Where(proposal => proposal.Observation.PostId == ID);
         var result = await proposalQuery.ToListAsync();
 
@@ -132,6 +134,29 @@ public class PostRepositoryClass : IPostRepository
         return tax;
     }
 
+    public Taxon ReadTaxFromVernacularName(string VernacularName)
+    {
+
+        var taxonQuery = _context.Taxons
+           .Where(taxon => taxon.VernacularName == VernacularName);
+
+        var result = taxonQuery.ToList();
+        var tax = result.FirstOrDefault();
+        
+        return tax;
+    }
+
+    public Taxon ReadTaxFromDWCName(string TaxonDWC)
+    {
+
+        var taxonQuery = _context.Taxons
+           .Where(taxon => taxon.dwc_TaxonID == TaxonDWC);
+
+        var result = taxonQuery.ToList();
+        var tax = result.FirstOrDefault();
+        
+        return tax;
+    }
     private List<ObservationDTO> GetObservationDTO(List<Observation> queryResult)
     {
         var posts = new List<ObservationDTO>();
@@ -202,11 +227,20 @@ public class PostRepositoryClass : IPostRepository
         var proposals = new List<ProposalDTO>();
         
         foreach (var proposal in queryResult)
-        {
+        { 
+            string t;
+            if (proposal.Taxon.VernacularName == null)
+            {
+                t = proposal.Taxon.dwc_TaxonID;
+            } else
+            {
+                t = proposal.Taxon.VernacularName;
+            }
             proposals.Add(new ProposalDTO
             {
                 AuthorName = proposal.Author.Name,
                 Text = proposal.Text,
+                Taxon = t,
                 TimeStamp = proposal.TimeStamp.ToString()
             });
         }

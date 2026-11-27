@@ -31,6 +31,7 @@
                         } else if (ob.type == typeof(Proposal))
                         {
                              <small>&mdash; Proposal</small>
+                             <small>(@ob.taxon)</small>
                         }
                     
                     </p>
@@ -55,17 +56,18 @@
                         <legend>Add Proposal</legend>
                         <div>
                             <label for="Pro">Select your proposal here: </label>
+                            <input type="text" name="proposal" value="" />
                             <select name="TaxonId">
                                 @foreach (var taxon in Model.Taxons)
                                 {
                                     @if (@taxon.VernacularName != null)
                                     {
-                                        <option value="taxonId">
+                                        <option value="@taxon.VernacularName">
                                             @taxon.VernacularName
                                         </option>    
                                     } else
                                     {
-                                        <option value="taxonId">
+                                        <option value="@taxon.dwc_TaxonID">
                                             @taxon.dwc_TaxonID
                                         </option>        
                                     }
