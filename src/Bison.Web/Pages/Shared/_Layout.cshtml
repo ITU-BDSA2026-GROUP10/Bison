@@ -14,6 +14,7 @@
         {
             <div>
                 <a href="/obs/@(User.Identity.Name)">My Observations</a> |
+                <a href="/favorites/@(User.Identity.Name)">My Favorites</a> |
                 <a href="/">Public Observations</a> |
                 <form class="form-inline" asp-page="/Account/Logout"
                     asp-route-returnUrl="@Url.Page("/", new { area = "" })"

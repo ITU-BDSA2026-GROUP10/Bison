@@ -12,7 +12,6 @@ public static class DbInitializer
 
         if (!(bisonContext.Authors.Any() && bisonContext.Posts.Any()))
         {
-            Console.WriteLine("inside the if");
             // Taxons, the parent of Pelecaniformes is null.
             var tPelecaniformes = new Taxon() { TaxonId = 1, dwc_TaxonID = "MSTSNM:Arter:3e4e67e4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Årefodede", Parent = null };
             var tArdeidae = new Taxon() { TaxonId = 2, dwc_TaxonID = "MSTSNM:Arter:495067e4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Hejrer", Parent = tPelecaniformes };
@@ -532,10 +531,6 @@ public static class DbInitializer
             bisonContext.Proposals.AddRange(proposals);
             bisonContext.Observations.AddRange(observations);
             bisonContext.SaveChanges();
-            Console.WriteLine("number of posts in db initializer" + posts.Count);
-            Console.WriteLine("number of observations in db initializer" + observations.Count);
-            Console.WriteLine("number of proposals in db initializer" + proposals.Count);
-            Console.WriteLine("number of comments in db initializer" + comments.Count);
         }
     }
 }

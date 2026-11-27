@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bison.Infrastructure.Migrations
 {
     [DbContext(typeof(BisonDBContext))]
-    [Migration("20261127094623_PleaseWorkProposals")]
-    partial class PleaseWorkProposals
+    [Migration("20261127120228_Proposal")]
+    partial class Proposal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,6 +92,9 @@ namespace Bison.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FavoritePosts")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
