@@ -5,7 +5,7 @@ using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
 
 namespace Bison.Infrastructure.Services;
-public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type);
+public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type/*, string? PhotoPath*/);
 
 
 public interface IObservationService
@@ -18,7 +18,7 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
     
     public Task<List<ObservationViewModel>> GetFavoritesFromAuthor(Author author);
-    public void AddObservationPost(Author author, string text);
+    public int AddObservationPost(Author author, string text);
 
     public Task AddCommentPost(Author author, string text, int obID);
 
@@ -49,7 +49,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
 
         return observations;
@@ -81,7 +81,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
 
         return observations;
@@ -102,18 +102,18 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadPostWithID(id);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
         var commentDTOs = await postRepository.ReadCommentsWithID(id);
         
         foreach (var DTO in commentDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)/*, null*/));
         }
         var proposalDTOs = await postRepository.ReadProposalsWithID(id);
         foreach (var DTO in proposalDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)/*, null*/));
         }
         return observations; 
     }
@@ -127,7 +127,7 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
         
         return observations; 
@@ -148,7 +148,7 @@ public class ObservationService : IObservationService
         return observations;
     }
     
-    public void AddObservationPost(Author author, string text)
+    public int AddObservationPost(Author author, string text)
     {
         int postid = postRepository.GetMaxPostId() + 1;
 
@@ -160,6 +160,7 @@ public class ObservationService : IObservationService
             TimeStamp = DateTime.Now
         };
         postRepository.AddPost(obs);
+        return postid;
     }
     
     public async Task AddCommentPost(Author author, string text, int obId)
