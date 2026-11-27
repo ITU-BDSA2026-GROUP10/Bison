@@ -69,23 +69,15 @@ public class Tests : PageTest
         await Expect(Page).ToHaveURLAsync(new Regex(".*Register"));
     }
 
-    /*[Test]
+    [Test]
     public async Task PublicObservationsAreVisibleWhenNotLoggedIn()
     {
         await Page.GotoAsync("http://localhost:5273");
 
-        // create a locator
-        var PublicObservations = Page.GetByRole(AriaRole.Link, new() { Name = "Public Observations" });
-
         // Expect an attribute "to be strictly equal" to the value
-        await Expect(Page.Locator("li").Filter(new() { HasText = "Nathan Sirmon About 30" })).ToBeVisibleAsync();
+        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
 
-        // Click the Login link
-        await PublicObservations.ClickAsync();
-
-        // Expects the URL to contain Login
-        await Expect(Page).ToHaveURLAsync(new Regex(""));
-    }*/
+    }
 
     [Test]
     public async Task UserTimelineIsAccessibleWhenNotLoggedIn()
