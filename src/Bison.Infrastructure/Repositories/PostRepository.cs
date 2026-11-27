@@ -238,15 +238,9 @@ public class PostRepositoryClass : IPostRepository
         return obs.PostId;
     } 
 
+// For googles simple AI review, with simple examples
     public async Task<int> AddProposals(Proposal proposal)
     {
-        /*proposal.Author.Posts.Add(proposal);
-        proposal.Observation.Proposals.Add(proposal);
-       _context.Posts.Add(proposal);
-       _context.Proposals.Add(proposal);
-        // _context.Add(comment);
-        await _context.SaveChangesAsync();
-        return proposal.PostId; */
         var auth = proposal.Author;
         if (await DoesThisAuthorExist(auth))
         {
@@ -255,11 +249,11 @@ public class PostRepositoryClass : IPostRepository
         }
         await _context.Proposals.AddAsync(proposal);
         await _context.SaveChangesAsync();
-        return proposal.PostId;
+        return proposal.PostId; 
     } 
 
     public async Task<Author> GetAuthorFromDatabase(string name, string email)
-{
+    {
     var author = await _context.Authors
         .FirstOrDefaultAsync(a => a.Name == name && a.Email == email);
 
@@ -285,7 +279,7 @@ public class PostRepositoryClass : IPostRepository
 
     public async Task<Boolean> DoesThisAuthorExist (Author author)
     {
-        var query = _context.Observations.Where(observation => observation.Author.Name == author.Name);
+        var query = _context.Posts.Where(post => post.Author.Name == author.Name);
 
         var result = await query.ToListAsync();
         
