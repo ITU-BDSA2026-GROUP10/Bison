@@ -128,7 +128,7 @@ namespace Bison.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Post");
 
@@ -328,7 +328,7 @@ namespace Bison.Infrastructure.Migrations
 
                     b.HasIndex("TaxonId");
 
-                    b.ToTable("Post", t =>
+                    b.ToTable("Posts", t =>
                         {
                             t.Property("ObservationPostId")
                                 .HasColumnName("Proposal_ObservationPostId");
