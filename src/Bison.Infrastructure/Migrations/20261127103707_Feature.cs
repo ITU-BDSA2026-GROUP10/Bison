@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bison.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CustomFeature : Migration
+    public partial class Feature : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
