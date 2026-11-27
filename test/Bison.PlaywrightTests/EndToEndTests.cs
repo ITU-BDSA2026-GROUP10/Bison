@@ -31,7 +31,7 @@ public class EndToEndTests : PageTest
     {
         await Page.GotoAsync("http://localhost:5273");
 
-        // Check that the My Observations link is not visible before login
+        // Expect that the My Observations link is not visible before login
         await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "My Observations" })).Not.ToBeVisibleAsync();
 
         // Click the Register link
@@ -79,14 +79,14 @@ public class EndToEndTests : PageTest
         // Click Login button
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        // Check that the My Observations link is visible after login
+        // Expect that the My Observations link is visible after login
         await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "My Observations" })).ToBeVisibleAsync();
 
 
         // Click the My Observations link
         await Page.GetByRole(AriaRole.Link, new() { Name = "My Observations" }).ClickAsync();
 
-        // Check that theo observation box is visible 
+        // Expect that the observation box is visible 
         await Expect(Page.GetByRole(AriaRole.Textbox)).ToBeVisibleAsync();
 
         // Click on the observations box 
@@ -101,7 +101,7 @@ public class EndToEndTests : PageTest
         // Click the Public Observations link
         await Page.GetByRole(AriaRole.Link, new() { Name = "Public Observations" }).ClickAsync();
 
-        // Check that the observation is visible with the correct author
+        // Expect that the observation is visible with the correct author
         await Expect(Page.Locator("li").Filter(new() { HasText = "test@example.com This is a test observation" })).ToBeVisibleAsync();
 
 
