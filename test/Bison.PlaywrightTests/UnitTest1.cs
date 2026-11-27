@@ -59,13 +59,46 @@ public class Tests : PageTest
         // create a locator
         var Register = Page.GetByRole(AriaRole.Link, new() { Name = "Register" });
 
-        // Expect an attribute "to be strictly equal" to the value.
+        // Expect an attribute "to be strictly equal" to the value
         await Expect(Register).ToHaveAttributeAsync("href", "/Identity/Account/Register");
 
-        // Click the Login link.
+        // Click the Login link
         await Register.ClickAsync();
 
-        // Expects the URL to contain Login.
+        // Expects the URL to contain Login
         await Expect(Page).ToHaveURLAsync(new Regex(".*Register"));
+    }
+
+    /*[Test]
+    public async Task PublicObservationsAreVisibleWhenNotLoggedIn()
+    {
+        await Page.GotoAsync("http://localhost:5273");
+
+        // create a locator
+        var PublicObservations = Page.GetByRole(AriaRole.Link, new() { Name = "Public Observations" });
+
+        // Expect an attribute "to be strictly equal" to the value
+        await Expect(Page.Locator("li").Filter(new() { HasText = "Nathan Sirmon About 30" })).ToBeVisibleAsync();
+
+        // Click the Login link
+        await PublicObservations.ClickAsync();
+
+        // Expects the URL to contain Login
+        await Expect(Page).ToHaveURLAsync(new Regex(""));
+    }*/
+
+    [Test]
+    public async Task UserTimelineIsAccessibleWhenNotLoggedIn()
+    {
+        await Page.GotoAsync("http://localhost:5273");
+
+        // Click the author's link
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Nathan Sirmon" }).First.ClickAsync();
+
+        // Click on the heading
+        await Page.GetByRole(AriaRole.Heading, new() { Name = "Nathan Sirmon's Observations" }).ClickAsync();
+
+        // Expect that the user's timeline is visible
+        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Nathan Sirmon's Observations" })).ToBeVisibleAsync();
     }
 }
