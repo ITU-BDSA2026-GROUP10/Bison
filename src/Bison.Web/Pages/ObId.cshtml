@@ -50,22 +50,22 @@
                             </fieldset>
                         </form>
                         
-                        <form asp-page="ObId" method="post" asp-page-handler="Proposal" asp-route-id="@ob.PostId">
+                        <form asp-page="ObId" method="post" asp-page-handler="Proposal" asp-route-id="@ob.PostId" enctype="multipart/form-data">
                         <fieldset name="writeProposal">
                         <legend>Add Proposal</legend>
                         <div>
                             <label for="Pro">Select your proposal here: </label>
-                            <select name = "TaxonId">
+                            <select name="TaxonId">
                                 @foreach (var taxon in Model.Taxons)
                                 {
                                     @if (@taxon.VernacularName != null)
                                     {
-                                        <option>
+                                        <option value="taxonId">
                                             @taxon.VernacularName
                                         </option>    
                                     } else
                                     {
-                                        <option>
+                                        <option value="taxonId">
                                             @taxon.dwc_TaxonID
                                         </option>        
                                     }

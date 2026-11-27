@@ -253,14 +253,25 @@ public class PostRepositoryClass : IPostRepository
     } 
 
 // For googles simple AI review, with simple examples
+/*
+comment.Author.Posts?.Add(comment);
+        comment.Observation.Comments?.Add(comment);
+        await _context.Posts.AddAsync(comment);
+        await _context.Comments.AddAsync(comment);
+        // _context.Add(comment);
+        await _context.SaveChangesAsync();
+        return comment.PostId;
+*/
     public async Task<int> AddProposals(Proposal proposal)
     {
-        var auth = proposal.Author;
+        /*var auth = proposal.Author;
         if (await DoesThisAuthorExist(auth))
         {
             auth = await GetAuthorFromDatabase(auth.Name, auth.Email);
         
-        }
+        }*/
+        proposal.Observation.Proposals?.Add(proposal);
+        await _context.Posts.AddAsync(proposal);
         await _context.Proposals.AddAsync(proposal);
         await _context.SaveChangesAsync();
         return proposal.PostId; 
@@ -291,7 +302,7 @@ public class PostRepositoryClass : IPostRepository
         return max;
     }
 
-    public async Task<Boolean> DoesThisAuthorExist (Author author)
+    public async Task<bool> DoesThisAuthorExist (Author author)
     {
         var query = _context.Posts.Where(post => post.Author.Name == author.Name);
 

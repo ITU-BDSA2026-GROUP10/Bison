@@ -39,13 +39,16 @@ public class ObIdModel : PageModel
         }
     }
 
-    public async Task<IActionResult> OnPostProposal([FromForm] string proposal, [FromQuery] int id, [FromForm] int taxonId)
+    public async Task<ActionResult> OnPostProposal([FromForm] string proposal, [FromQuery] int id, [FromForm] int taxonId)
     {
+        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my taxon id is: ", taxonId);
+        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my obid is: ", id);
+        Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% my proposal is: ", proposal);
         //save to database
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated)
         {
-            var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
+            var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
             await _service.AddProposalPost(auth, proposal, id, taxonId);
             return RedirectToPage("/ObId", new { id = id });
             //evt send back which page to redirect to
