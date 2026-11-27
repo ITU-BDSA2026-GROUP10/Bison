@@ -28,4 +28,22 @@ public class Tests : PageTest
         // Expects the URL to contain Login.
         await Expect(Page).ToHaveURLAsync(new Regex(".*Login"));
     }
+
+    [Test]
+    public async Task RegisterLinkWorks()
+    {
+        await Page.GotoAsync("http://localhost:5273");
+
+        // create a locator
+        var Register = Page.GetByRole(AriaRole.Link, new() { Name = "Register" });
+
+        // Expect an attribute "to be strictly equal" to the value.
+        await Expect(Register).ToHaveAttributeAsync("href", "/Identity/Account/Register");
+
+        // Click the Login link.
+        await Register.ClickAsync();
+
+        // Expects the URL to contain Login.
+        await Expect(Page).ToHaveURLAsync(new Regex(".*Register"));
+    }
 }
