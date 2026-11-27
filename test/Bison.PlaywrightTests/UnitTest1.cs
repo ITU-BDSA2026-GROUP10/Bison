@@ -80,7 +80,7 @@ public class Tests : PageTest
     }
 
     [Test]
-    public async Task UserTimelineIsAccessibleWhenNotLoggedIn()
+    public async Task UserTimelineIsAccessibleAndObservationBoxIsNotVisibleWhenNotLoggedIn()
     {
         await Page.GotoAsync("http://localhost:5273");
 
@@ -92,5 +92,8 @@ public class Tests : PageTest
 
         // Expect that the user's timeline is visible
         await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Nathan Sirmon's Observations" })).ToBeVisibleAsync();
+
+        // Expect that the observation box is not visible
+        await Expect(Page.GetByRole(AriaRole.Textbox)).Not.ToBeVisibleAsync();
     }
 }
