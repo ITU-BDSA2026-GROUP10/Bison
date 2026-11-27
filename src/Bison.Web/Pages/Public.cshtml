@@ -26,7 +26,7 @@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
-                                <button>Like</button>
+                                <button>Save</button>
                             </form>
                         }
                        
