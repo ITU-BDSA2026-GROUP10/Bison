@@ -1,0 +1,44 @@
+@page "/favorites/{author}"
+@model Bison.Web.Pages.MyFavoritesModel
+@using Microsoft.AspNetCore.Identity
+@using Bison.Core.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Bison";
+    Layout = "Shared/_Layout";
+    var routeName = HttpContext.GetRouteValue("author");
+}
+
+<div>
+    <h2> @routeName's favorites </h2>
+</div>
+<div>
+    @if (Model.Observations != null && Model.Observations.Any())
+    {
+        <ul id="messagelist" class="observations">
+            @foreach (var ob in Model.Observations)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/favorites/@ob.Author">@ob.Author</a>
+                        </strong>
+                        @ob.Message
+                        <small>&mdash; @ob.Timestamp</small>
+                        @*<a href="/ob?id=@ob.PostId">See comments and proposals</a>*@
+                    </p>
+                </li>
+            }
+        </ul>
+    
+    }
+    else
+    {
+        <em>There are no observations so far.</em>
+    }
+    @{
+        ViewData["ObservationCount"] = Model.Observations.Count;
+    }
+    <partial name="_PaginationPartial" model="Model.CurrentPage" />
+</div>

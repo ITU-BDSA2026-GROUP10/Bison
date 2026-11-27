@@ -19,18 +19,20 @@ public class PublicModel : PageModel
 
     public string Author {get; set;}
 
+    public int counter {get; set;}
+
     public PublicModel(IObservationService service)
     {
         _service = service;
     }
 
-    /*public async Task<ActionResult> OnGet([FromQuery] int page, [FromQuery] Observation obs)
+    public async Task<ActionResult> OnPostLike([FromQuery] int id)
     {
-        CurrentPage = ObservationService.ValidPageNumber(page);
-        Observations = await _service.GetObservationFromID(page, obs.PostId);
-        return Page();
-    }*/
-
+        var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
+        counter++;
+        await _service.AddFavorites(auth, id);
+        return RedirectToPage("Public");
+    }
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {
         CurrentPage = ObservationService.ValidPageNumber(page);
@@ -38,11 +40,5 @@ public class PublicModel : PageModel
         return Page();
     }
     
-    /*public void OnGetComment([FromFrom] int ID, int page)
-    {
-        Comment = await _service.GetComments(ID, page);
-        return Page();
-    }*/
-
 }
 

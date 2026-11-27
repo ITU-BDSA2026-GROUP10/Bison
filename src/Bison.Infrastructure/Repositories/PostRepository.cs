@@ -27,7 +27,12 @@ public interface IPostRepository
     public Task<int> AddComments(Comment comment);
     public Task<int> AddProposals(Proposal proposal);
 
+    public Task <int> AddFavorites(Author author, int id);
+
     public Task<int> AddAuthor(Author author, int authorId);
+    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author);
+
+    //public ObservationDTO GetObservationsFromId(Observation obs);
 }
 public class PostRepositoryClass : IPostRepository
 {
@@ -81,6 +86,17 @@ public class PostRepositoryClass : IPostRepository
         return GetObservationDTO(result);
     }
 
+    public async Task<ObservationDTO> ReadOnePostWithID(int ID)
+    {
+        var observationQuery = _context.Observations
+            .Include(observation => observation.Author)
+            .Where(observation => observation.PostId == ID);
+
+        var result = await observationQuery.ToListAsync();
+        
+        return GetObservationsFromId(result.FirstOrDefault());
+    }
+
     public async Task<List<CommentDTO>> ReadCommentsWithID(int ID)
     {
     
@@ -110,8 +126,7 @@ public class PostRepositoryClass : IPostRepository
 
         var result = taxonQuery.ToList();
         var tax = result.FirstOrDefault();
-        Console.WriteLine(" !!!! this is the taxon we think we found ------------- " + tax);
-
+        
         return tax;
     }
 
@@ -134,20 +149,20 @@ public class PostRepositoryClass : IPostRepository
         return posts;
     }
 
-    /*private Observation GetObservationsFromId(Observation obs)
+    private ObservationDTO GetObservationsFromId(Observation obs)
     {
-        var posts = new Observation
+        var posts = new ObservationDTO
             {
-                PostId = obs.PostId,
-                AuthorId = obs.Author.AuthorId,
-                Author = obs.Author,
+                PostID = obs.PostId,
+                AuthorID = obs.Author.AuthorId,
+                AuthorName = obs.Author.Name,
                 Text = obs.Text,
-                TimeStamp = obs.TimeStamp,
+                TimeStamp = obs.TimeStamp.ToString(),
                 Taxon = obs.Taxon
             };
         
         return posts;
-    }*/
+    }
     
     public Observation ReadObservationWithID(int ID)
     {
@@ -157,7 +172,6 @@ public class PostRepositoryClass : IPostRepository
 
         var result = observationQuery.ToList();
         var obs = result.FirstOrDefault();
-        Console.WriteLine(" !!!! this is the obs we think we found ------------- "+ obs);
         
         return obs;
     }
@@ -284,11 +298,9 @@ public class PostRepositoryClass : IPostRepository
             
             var result = await query.ToListAsync();
             var auth = result.FirstOrDefault();
-            Console.WriteLine("Author exists");
             return author.AuthorId;
         } else
         {
-            Console.WriteLine("Author doesn't exist");
             return GetMaxAuthorId() + 1;
         }
     }
@@ -331,4 +343,35 @@ public class PostRepositoryClass : IPostRepository
         return proposal.PostId;
     } 
     
+    public async Task<int> AddFavorites(Author author, int id)
+    {
+        if(author.FavoritePosts == null)
+        {
+            author.FavoritePosts = new List<int>();
+        } 
+        if (!author.FavoritePosts.Contains(id))
+        {
+            author.FavoritePosts.Add(id);
+            await _context.SaveChangesAsync();
+            return id;
+        }
+       return id;
+    }
+
+    public async Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author)
+    {
+        List<ObservationDTO> observationDTOs = new List<ObservationDTO>();
+        if (author.FavoritePosts == null)
+        {
+            author.FavoritePosts = new List<int>();
+        }
+        var ids = author.FavoritePosts;
+         foreach (var id in ids)
+        {
+            var post = await ReadOnePostWithID(id);
+            
+            observationDTOs.Add(post);
+        }
+        return observationDTOs;
+    }
 }

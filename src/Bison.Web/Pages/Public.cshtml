@@ -23,7 +23,15 @@
                         </strong>
                         @obs.Message
                         <small>&mdash; @obs.Timestamp</small>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
+                                <button>Save</button>
+                            </form>
+                        }
+                       
                         <a href="/ob?id=@obs.PostId">See comments and proposals</a>
+                        <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" height="50"/>
                     </p>
                 </li>
             }

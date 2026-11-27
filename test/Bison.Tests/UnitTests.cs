@@ -199,7 +199,11 @@ public class EmptyPostRepository : IPostRepository
     public Task<int> AddAuthor(Author author, int authorId) {return null;}
     
     public Task<int> AddComments(Comment comment) { return null;}
-    public Task<int> AddProposals(Proposal proposal) { return null;}
+    public Task<int> AddProposals(Proposal proposal) { return null; }
+
+    public Task<int> AddFavorites(Author author, int id) { return null; }
+
+    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author) {return null;}
 }
 
 public class SinglePostRepository : IPostRepository
@@ -271,7 +275,8 @@ public class SinglePostRepository : IPostRepository
      public Task<int> AddComments(Comment comment) { return null;}
     public Task<int> AddProposals(Proposal proposal) { return null; }
     
-
+    public Task<int> AddFavorites(Author author, int id) { return null;}
+    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author) {return null;}
 }
 
 
@@ -356,4 +361,7 @@ public class FakePostRepository : IPostRepository
     public Task<int> AddAuthor(Author author, int authorId){return null;}
      public Task<int> AddComments(Comment comment) { return null;}
     public Task<int> AddProposals(Proposal proposal) { return null;}
+    public Task<int> AddFavorites(Author author, int id) { return null;}
+
+    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author) {return null;}
 }

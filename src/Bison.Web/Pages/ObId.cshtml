@@ -23,6 +23,8 @@
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
+                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" height="50"/>
+
                         @if (ob.type == typeof(Comment))
                         {
                             <small>&mdash; Comment</small>

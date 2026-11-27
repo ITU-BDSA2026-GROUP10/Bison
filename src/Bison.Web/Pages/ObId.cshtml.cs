@@ -23,10 +23,8 @@ public class ObIdModel : PageModel
         //start by making a observation and then call repos method addPost()
         if (User.Identity.IsAuthenticated)
         {
-            var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
-            Console.WriteLine("Dette er min comment: " + comment);
+            var auth = await _service.GetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
             await _service.AddCommentPost(auth, comment, id);
-            Console.WriteLine(User.Identity.Name + " har lavet denne comment " + comment);
             return RedirectToPage("/ObId", new { id = id });
             //evt send back which page to redirect to
         }
@@ -43,9 +41,7 @@ public class ObIdModel : PageModel
         if (User.Identity.IsAuthenticated)
         {
             var auth = await _service.SetAuthor(User.Identity.Name, User.Identity.Name); //supposed to be name and then email, but both are email right now?
-            Console.WriteLine("Dette er min proposal: " + proposal);
             await _service.AddProposalPost(auth, proposal, id, taxonId);
-            Console.WriteLine(User.Identity.Name + " har lavet denne proposal " + proposal);
             return RedirectToPage("/ObId", new { id = id });
             //evt send back which page to redirect to
         }

@@ -9,6 +9,6 @@ public class ObservationDTO
     //public int AuthorID {get; set;}
     public string Text { get; set; } = "";
     public string TimeStamp { get; set; }
-
+    //public string? PhotoPath {get; set;}
     public Taxon? Taxon { get; set; }
 }

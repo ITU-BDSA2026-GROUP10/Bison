@@ -5,7 +5,7 @@ using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
 
 namespace Bison.Infrastructure.Services;
-public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type);
+public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type/*, string? PhotoPath*/);
 
 
 public interface IObservationService
@@ -16,12 +16,17 @@ public interface IObservationService
     public Task<List<ObservationViewModel>> GetObservationsFromAuthor(string author, int page);
     public Task<List<ObservationViewModel>> GetObservationFromID(int id, int page);
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
-    public void AddObservationPost(Author author, string text);
+    
+    public Task<List<ObservationViewModel>> GetFavoritesFromAuthor(Author author);
+    public int AddObservationPost(Author author, string text);
 
     public Task AddCommentPost(Author author, string text, int obID);
 
     public Task AddProposalPost(Author author, string text, int obId, int taxonId);
     public Task<Author> SetAuthor(string name, string email);
+
+    public Task AddFavorites(Author author, int id);
+    public Task<Author> GetAuthor(string name, string email);
 }
 
 public class ObservationService : IObservationService
@@ -44,7 +49,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
 
         return observations;
@@ -76,7 +81,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
 
         return observations;
@@ -97,18 +102,18 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadPostWithID(id);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
         var commentDTOs = await postRepository.ReadCommentsWithID(id);
         
         foreach (var DTO in commentDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)/*, null*/));
         }
         var proposalDTOs = await postRepository.ReadProposalsWithID(id);
         foreach (var DTO in proposalDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)/*, null*/));
         }
         return observations; 
     }
@@ -122,13 +127,28 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
         }
         
         return observations; 
     }
+
+    public async Task<List<ObservationViewModel>> GetFavoritesFromAuthor(Author author)
+    {
+        List<ObservationViewModel> observations = new List<ObservationViewModel>();
+
+        //var observationDTOs = author.FavoritePosts;//await postRepository.GetFavoritesFromAuthor(author);
+
+        var observationDTOs = await postRepository.GetFavoritesFromAuthor(author);
+        foreach(var post in observationDTOs)
+        {
+            //var post = await postRepository.ReadPostWithID();
+            observations.Add(new ObservationViewModel(post.AuthorName, post.Text, post.TimeStamp.ToString(), post.PostID, typeof(Observation)));
+        }
+        return observations;
+    }
     
-    public void AddObservationPost(Author author, string text)
+    public int AddObservationPost(Author author, string text)
     {
         int postid = postRepository.GetMaxPostId() + 1;
 
@@ -139,10 +159,8 @@ public class ObservationService : IObservationService
             PostId = postid,
             TimeStamp = DateTime.Now
         };
-        
-        Console.WriteLine(obs.Author.Email);
-        Console.WriteLine(text);
         postRepository.AddPost(obs);
+        return postid;
     }
     
     public async Task AddCommentPost(Author author, string text, int obId)
@@ -180,6 +198,10 @@ public class ObservationService : IObservationService
         await postRepository.AddProposals(p);
     }
     
+    public async Task AddFavorites(Author author, int id)
+    {
+        await postRepository.AddFavorites(author, id);
+    }
     public async Task<Author> SetAuthor(string name, string email)
     {
         Author author = new Author{Name = name, Email = email};
@@ -194,6 +216,11 @@ public class ObservationService : IObservationService
         }
         author.AuthorId = result;
         return author;
+    }
+
+    public async Task<Author> GetAuthor(string name, string email)
+    {
+        return await postRepository.GetAuthorFromDatabase(name, email);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
