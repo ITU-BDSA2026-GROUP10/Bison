@@ -7,7 +7,7 @@ using Bison.Core.Models;
 
 namespace Bison.Web.Pages;
 
-public class MyLikesModel : PageModel
+public class MyFavoritesModel : PageModel
 {
     private readonly IObservationService _service;
     // This is a comment
@@ -18,7 +18,7 @@ public class MyLikesModel : PageModel
 
     public string Author {get; set;}
 
-    public MyLikesModel(IObservationService service)
+    public MyFavoritesModel(IObservationService service)
     {
         _service = service;
     }

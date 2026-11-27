@@ -39,8 +39,8 @@ public class UserTimelineModel : PageModel
         
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
         {   
-            var auth = await _service.SetAuthor(author, author); //supposed to be name and then email
-            _service.AddObservationPost(auth, observation);
+            var auth = await _service.GetAuthor(author, author); //supposed to be name and then email
+            //_service.AddObservationPost(auth, observation);
             Console.WriteLine("Dette er min observation: " + Text);
             var id = _service.AddObservationPost(auth, Text);
             if(Photo != null && Photo.Length > 0)
