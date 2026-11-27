@@ -3,6 +3,9 @@ using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using System.Diagnostics;
 
+//Link used for kill process:
+//https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.kill?view=net-11.0
+
 namespace Bison.PlaywrightTests;
 
 [Parallelizable(ParallelScope.Self)]
@@ -23,7 +26,7 @@ public class Tests : PageTest
     [TearDown]
     public async Task Cleanup()
     {
-        _serverProcess.Kill();
+        _serverProcess.Kill(entireProcessTree: true); //stops the server after the test have run 
         _serverProcess.Dispose();
     }
 
