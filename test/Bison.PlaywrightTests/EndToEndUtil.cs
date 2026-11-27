@@ -33,7 +33,7 @@ public class EndToEndUtil
 
         if (process != null)
         {
-            await Task.Delay(10000); //Allows Bison to build and start (10 sec)
+            await Task.Delay(6000); //Allows Bison to build and start (10 sec)
             return process;
         }
         else
