@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Post Page</title>
+    </head>
+    <body>
+        <select name="TaxonId">
+            @foreach (var taxon in Model.Taxons)
+            {
+                @if (@taxon.VernacularName != null)
+                {
+                    <option value="@taxon.VernacularName">
+                        @taxon.VernacularName
+                    </option>    
+                } else
+                {
+                    <option value="@taxon.dwc_TaxonID">
+                        @taxon.dwc_TaxonID
+                    </option>        
+                }
+            }
+        </select>
+    </body>
+</html>

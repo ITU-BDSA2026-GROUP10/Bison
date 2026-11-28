@@ -3,12 +3,11 @@
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
-    var routeName = HttpContext.GetRouteValue("filter");
+    var routeName = HttpContext.GetRouteValue("id");
 }
 
 <div>
-    <h2> Public Timeline </h2>
-
+    <h2> Filtered observations </h2>
     @if (Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">

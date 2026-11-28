@@ -27,22 +27,41 @@ public class TaxonService : ITaxonService
 
     public List<ObservationDTO> Filter(string id, List<ObservationDTO> observations){
         List <ObservationDTO> filteredObservations = new List<ObservationDTO>();
+        
         foreach(var ob in observations){
             if(ob.Taxon != null)
             {
-                if(ob.Taxon.dwc_TaxonID.Equals(id)) {
-                    filteredObservations.Add(ob);
-                } else {
-                    if(ob.Taxon.Children != null)
-                    {
-                        foreach (var child in ob.Taxon.Children){
-                            if(child.dwc_TaxonID.Equals(id)){
-                                filteredObservations.Add(ob);
+                if(ob.Taxon.VernacularName != null)
+                {
+                    if(ob.Taxon.VernacularName.Equals(id)) {
+                        filteredObservations.Add(ob);
+                    } else {
+                        if(ob.Taxon.Children != null)
+                        {
+                            foreach (var child in ob.Taxon.Children){
+                                if(child.Parent.VernacularName.Equals(id)){
+                                    filteredObservations.Add(ob);
+                                }
                             }
                         }
+                    } 
+                } else
+                {
+                    if(ob.Taxon.dwc_TaxonID.Equals(id)) {
+                        filteredObservations.Add(ob);
+                    } else {
+                        if(ob.Taxon.Children != null)
+                        {
+                            foreach (var child in ob.Taxon.Children){
+                                //if(child.dwc_TaxonID.Equals(id)){
+                                    filteredObservations.Add(ob);
+                                //}
+                            }
+                        }
+                        
                     }
-                    
                 }
+                
             }
             
         }

@@ -11,6 +11,15 @@
 
 <div>
     <h2> Public Timeline </h2>
+    <div> 
+        Filter by:
+        <form asp-page="Public" method="post" asp-page-handler="Filter" asp-route-id="Model.taxon"> 
+            <partial name="_taxonDropDown.cshtml"></partial>
+            <div>
+                <input type="submit" value="Filter">
+            </div>
+        </form>
+    </div>
     @if (Model.Observations != null && Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">

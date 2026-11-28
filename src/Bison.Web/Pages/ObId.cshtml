@@ -59,22 +59,7 @@
                         <div>
                             <label for="Pro">Select your proposal here: </label>
                             <input type="text" name="proposal" value="" />
-                            <select name="TaxonId">
-                                @foreach (var taxon in Model.Taxons)
-                                {
-                                    @if (@taxon.VernacularName != null)
-                                    {
-                                        <option value="@taxon.VernacularName">
-                                            @taxon.VernacularName
-                                        </option>    
-                                    } else
-                                    {
-                                        <option value="@taxon.dwc_TaxonID">
-                                            @taxon.dwc_TaxonID
-                                        </option>        
-                                    }
-                                }
-                            </select>
+                            <partial name="_taxonDropDown.cshtml"></partial>
                             @Html.ValidationMessage("proposal")
                         </div>
                         <div>
