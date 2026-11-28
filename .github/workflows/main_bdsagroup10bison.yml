@@ -61,7 +61,7 @@ jobs:
         with:
           app-name: 'bdsagroup10bison2026'
           slot-name: 'Production'
-          package: ${{env.DOTNET_ROOT}}/myapp
+          package: .
           startup-command: 'dotnet Bison.Razor.dll'
           clean: true
           #publish-profle: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
