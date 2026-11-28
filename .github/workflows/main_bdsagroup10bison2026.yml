@@ -64,4 +64,9 @@ jobs:
           package: .
           startup-command: 'dotnet Bison.Razor.dll'
           clean: true
+          publish-profle: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+
+      - name: logout
+        run: |
+          az logout
           
