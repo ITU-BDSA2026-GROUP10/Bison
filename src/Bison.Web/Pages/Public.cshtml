@@ -14,28 +14,7 @@
     @if (Model.Observations != null && Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
-            @foreach (var obs in Model.Observations)
-            {
-                <li>
-                    <div> 
-                        <p>
-                            <strong>
-                            <a href="/obs/@obs.Author">@obs.Author</a>
-                            </strong>
-                            @obs.Message
-                            <small>&mdash; @obs.Timestamp</small>
-                            <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
-                            <a href="/ob?id=@obs.PostId">See comments and proposals</a>
-                            @if (User.Identity?.IsAuthenticated == true)
-                            {
-                                <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
-                                    <button>Save</button>
-                                </form>
-                            }
-                        </p>
-                    </div>
-                </li>
-            }
+            <partial name ="_posts.cshtml">
         </ul>
     }
     else

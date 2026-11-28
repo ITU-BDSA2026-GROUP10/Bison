@@ -22,23 +22,7 @@
     @if (Model.Observations != null && Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
-            @foreach (var ob in Model.Observations)
-            {
-                <li>
-                    <div>
-                    <p>
-                        <strong>
-                            <a href="/obs/@ob.Author">@ob.Author</a>
-                        </strong>
-                        @ob.Message
-                        <small>&mdash; @ob.Timestamp</small>
-                         <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
-                        <a href="/ob?id=@ob.PostId">See comments and proposals</a>
-                        <!--https://wwf.dk/wp-content/uploads/2023/11/fulg_side5-e1699539325394.png -->
-                          </p>
-                    </div>
-                </li>
-            }
+            <partial name ="_posts.cshtml">
         </ul>
     
     }

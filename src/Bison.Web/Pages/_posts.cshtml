@@ -1,0 +1,44 @@
+@using Bison.Core.Models
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Post Page</title>
+    </head>
+    <body>
+        @foreach (var obs in Model.Observations)
+            {
+                <li>
+                    <div>
+                    <p>
+                        <strong>
+                            <a href="/obs/@obs.Author">@obs.Author</a>
+                        </strong>
+                        @obs.Message
+                        <small>&mdash; @obs.Timestamp</small>
+                        @if (obs.type == typeof(Observation))
+                        {
+                            <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;max-height:50px; max-width:330px; height: auto; width: auto; padding: 0 10px 0 0;"/>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
+                                    <!--<button style="background:#e29494;padding:1%;color:#7e2c2c;" >Save</button>--> <!--this is an example of how we can change the look of the button-->
+                                    <button>Save</button>
+                                </form>
+                            }
+                            <a href="/ob?id=@obs.PostId">See comments and proposals</a>
+                            
+                        }
+                        @if (obs.type == typeof(Comment))
+                        {
+                            <small>&mdash; Comment</small>
+                        } else if (obs.type == typeof(Proposal))
+                        {
+                             <small>&mdash; Proposal</small>
+                        }
+                    </p>
+                    </div>
+                </li>
+            }
+    </body>
+</html>

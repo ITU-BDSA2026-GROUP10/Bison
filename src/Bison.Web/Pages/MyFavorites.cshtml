@@ -27,7 +27,7 @@
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
-                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
+                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;max-height:50px; max-width:330px; height: auto; width: auto; padding: 0 10px 0 0;"/>
                         <a href="/ob?id=@ob.PostId">See comments and proposals</a>
                        </p>
                     </div>
