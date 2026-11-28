@@ -18,6 +18,7 @@
                         <small>&mdash; @obs.Timestamp</small>
                         @if (obs.type == typeof(Observation))
                         {
+                            <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;max-height:50px; max-width:330px; height: auto; width: auto; padding: 0 10px 0 0;"/>
                             @if (User.Identity?.IsAuthenticated == true)
                             {
                                 <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
@@ -25,7 +26,6 @@
                                     <button>Save</button>
                                 </form>
                             }
-                            <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
                             <a href="/ob?id=@obs.PostId">See comments and proposals</a>
                             
                         }
