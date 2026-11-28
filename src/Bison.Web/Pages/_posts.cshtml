@@ -20,8 +20,8 @@
                             @if (User.Identity?.IsAuthenticated == true)
                             {
                                 <form asp-page="Public" method="post" asp-page-handler="Like" asp-route-id="@obs.PostId"> 
-                                    <button style="background:#e29494;padding:1%;color:#7e2c2c;" >Save</button>
-                                    <!--<button style="background:#cc6e6e;padding:5;color:#7e2c2c;" >Save @@heartEmpty</button>-->
+                                    <!--<button style="background:#e29494;padding:1%;color:#7e2c2c;" >Save</button>--> <!--this is an example of how we can change the look of the button-->
+                                    <button>Save</button>
                                 </form>
                             }
                             <a href="/ob?id=@obs.PostId">See comments and proposals</a>
