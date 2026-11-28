@@ -13,6 +13,7 @@ public interface ITaxonService
 {
     public Task<List<ObservationViewModel>> GetObservationsFromTaxonID(string id, int page);
     public void filteredObservations(List<Observation> observations);
+    public Task<List<TaxonDTO>> GetAllTaxons ();
 }
 
 public class TaxonService : ITaxonService
@@ -61,7 +62,7 @@ public class TaxonService : ITaxonService
         //var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in filteredObservations)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/, null));
         }
         
         return observations; 
@@ -97,4 +98,11 @@ public class TaxonService : ITaxonService
     {
         return null;
     }*/
+
+    public async Task<List<TaxonDTO>> GetAllTaxons ()
+    {
+        List<TaxonDTO> taxonDTOs = await postRepository.GetAllTaxons();
+        
+        return taxonDTOs; 
+    }
 }

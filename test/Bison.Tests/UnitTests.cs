@@ -204,6 +204,10 @@ public class EmptyPostRepository : IPostRepository
     public Task<int> AddFavorites(Author author, int id) { return null; }
 
     public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author) {return null;}
+    public Task<List<TaxonDTO>> GetAllTaxons (){return null;}
+
+    public Taxon ReadTaxFromVernacularName(string VernacularName){return null;}
+    public Taxon ReadTaxFromDWCName(string TaxonDWC){return null;}
 }
 
 public class SinglePostRepository : IPostRepository
@@ -277,6 +281,11 @@ public class SinglePostRepository : IPostRepository
     
     public Task<int> AddFavorites(Author author, int id) { return null;}
     public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author) {return null;}
+
+     public Task<List<TaxonDTO>> GetAllTaxons (){return null;}
+
+    public Taxon ReadTaxFromVernacularName(string VernacularName){return null;}
+    public Taxon ReadTaxFromDWCName(string TaxonDWC){return null;}
 }
 
 
@@ -364,4 +373,9 @@ public class FakePostRepository : IPostRepository
     public Task<int> AddFavorites(Author author, int id) { return null;}
 
     public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author) {return null;}
+
+     public Task<List<TaxonDTO>> GetAllTaxons (){return null;}
+
+    public Taxon ReadTaxFromVernacularName(string VernacularName){return null;}
+    public Taxon ReadTaxFromDWCName(string TaxonDWC){return null;}
 }

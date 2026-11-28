@@ -30,8 +30,11 @@ public interface IPostRepository
     public Task <int> AddFavorites(Author author, int id);
 
     public Task<int> AddAuthor(Author author, int authorId);
-    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author);
 
+    public Task<List<TaxonDTO>> GetAllTaxons ();
+    public Task<List<ObservationDTO>> GetFavoritesFromAuthor(Author author);
+    public Taxon ReadTaxFromVernacularName(string VernacularName);
+    public Taxon ReadTaxFromDWCName(string TaxonDWC);
     //public ObservationDTO GetObservationsFromId(Observation obs);
 }
 public class PostRepositoryClass : IPostRepository
@@ -113,6 +116,7 @@ public class PostRepositoryClass : IPostRepository
     {
         var proposalQuery = _context.Proposals
         .Include(proposal => proposal.Author)
+        .Include(proposal => proposal.Taxon)
         .Where(proposal => proposal.Observation.PostId == ID);
         var result = await proposalQuery.ToListAsync();
 
@@ -130,6 +134,29 @@ public class PostRepositoryClass : IPostRepository
         return tax;
     }
 
+    public Taxon ReadTaxFromVernacularName(string VernacularName)
+    {
+
+        var taxonQuery = _context.Taxons
+           .Where(taxon => taxon.VernacularName == VernacularName);
+
+        var result = taxonQuery.ToList();
+        var tax = result.FirstOrDefault();
+        
+        return tax;
+    }
+
+    public Taxon ReadTaxFromDWCName(string TaxonDWC)
+    {
+
+        var taxonQuery = _context.Taxons
+           .Where(taxon => taxon.dwc_TaxonID == TaxonDWC);
+
+        var result = taxonQuery.ToList();
+        var tax = result.FirstOrDefault();
+        
+        return tax;
+    }
     private List<ObservationDTO> GetObservationDTO(List<Observation> queryResult)
     {
         var posts = new List<ObservationDTO>();
@@ -200,11 +227,20 @@ public class PostRepositoryClass : IPostRepository
         var proposals = new List<ProposalDTO>();
         
         foreach (var proposal in queryResult)
-        {
+        { 
+            string t;
+            if (proposal.Taxon.VernacularName == null)
+            {
+                t = proposal.Taxon.dwc_TaxonID;
+            } else
+            {
+                t = proposal.Taxon.VernacularName;
+            }
             proposals.Add(new ProposalDTO
             {
                 AuthorName = proposal.Author.Name,
                 Text = proposal.Text,
+                Taxon = t,
                 TimeStamp = proposal.TimeStamp.ToString()
             });
         }
@@ -250,8 +286,33 @@ public class PostRepositoryClass : IPostRepository
         return obs.PostId;
     } 
 
+// For googles simple AI review, with simple examples
+/*
+comment.Author.Posts?.Add(comment);
+        comment.Observation.Comments?.Add(comment);
+        await _context.Posts.AddAsync(comment);
+        await _context.Comments.AddAsync(comment);
+        // _context.Add(comment);
+        await _context.SaveChangesAsync();
+        return comment.PostId;
+*/
+    public async Task<int> AddProposals(Proposal proposal)
+    {
+        /*var auth = proposal.Author;
+        if (await DoesThisAuthorExist(auth))
+        {
+            auth = await GetAuthorFromDatabase(auth.Name, auth.Email);
+        
+        }*/
+        proposal.Observation.Proposals?.Add(proposal);
+        await _context.Posts.AddAsync(proposal);
+        await _context.Proposals.AddAsync(proposal);
+        await _context.SaveChangesAsync();
+        return proposal.PostId; 
+    } 
+
     public async Task<Author> GetAuthorFromDatabase(string name, string email)
-{
+    {
     var author = await _context.Authors
         .FirstOrDefaultAsync(a => a.Name == name && a.Email == email);
 
@@ -275,9 +336,9 @@ public class PostRepositoryClass : IPostRepository
         return max;
     }
 
-    public async Task<Boolean> DoesThisAuthorExist (Author author)
+    public async Task<bool> DoesThisAuthorExist (Author author)
     {
-        var query = _context.Observations.Where(observation => observation.Author.Name == author.Name);
+        var query = _context.Posts.Where(post => post.Author.Name == author.Name);
 
         var result = await query.ToListAsync();
         
@@ -331,17 +392,23 @@ public class PostRepositoryClass : IPostRepository
         await _context.SaveChangesAsync();
         return comment.PostId;
     } 
-    
-     public async Task<int> AddProposals(Proposal proposal)
+
+    public async Task<List<TaxonDTO>> GetAllTaxons ()
     {
-        proposal.Author.Posts.Add(proposal);
-        proposal.Observation.Proposals.Add(proposal);
-       _context.Posts.Add(proposal);
-       _context.Proposals.Add(proposal);
-        // _context.Add(comment);
-        await _context.SaveChangesAsync();
-        return proposal.PostId;
-    } 
+        var query = _context.Taxons;
+
+        var queryResult = await query.ToListAsync();
+        var taxons = new List<TaxonDTO>();
+        foreach (var taxon in queryResult)
+        {
+            taxons.Add(new TaxonDTO
+            {
+                VernacularName = taxon.VernacularName,
+                dwc_TaxonID = taxon.dwc_TaxonID
+            });
+        }
+        return taxons;
+    }   
     
     public async Task<int> AddFavorites(Author author, int id)
     {

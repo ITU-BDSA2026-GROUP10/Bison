@@ -118,7 +118,6 @@ namespace Bison.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("TimeStamp")

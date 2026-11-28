@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bison.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Feature : Migration
+    public partial class Proposal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -197,7 +197,7 @@ namespace Bison.Infrastructure.Migrations
                 {
                     PostId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: true),
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AuthorId = table.Column<int>(type: "INTEGER", nullable: false),
                     Discriminator = table.Column<string>(type: "TEXT", maxLength: 13, nullable: false),

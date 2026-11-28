@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bison.Infrastructure.Migrations
 {
     [DbContext(typeof(BisonDBContext))]
-    [Migration("20261127103707_Feature")]
-    partial class Feature
+    [Migration("20261127120228_Proposal")]
+    partial class Proposal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,7 +121,6 @@ namespace Bison.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("TimeStamp")
