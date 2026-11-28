@@ -14,58 +14,40 @@
     @if (Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
+            <partial name ="_posts.cshtml">
             @foreach (var ob in Model.Observations)
             {
-                <li>
-                    <p>
-                        <strong>
-                            <a href="/obs/@ob.Author">@ob.Author</a>
-                        </strong>
-                        @ob.Message
-                        <small>&mdash; @ob.Timestamp</small>
-                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" height="50"/>
-
-                        @if (ob.type == typeof(Comment))
-                        {
-                            <small>&mdash; Comment</small>
-                        } else if (ob.type == typeof(Proposal))
-                        {
-                             <small>&mdash; Proposal</small>
-                        }
+                @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
+                {   
+                    <form asp-page="ObId" method="post" asp-page-handler="Comment" asp-route-id="@ob.PostId">
+                    <fieldset name="writeComment">
+                    <legend>Add Comment</legend>
+                    <div>
+                        <label for="Com">Write your comment here: </label>
+                        <input type="text" name="comment" value="" />
+                        @Html.ValidationMessage("Comment")
+                    </div>
+                    <div>
+                        <input type="submit" value="Share Comment">
+                    </div>
+                        </fieldset>
+                    </form>
                     
-                    </p>
-                    @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
-                    {   
-                        <form asp-page="ObId" method="post" asp-page-handler="Comment" asp-route-id="@ob.PostId">
-                        <fieldset name="writeComment">
-                        <legend>Add Comment</legend>
-                        <div>
-                            <label for="Com">Write your comment here: </label>
-                            <input type="text" name="comment" value="" />
-                            @Html.ValidationMessage("Comment")
-                        </div>
-                        <div>
-                            <input type="submit" value="Share Comment">
-                        </div>
-                            </fieldset>
-                        </form>
-                        
-                        <form asp-page="ObId" method="post" asp-page-handler="Proposal" asp-route-id="@ob.PostId">
-                        <fieldset name="writeProposal">
-                        <legend>Add Proposal</legend>
-                        <div>
-                            <label for="Pro">Write your proposal here: </label>
-                            <input type="text" name="proposal" value="" />
-                            @Html.ValidationMessage("proposal")
-                        </div>
-                        <div>
-                            <input type="submit" value="Share Proposal">
-                        </div>
-                            </fieldset>
-                        </form>
-                    }
-                </li>
-            }
+                    <form asp-page="ObId" method="post" asp-page-handler="Proposal" asp-route-id="@ob.PostId">
+                    <fieldset name="writeProposal">
+                    <legend>Add Proposal</legend>
+                    <div>
+                        <label for="Pro">Write your proposal here: </label>
+                        <input type="text" name="proposal" value="" />
+                        @Html.ValidationMessage("proposal")
+                    </div>
+                    <div>
+                        <input type="submit" value="Share Proposal">
+                    </div>
+                        </fieldset>
+                    </form>
+                }
+            } 
         </ul>
     }
     else
