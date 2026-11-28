@@ -60,7 +60,11 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'bdsagroup10bison2026'
+          slot-name: 'Production'
           package: ${{env.DOTNET_ROOT}}/myapp
+          startup-command: 'dotnet Bison.Razor.dll'
+          clean: true
+          #publish-profle: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
       - name: logout
         run: |
