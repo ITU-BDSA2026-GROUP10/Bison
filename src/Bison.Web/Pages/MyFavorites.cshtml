@@ -20,14 +20,17 @@
             @foreach (var ob in Model.Observations)
             {
                 <li>
+                    <div>
                     <p>
                         <strong>
                             <a href="/favorites/@ob.Author">@ob.Author</a>
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
-                        @*<a href="/ob?id=@ob.PostId">See comments and proposals</a>*@
-                    </p>
+                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
+                        <a href="/ob?id=@ob.PostId">See comments and proposals</a>
+                       </p>
+                    </div>
                 </li>
             }
         </ul>

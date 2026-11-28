@@ -9,6 +9,7 @@
         @foreach (var obs in Model.Observations)
             {
                 <li>
+                    <div>
                     <p>
                         <strong>
                             <a href="/obs/@obs.Author">@obs.Author</a>
@@ -24,8 +25,9 @@
                                     <button>Save</button>
                                 </form>
                             }
+                            <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
                             <a href="/ob?id=@obs.PostId">See comments and proposals</a>
-                            <img src="/uploads/@{@obs.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" height="50"/>
+                            
                         }
                         @if (obs.type == typeof(Comment))
                         {
@@ -35,6 +37,7 @@
                              <small>&mdash; Proposal</small>
                         }
                     </p>
+                    </div>
                 </li>
             }
     </body>
