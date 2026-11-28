@@ -11,4 +11,5 @@ public class ObservationDTO
     public string TimeStamp { get; set; }
     //public string? PhotoPath {get; set;}
     public Taxon? Taxon { get; set; }
+    public string License { get; set; } = "";
 }

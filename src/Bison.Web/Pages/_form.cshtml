@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Post Page</title>
-    </head>
-    <body>
-        <h3>What did you spot today?</h3>
-        <form asp-page="UserTimeLine" enctype="multipart/form-data">
-            <fieldset>
-          <legend>Add observation</legend>
-          <div>
-            <label for="Obs">Write your observation here: </label>
-            <input type="text" name="observation" value="" />
-            @Html.ValidationMessage("observation")
-            <label for="Photo"></label>
-            <input type="file" name="photo" />
-          </div>
-          <div>
-            <input type="submit" value="Post">
-          </div>
-            </fieldset>
-        </form>
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Post Page</title>
+</head>
+<body>
+  <h3>What did you spot today?</h3>
+  <form asp-page="UserTimeLine" enctype="multipart/form-data">
+      <fieldset>
+    <legend>Add observation</legend>
+    <div>
+      <label for="Obs">Write your observation here: </label>
+      <input type="text" name="observation" value="" />
+      @Html.ValidationMessage("observation")
+      <label for="Photo"></label>
+      <input type="file" name="photo" />
+    </div>
+    <div>
+        <label for="Pro">Select your license here: </label>
+        <select name="license">
+             <option value="---">
+                  ---
+              </option>   
+             <option value="by">
+                  by
+              </option>
+              <option value="by-nc">
+                  by-nc
+              </option>
+              <option value="by-nc-nd">
+                  by-nc-nd
+              </option>
+              <option value="by-nc-sa">
+                  by-nc-sa
+              </option>
+              <option value="by-nd">
+                  by-nd
+              </option>
+              <option value="by-sa">
+                  by-sa
+              </option>
+        </select>
+        @Html.ValidationMessage("proposal")
+    </div>
+    <div>
+      <input type="submit" value="Post">
+    </div>
+      </fieldset>
+  </form>
+</body>
 </html>

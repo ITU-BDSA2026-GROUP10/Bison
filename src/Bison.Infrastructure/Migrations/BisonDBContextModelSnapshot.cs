@@ -306,6 +306,10 @@ namespace Bison.Infrastructure.Migrations
                 {
                     b.HasBaseType("Bison.Core.Models.Post");
 
+                    b.Property<string>("License")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("TaxonId")
                         .HasColumnType("INTEGER");
 

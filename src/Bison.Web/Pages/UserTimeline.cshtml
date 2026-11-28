@@ -33,7 +33,11 @@
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
                          <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
-                        <a href="/ob?id=@ob.PostId">See comments and proposals</a>
+                         @if(ob.License != "" && ob.License !="---" && ob.License != null)
+                            {
+                                <small>License: @ob.License</small>
+                            }
+                        <div><a href="/ob?id=@ob.PostId">See comments and proposals</a></div>
                         <!--https://wwf.dk/wp-content/uploads/2023/11/fulg_side5-e1699539325394.png -->
                           </p>
                     </div>

@@ -5,7 +5,7 @@ using Bison.Core.Models;
 using Bison.Infrastructure.Repositories;
 
 namespace Bison.Infrastructure.Services;
-public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type/*, string? PhotoPath*/);
+public record ObservationViewModel(string Author, string Message, string Timestamp, int? PostId, Type? type, string? License);
 
 
 public interface IObservationService
@@ -19,6 +19,7 @@ public interface IObservationService
     
     public Task<List<ObservationViewModel>> GetFavoritesFromAuthor(Author author);
     public int AddObservationPost(Author author, string text);
+    public int AddObservationPostWithPicture(Author author, string text, string license);
 
     public Task AddCommentPost(Author author, string text, int obID);
 
@@ -49,7 +50,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation), DTO.License));
         }
 
         return observations;
@@ -81,7 +82,7 @@ public class ObservationService : IObservationService
 
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp, DTO.PostID, typeof(Observation), DTO.License));
         }
 
         return observations;
@@ -102,18 +103,18 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadPostWithID(id);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation), DTO.License));
         }
         var commentDTOs = await postRepository.ReadCommentsWithID(id);
         
         foreach (var DTO in commentDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment)/*, null*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Comment), null));
         }
         var proposalDTOs = await postRepository.ReadProposalsWithID(id);
         foreach (var DTO in proposalDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal)/*, null*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.ObservationID, typeof(Proposal), null));
         }
         return observations; 
     }
@@ -127,7 +128,7 @@ public class ObservationService : IObservationService
         var observationDTOs = await postRepository.ReadObservationsWithTaxonId(id, page);
         foreach (var DTO in observationDTOs)
         {
-            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation)/*, DTO.PhotoPath*/));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation), DTO.License));
         }
         
         return observations; 
@@ -140,10 +141,10 @@ public class ObservationService : IObservationService
         //var observationDTOs = author.FavoritePosts;//await postRepository.GetFavoritesFromAuthor(author);
 
         var observationDTOs = await postRepository.GetFavoritesFromAuthor(author);
-        foreach(var post in observationDTOs)
+        foreach(var DTO in observationDTOs)
         {
             //var post = await postRepository.ReadPostWithID();
-            observations.Add(new ObservationViewModel(post.AuthorName, post.Text, post.TimeStamp.ToString(), post.PostID, typeof(Observation)));
+            observations.Add(new ObservationViewModel(DTO.AuthorName, DTO.Text, DTO.TimeStamp.ToString(), DTO.PostID, typeof(Observation), DTO.License));
         }
         return observations;
     }
@@ -158,6 +159,22 @@ public class ObservationService : IObservationService
             Text = text,
             PostId = postid,
             TimeStamp = DateTime.Now
+        };
+        postRepository.AddPost(obs);
+        return postid;
+    }
+
+    public int AddObservationPostWithPicture(Author author, string text, string license)
+    {
+        int postid = postRepository.GetMaxPostId() + 1;
+
+        Observation obs = new Observation
+        {
+            Author = author,
+            Text = text,
+            PostId = postid,
+            TimeStamp = DateTime.Now,
+            License = license
         };
         postRepository.AddPost(obs);
         return postid;
