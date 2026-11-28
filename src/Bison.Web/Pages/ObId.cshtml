@@ -34,7 +34,7 @@
                         }
                     
                     </p>
-                     @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
+                    @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
                     {   
                         <form asp-page="ObId" method="post" asp-page-handler="Comment" asp-route-id="@ob.PostId">
                         <fieldset name="writeComment">
