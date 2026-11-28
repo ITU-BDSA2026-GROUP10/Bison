@@ -142,6 +142,7 @@ public class PostRepositoryClass : IPostRepository
                 AuthorName = obs.Author.Name,
                 Text = obs.Text,
                 //make timestamp an int!
+                License = obs.License,
                 TimeStamp = obs.TimeStamp.ToString(),
                 Taxon = obs.Taxon
             });
@@ -314,7 +315,7 @@ public class PostRepositoryClass : IPostRepository
     
     public async Task<int> AddAuthor(Author author, int authorId)
     {
-        if (author.AuthorId == null && authorId != null){author.AuthorId = authorId;}
+        if (author.AuthorId == 0 && authorId != 0){author.AuthorId = authorId;}
         _context.Authors.Add(author);
         await _context.SaveChangesAsync();
         return author.AuthorId;

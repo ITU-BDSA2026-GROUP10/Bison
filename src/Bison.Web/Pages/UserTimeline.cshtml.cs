@@ -20,6 +20,7 @@ public class UserTimelineModel : PageModel
 
     public string Author {get; set;}
     public IFormFile? Photo {get; set;}
+    public string? License {get; set;}
 
     //[BindProperty]
     //public InputModel Input {get; set;}
@@ -29,22 +30,29 @@ public class UserTimelineModel : PageModel
         _service = service;
     }
     
-    public async Task<IActionResult> OnPost([FromForm] string observation, [FromForm] IFormFile photo, [FromRoute] string author)
+    public async Task<IActionResult> OnPost([FromForm] string observation, [FromForm] IFormFile photo, [FromForm] string license, [FromRoute] string author)
     {
         Text = observation;
         Photo = photo;
+        License = license;
         
         Console.WriteLine("Observation: " + Text);
         Console.WriteLine("Photo: " + Photo);
+        Console.WriteLine("License: " + License);
         
         if (User.Identity.IsAuthenticated && User.Identity.Name == author)
         {   
             var auth = await _service.GetAuthor(author, author); //supposed to be name and then email
             //_service.AddObservationPost(auth, observation);
             Console.WriteLine("Dette er min observation: " + Text);
-            var id = _service.AddObservationPost(auth, Text);
+            int id;
+            if(Photo == null)
+            {
+                id = _service.AddObservationPost(auth, Text);
+            }
             if(Photo != null && Photo.Length > 0)
             {
+                id = _service.AddObservationPostWithPicture(auth, Text, License);
                 Console.WriteLine("Photo length is greater than 0");
                 var path = Path.Combine("wwwroot/uploads", id.ToString());
                 path = path + ".png";
