@@ -16,15 +16,16 @@
         <ul id="messagelist" class="observations">
             @foreach (var ob in Model.Observations)
             {
-                <li>
+                <li> 
+                    <div>
                     <p>
                         <strong>
                             <a href="/obs/@ob.Author">@ob.Author</a>
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
-                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" height="50"/>
-
+                        <img src="/uploads/@{@ob.PostId}.png" onerror="this.onerror=null; this.remove();" alt="picture" style="float:right;height:50px;padding: 0 10px 0 0;"/>
+                           
                         @if (ob.type == typeof(Comment))
                         {
                             <small>&mdash; Comment</small>
@@ -33,7 +34,8 @@
                              <small>&mdash; Proposal</small>
                         }
                     
-                    </p>
+                    </p> 
+                    </div>
                      @if(SignInManager.IsSignedIn(User) && (ob.type == typeof(Observation)))
                     {   
                         <form asp-page="ObId" method="post" asp-page-handler="Comment" asp-route-id="@ob.PostId">
