@@ -59,7 +59,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'bdsagroup10bison'
+          app-name: 'bdsagroup10bison2026'
           slot-name: 'Production'
           package: .
           startup-command: 'dotnet Bison.Razor.dll'
